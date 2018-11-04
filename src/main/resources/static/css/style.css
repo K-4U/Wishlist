@@ -1,0 +1,22 @@
+/* GENERAL */
+@font-face {
+    font-family: Ubuntu;
+    src: url('../fonts/Ubuntu-R.eot'); /* Internet Explorer */
+    src: local("Ubuntu"), url('../fonts/Ubuntu-R.ttf') format("truetype");
+}
+
+html, body {
+    height: 100%;
+}
+
+.drop-shadow {
+    -webkit-box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.25);
+    -moz-box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.25);
+    box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.25);
+}
+
+.drop-heavy-shadow {
+    -webkit-box-shadow: 0px 0px 20px 10px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 0px 0px 20px 10px rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 0px 20px 10px rgba(0, 0, 0, 0.75);
+}
