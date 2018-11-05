@@ -1,9 +1,11 @@
 package nl.k4u.web.wishlist.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -13,6 +15,8 @@ import org.springframework.web.servlet.view.UrlBasedViewResolver;
 import org.springframework.web.servlet.view.tiles3.TilesConfigurer;
 import org.springframework.web.servlet.view.tiles3.TilesView;
 
+import nl.k4u.web.wishlist.beans.UserInterceptor;
+
 /**
  * @author Koen Beckers (K-4U)
  */
@@ -20,6 +24,9 @@ import org.springframework.web.servlet.view.tiles3.TilesView;
 @Configuration
 @ComponentScan(basePackages = {"nl.k4u.web", "nl.k4u.jpa"})
 public class WebConfig implements WebMvcConfigurer {
+
+	@Autowired
+	private UserInterceptor userInterceptor;
 
 	@Bean
 	public TilesConfigurer tilesConfigurer() {
@@ -57,4 +64,8 @@ public class WebConfig implements WebMvcConfigurer {
 		configurer.enable();
 	}
 
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		registry.addInterceptor(userInterceptor);
+	}
 }

@@ -5,10 +5,16 @@
 
 <tiles-definitions>
 	<definition name="mainLayout" template="/WEB-INF/jsp/templates/main-template.jsp">
-		<put-attribute name="body" value="/WEB-INF/jsp/templates/empty-content.jsp"/>
+		<put-attribute name="pageBody" value="/WEB-INF/jsp/templates/empty-content.jsp"/>
 		<put-attribute name="activePage" value=""/>
 	</definition>
 
 	<definition name="login" template="/WEB-INF/jsp/templates/login-template.jsp"/>
+
+
+	<definition name="index" extends="mainLayout">
+		<put-attribute name="pageBody" value="/WEB-INF/jsp/welcome.jsp"/>
+		<put-attribute name="activePage" value="home"/>
+	</definition>
 
 </tiles-definitions>

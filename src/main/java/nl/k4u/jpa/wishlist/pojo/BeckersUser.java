@@ -1,5 +1,6 @@
 package nl.k4u.jpa.wishlist.pojo;
 
+import java.util.Date;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -28,6 +29,27 @@ public class BeckersUser {
 	@Column
 	private String passHash;
 
+	@Column
+	private Date dateOfBirth;
+
+	@Column
+	private String avatarName;
+
+	public Date getDateOfBirth() {
+		return dateOfBirth;
+	}
+
+	public void setDateOfBirth(Date dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
+	}
+
+	public String getAvatarName() {
+		return avatarName;
+	}
+
+	public void setAvatarName(String avatarName) {
+		this.avatarName = avatarName;
+	}
 
 	@Override
 	public String toString() {
