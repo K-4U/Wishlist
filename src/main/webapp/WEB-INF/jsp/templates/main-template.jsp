@@ -16,7 +16,7 @@
 	<script src="${base}webjars/bootstrap/3.3.7-1/js/bootstrap.min.js"></script>
 </head>
 <body>
-<nav class="navbar navbar-inverse navbar-fixed-top">
+<nav class="navbar navbar-inverse">
 	<div class="container">
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
@@ -31,7 +31,7 @@
 		<div id="navbar" class="collapse navbar-collapse">
 			<ul class="nav navbar-nav">
 				<li <c:if test="${activePage == 'home'}">class="active"</c:if>><a href=${base}">Home</a></li>
-				<li <c:if test="${activePage == 'ownlists'}">class=" active"</c:if>><a href="${base}own">Eigen
+				<li <c:if test="${activePage == 'lists-own'}">class=" active"</c:if>><a href="${base}lists/own">Eigen
 					lijsten</a></li>
 				<li <c:if test="${activePage == 'lists'}">class="active"</c:if>><a href="${base}lists">Andere
 					lijsten</a></li>

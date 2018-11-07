@@ -24,20 +24,20 @@ public class WishlistItem {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@JoinColumn
-	@ManyToOne
+	@JoinColumn(nullable = false)
+	@ManyToOne(optional = false)
 	private BeckersUser owner;
 
-	@Column
+	@Column(nullable = false)
 	private String description;
 
-	@Column
+	@Column(nullable = false)
 	private String url;
 
-	@Column
+	@Column(nullable = false)
 	private Double price;
 
-	@Column
+	@Column(nullable = false)
 	private Date addedOn;
 
 	@JoinColumn
@@ -50,8 +50,8 @@ public class WishlistItem {
 	@Column
 	private Event purchaseEvent;
 
-	@JoinColumn
-	@ManyToOne
+	@JoinColumn(nullable = false)
+	@ManyToOne(optional = false)
 	private Wishlist wishlist;
 
 	public Wishlist getWishlist() {

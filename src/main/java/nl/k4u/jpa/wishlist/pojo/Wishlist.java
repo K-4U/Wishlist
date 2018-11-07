@@ -24,7 +24,7 @@ public class Wishlist {
 	private Integer id;
 
 	@JoinColumn
-	@ManyToOne
+	@ManyToOne(optional = false)
 	private BeckersUser owner;
 
 	@Column

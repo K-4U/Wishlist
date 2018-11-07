@@ -17,4 +17,24 @@
 		<put-attribute name="activePage" value="home"/>
 	</definition>
 
+	<definition name="lists-own" extends="mainLayout">
+		<put-attribute name="pageBody" value="/WEB-INF/jsp/list-overview.jsp"/>
+		<put-attribute name="activePage" value="lists-own"/>
+	</definition>
+
+	<definition name="lists-own-add" extends="mainLayout">
+		<put-attribute name="pageBody" value="/WEB-INF/jsp/add-list.jsp"/>
+		<put-attribute name="activePage" value="lists-own-add"/>
+	</definition>
+
+	<definition name="list-view" extends="mainLayout">
+		<put-attribute name="pageBody" value="/WEB-INF/jsp/list-view.jsp"/>
+		<put-attribute name="activePage" value="lists-view"/>
+	</definition>
+
+	<definition name="list-add-item" extends="mainLayout">
+		<put-attribute name="pageBody" value="/WEB-INF/jsp/list-add-item.jsp"/>
+		<put-attribute name="activePage" value="list-add-item"/>
+	</definition>
+
 </tiles-definitions>

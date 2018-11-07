@@ -22,4 +22,11 @@ public class ListService {
 		return listDao.getAllByOwner(user);
 	}
 
+	public Wishlist getWishListById(Integer id) {
+		return listDao.getOne(id);
+	}
+
+	public Wishlist saveList(Wishlist delegate) {
+		return listDao.save(delegate);
+	}
 }

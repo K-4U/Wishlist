@@ -22,10 +22,12 @@ public class UserInterceptor extends HandlerInterceptorAdapter {
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
 
-		if (null != modelAndView.getViewName()) {
-			if (!isRedirectView(modelAndView)) {
-				if (null != AuthSupport.getPrincipalDelegate()) {
-					modelAndView.addObject("user", AuthSupport.getPrincipalDelegate());
+		if (null != modelAndView) {
+			if (null != modelAndView.getViewName()) {
+				if (!isRedirectView(modelAndView)) {
+					if (null != AuthSupport.getPrincipalDelegate()) {
+						modelAndView.addObject("user", AuthSupport.getPrincipalDelegate());
+					}
 				}
 			}
 		}
