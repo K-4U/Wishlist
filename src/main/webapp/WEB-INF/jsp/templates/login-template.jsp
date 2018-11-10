@@ -28,10 +28,10 @@
 <body>
 <div class="master">
 	<div class="col-md-10 col-lg-2 col-sm-10 col-xs-10 loginBox">
-		<div class="panel panel-default drop-heavy-shadow">
-			<div class="panel-heading">
+		<div class="panel panel-default drop-heavy-shadow transparent">
+			<%--<div class="panel-heading">
 				<div class="panel-title">Login</div>
-			</div>
+			</div>--%>
 			<div class="panel-body">
 				<div class="row" style="padding-bottom: 10px">
 					<div class="col-md-12">
@@ -47,10 +47,14 @@
 						</c:if>
 						<form method="post" action="login">
 							<div class="form-group">
-								<input type="text" name="username" placeholder="Gebruikersnaam" class="form-control"/>
-								<input type="password" name="password" placeholder="Wachtwoord" class="form-control"/>
-								<button type="submit" class="btn btn-primary">Login</button>
+								<input type="text" name="username" placeholder="Gebruikersnaam"
+								       class="form-control transparent-input"
+								       style="border-bottom-left-radius: 0; border-bottom-right-radius: 0"/>
+								<input type="password" name="password" placeholder="Wachtwoord"
+								       class="form-control transparent-input"
+								       style="border-top-left-radius: 0; border-top-right-radius: 0"/>
 							</div>
+							<button type="submit" class="btn btn-primary">Login</button>
 						</form>
 					</div>
 				</div>
