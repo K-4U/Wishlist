@@ -1,5 +1,8 @@
 package nl.k4u.web.wishlist.controller;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -17,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import nl.k4u.jpa.wishlist.pojo.BeckersUser;
 import nl.k4u.jpa.wishlist.pojo.Wishlist;
 import nl.k4u.jpa.wishlist.service.ListService;
+import nl.k4u.web.wishlist.Glyphicon;
+import nl.k4u.web.wishlist.beans.GlyphiconEditor;
 import nl.k4u.web.wishlist.fbo.ListFBO;
 import nl.k4u.web.wishlist.security.AuthSupport;
 import nl.k4u.web.wishlist.validators.ListValidator;
@@ -40,7 +45,16 @@ public class ListsController {
 	@InitBinder(COMMAND_NAME)
 	public void initBinder(WebDataBinder binder) {
 		binder.addValidators(validator);
+		binder.registerCustomEditor(Glyphicon.class, new GlyphiconEditor());
 	}
+
+	@ModelAttribute("glyphicons")
+	public List<Glyphicon> glyphicons() {
+		List<Glyphicon> glyphicons = new ArrayList<>(Arrays.asList(Glyphicon.values()));
+		glyphicons.sort(Comparator.comparing(Glyphicon::toString));
+		return glyphicons;
+	}
+
 
 	private ListFBO getListFBO(Integer id) {
 		ListFBO fbo = new ListFBO();

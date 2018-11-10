@@ -6,11 +6,12 @@
 	<div class="panel panel-default">
 		<div class="panel-heading">
 			<span class="panel-title">
-				<c:out value="${list.listName}"/>
+				<i class="fas fa-<c:out value="${list.icon == null ? 'list' : list.icon}" />"></i>&nbsp;<c:out
+					value="${list.listName}"/>
 			</span>
 			<c:if test="${owner}">
 				<a href="${base}list/${list.id}/add" class="close" data-dismiss="alert"><span
-						class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
+						class="fas fa-plus" aria-hidden="true"></span></a>
 			</c:if>
 		</div>
 		<ul class="list-group">

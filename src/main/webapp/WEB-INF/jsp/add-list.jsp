@@ -12,6 +12,20 @@
 			</div>
 
 			<div class="panel-body">
+				<spring:bind path="delegate.icon">
+					<div class="form-group ${status.error ? 'has-error' : ''}">
+						<select class="selectpicker" name="${status.expression}" data-live-search="true">
+							<option selected></option>
+								<%--@elvariable id="glyphicon" type="nl.k4u.web.wishlist.Glyphicon"--%>
+							<c:forEach items="${glyphicons}" var="glypicon">
+								<option data-icon="<c:out value="${glypicon.library}" /> fa-<c:out value="${glypicon}" />">
+									<c:out value="${glypicon}"/></option>
+							</c:forEach>
+						</select>
+						<form:errors path="${status.expression}" cssClass="help-block"/>
+					</div>
+				</spring:bind>
+
 				<spring:bind path="delegate.listName">
 					<div class="form-group ${status.error ? 'has-error' : ''}">
 						<form:input path="${status.expression}" cssClass="form-control" placeholder="Lijst naam"/>

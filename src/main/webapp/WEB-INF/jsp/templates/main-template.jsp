@@ -10,10 +10,20 @@
 	<%--TODO: Add title--%>
 	<title></title>
 	<link href="${base}webjars/bootstrap/3.3.7-1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+	<link rel="stylesheet"
+	      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/css/bootstrap-select.min.css">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+	      integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
 	<link href="${base}css/style.css" rel="stylesheet">
 
 	<script src="${base}webjars/jquery/3.3.1-1/jquery.min.js"></script>
 	<script src="${base}webjars/bootstrap/3.3.7-1/js/bootstrap.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/js/bootstrap-select.min.js"></script>
+	<script type="text/javascript">
+        $.fn.selectpicker.Constructor.iconBase = '';
+        $.fn.selectpicker.Constructor.tickIcon = 'fas fa-check';
+	</script>
+
 </head>
 <body>
 <nav class="navbar navbar-inverse">
@@ -30,13 +40,15 @@
 		</div>
 		<div id="navbar" class="collapse navbar-collapse">
 			<ul class="nav navbar-nav">
-				<li <c:if test="${activePage == 'home'}">class="active"</c:if>><a href=${base}">Home</a></li>
+				<li <c:if test="${activePage == 'home'}">class="active"</c:if>><a href="${base}">Home</a></li>
 				<li <c:if test="${activePage == 'lists-own'}">class=" active"</c:if>><a href="${base}lists/own">Eigen
 					lijsten</a></li>
 				<li <c:if test="${activePage == 'lists'}">class="active"</c:if>><a href="${base}lists">Andere
 					lijsten</a></li>
+				<li role="separator" class="divider"></li>
+				<li class="hidden-sm hidden"><a href="${base}logout">Uitloggen</a></li>
 			</ul>
-			<ul class="nav navbar-nav pull-right">
+			<ul class="nav navbar-nav pull-right hidden-xs">
 				<li class="dropdown">
 					<a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
 					   aria-expanded="false">
@@ -47,11 +59,7 @@
 					</a>
 					<ul class="dropdown-menu">
 						<li>
-							<a href="#">Settings</a>
-						</li>
-						<li role="separator" class="divider"></li>
-						<li>
-							<a href="#">Log out</a>
+							<a href="${base}logout">Uitloggen</a>
 						</li>
 					</ul>
 				</li>
