@@ -16,13 +16,10 @@
 	      integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
 	<link href="${base}css/style.css" rel="stylesheet">
 
-	<script src="${base}webjars/jquery/3.3.1-1/jquery.min.js"></script>
-	<script src="${base}webjars/bootstrap/3.3.7-1/js/bootstrap.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/js/bootstrap-select.min.js"></script>
-	<script type="text/javascript">
-        $.fn.selectpicker.Constructor.iconBase = '';
-        $.fn.selectpicker.Constructor.tickIcon = 'fas fa-check';
-	</script>
+	<!-- Bootstrap DataTables | https://datatables.net -->
+	<link rel="stylesheet" type="text/css" href="${base}webjars/datatables/1.10.16/css/dataTables.bootstrap.css"/>
+	<link rel="stylesheet" type="text/css"
+	      href="${base}webjars/datatables.net-responsive-bs/2.2.3/css/responsive.bootstrap.css"/>
 
 </head>
 <body>
@@ -69,12 +66,45 @@
 </nav>
 
 <div class="container">
-
+	<%--@elvariable id="messages" type="java.util.List<nl.k4u.web.wishlist.beans.MessagesBean.Message>"--%>
+	<c:if test="${messages.size() > 0}">
+		<c:forEach items="${messages}" var="message">
+			<div class="row">
+				<div class="col-md-12 col-xs-12 col-lg-12 col-sm-12">
+					<div class="alert alert-${message.type}">${message.message}</div>
+				</div>
+			</div>
+		</c:forEach>
+		<spring:eval expression="@messagesBean.clearMessages()"/>
+	</c:if>
 	<tiles:insertAttribute name="pageBody">
 		<tiles:putAttribute name="activePage" value="${activePage}"/>
 	</tiles:insertAttribute>
 
 </div><!-- /.container -->
 
+<script src="${base}webjars/jquery/3.3.1-1/jquery.min.js"></script>
+
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script type="text/javascript" src="${base}webjars/bootstrap/3.3.7-1/js/transition.js"></script>
+<script type="text/javascript" src="${base}webjars/bootstrap/3.3.7-1/js/collapse.js"></script>
+<script type="text/javascript" src="${base}webjars/bootstrap/3.3.7-1/js/bootstrap.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/js/bootstrap-select.min.js"></script>
+
+<script type="text/javascript">
+    $.fn.selectpicker.Constructor.iconBase = '';
+    $.fn.selectpicker.Constructor.tickIcon = 'fas fa-check';
+</script>
+
+<script type="text/javascript" src="${base}webjars/datatables/1.10.16/js/jquery.dataTables.js"></script>
+<script type="text/javascript" src="${base}webjars/datatables/1.10.16/js/dataTables.bootstrap.js"></script>
+<script type="text/javascript"
+        src="${base}webjars/datatables.net-responsive/2.2.3/js/dataTables.responsive.js"></script>
+<script type="text/javascript"
+        src="${base}webjars/datatables.net-responsive-bs/2.2.3/js/responsive.bootstrap.js"></script>
+
+<script type="text/javascript" src="${base}js/application.js"></script>
 </body>
 </html>

@@ -6,7 +6,7 @@
 	<div class="col-md-12">
 		<div class="panel panel-default">
 			<div class="panel-heading">
-				<span class="panel-title">Voeg item toe</span>
+				<span class="panel-title">Bewerk ${itemAddCommand.delegate.description}</span>
 				<a href="${base}list/${itemAddCommand.wishlist.id}" class="close" data-dismiss="alert"><span
 						class="glyphicon glyphicon-remove"
 						aria-hidden="true"></span></a>

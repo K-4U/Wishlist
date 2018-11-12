@@ -31,7 +31,7 @@ import nl.k4u.web.wishlist.validators.ListValidator;
  */
 @Controller
 @RequestMapping("/lists")
-public class ListsController {
+public class ListsController extends BaseController {
 
 	private static final String COMMAND_NAME = "listAddCommand";
 
@@ -98,6 +98,7 @@ public class ListsController {
 		obj.getDelegate().setOwner(user);
 
 		Wishlist saved = listService.saveList(obj.getDelegate());
+		messagesBean.addSuccesssMessage("Lijst aangemaakt");
 
 		return "redirect:/list/" + saved.getId();
 	}

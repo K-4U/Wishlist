@@ -28,7 +28,7 @@ import nl.k4u.web.wishlist.validators.ItemValidator;
  * @author Koen Beckers (K-4U)
  */
 @Controller
-public class ListController {
+public class ListController extends BaseController {
 
 	private static final String COMMAND_NAME = "itemAddCommand";
 
@@ -93,14 +93,61 @@ public class ListController {
 			model.addAttribute(COMMAND_NAME, obj);
 			return "list-add-item";
 		}
+		Wishlist wishListById = listService.getWishListById(listId);
 
 		WishlistItem delegate = obj.getDelegate();
 		delegate.setAddedOn(Calendar.getInstance().getTime());
 		delegate.setOwner(user);
-		delegate.setWishlist(obj.getWishlist());
-
+		delegate.setWishlist(wishListById);
 
 		itemService.saveItem(delegate);
+
+		messagesBean.addSuccesssMessage(delegate.getDescription() + " toegevoegd aan " + wishListById.getListName());
+
+		return "redirect:/list/" + listId;
+	}
+
+	@RequestMapping(path = "list/{listId}/edit/{itemId}", method = RequestMethod.GET)
+	public String editItem(Model model, @PathVariable Integer listId, @PathVariable Integer itemId) {
+		BeckersUser user = AuthSupport.getPrincipalDelegate();
+		//May need it. Doubt it
+
+		model.addAttribute(COMMAND_NAME, getItemFBO(listId, itemId));
+		return "list-edit-item";
+	}
+
+	@RequestMapping(path = "list/{listId}/edit/{itemId}", method = RequestMethod.POST)
+	public String saveItem(@Valid @ModelAttribute(COMMAND_NAME) ItemFBO obj, BindingResult result,
+	                       Model model, @PathVariable Integer listId, @PathVariable Integer itemId) {
+		BeckersUser user = AuthSupport.getPrincipalDelegate();
+
+		if (result.hasErrors()) {
+			model.addAttribute(COMMAND_NAME, obj);
+			return "list-edit-item";
+		}
+
+		WishlistItem delegate = obj.getDelegate();
+
+		WishlistItem item = itemService.getItemById(itemId);
+		item.setDescription(delegate.getDescription());
+		item.setPrice(delegate.getPrice());
+		item.setUrl(delegate.getUrl());
+
+		itemService.saveItem(item);
+
+		messagesBean.addSuccesssMessage(item.getDescription() + " opgeslagen");
+
+		return "redirect:/list/" + listId;
+	}
+
+	@RequestMapping(path = "list/{listId}/remove/{itemId}", method = RequestMethod.GET)
+	public String deleteItem(Model model, @PathVariable Integer listId, @PathVariable Integer itemId) {
+
+		WishlistItem item = itemService.getItemById(itemId);
+		item.setDeleted(true);
+		itemService.saveItem(item);
+
+		messagesBean.addSuccesssMessage(item.getDescription() + " verwijderd");
 
 		return "redirect:/list/" + listId;
 	}

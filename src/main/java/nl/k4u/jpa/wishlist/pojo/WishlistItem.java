@@ -1,5 +1,6 @@
 package nl.k4u.jpa.wishlist.pojo;
 
+import java.net.URISyntaxException;
 import java.util.Date;
 import java.util.Objects;
 
@@ -12,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import nl.k4u.jpa.wishlist.enums.Event;
+import nl.k4u.web.wishlist.WishlistApplication;
 
 /**
  * @author Koen Beckers (K-4U)
@@ -49,10 +51,12 @@ public class WishlistItem {
 
 	@Column
 	private Event purchaseEvent;
-
+	@Column(nullable = false)
+	private boolean deleted;
 	@JoinColumn(nullable = false)
 	@ManyToOne(optional = false)
 	private Wishlist wishlist;
+
 
 	public Wishlist getWishlist() {
 		return wishlist;
@@ -168,5 +172,34 @@ public class WishlistItem {
 
 	public void setPurchaseEvent(Event purchaseEvent) {
 		this.purchaseEvent = purchaseEvent;
+	}
+
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
+
+	public String getStore() {
+		//Parse:
+		String domainName;
+		try {
+			domainName = WishlistApplication.getDomainName(getUrl());
+		} catch (URISyntaxException e) {
+			//This means we don't have a valid url, maybe the store was entered, just return that:
+			domainName = getUrl();
+		}
+		return domainName.substring(0, 1).toUpperCase() + domainName.substring(1).toLowerCase();
+	}
+
+	public boolean hasValidUrl() {
+		try {
+			WishlistApplication.getDomainName(getUrl());
+			return true;
+		} catch (URISyntaxException e) {
+			return false;
+		}
 	}
 }

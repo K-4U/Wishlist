@@ -24,6 +24,7 @@
 		<java.version>1.8</java.version>
 		<bootstrap.version>3.3.7-1</bootstrap.version>
 		<datatables.version>1.10.16</datatables.version>
+		<datatables.npm.version>2.2.3</datatables.npm.version>
 		<datatables.bootstrap.version>2-20120202-2</datatables.bootstrap.version>
 		<jquery.version>3.3.1-1</jquery.version>
 	</properties>
@@ -103,9 +104,34 @@
 			<version>${datatables.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.webjars</groupId>
-			<artifactId>datatables-bootstrap</artifactId>
-			<version>${datatables.bootstrap.version}</version>
+			<groupId>org.webjars.npm</groupId>
+			<artifactId>datatables.net-responsive</artifactId>
+			<version>${datatables.npm.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.webjars.npm</groupId>
+					<artifactId>datatables.net</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.webjars.npm</groupId>
+					<artifactId>jquery</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.webjars.npm</groupId>
+			<artifactId>datatables.net-responsive-bs</artifactId>
+			<version>${datatables.npm.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.webjars.npm</groupId>
+					<artifactId>datatables.net</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.webjars.npm</groupId>
+					<artifactId>jquery</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.webjars</groupId>

@@ -1,5 +1,8 @@
 package nl.k4u.web.wishlist;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -21,5 +24,16 @@ public class WishlistApplication {
 	@Bean
 	public UserInterceptor userInterceptor() {
 		return new UserInterceptor();
+	}
+
+
+	//TODO: Move me to k4lib or something
+	public static String getDomainName(String url) throws URISyntaxException {
+		URI uri = new URI(url);
+		String domain = uri.getHost();
+		if (domain == null) {
+			throw new URISyntaxException(url, "no domain");
+		}
+		return domain.startsWith("www.") ? domain.substring(4) : domain;
 	}
 }

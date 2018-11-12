@@ -37,4 +37,9 @@
 		<put-attribute name="activePage" value="list-add-item"/>
 	</definition>
 
+	<definition name="list-edit-item" extends="mainLayout">
+		<put-attribute name="pageBody" value="/WEB-INF/jsp/list-edit-item.jsp"/>
+		<put-attribute name="activePage" value="list-add-item"/>
+	</definition>
+
 </tiles-definitions>
