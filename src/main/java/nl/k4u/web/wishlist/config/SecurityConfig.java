@@ -28,11 +28,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable()
 				.authorizeRequests()
-				.antMatchers("/webjars/**", "/css/**", "/js/**", "/img/**", "/error", "/favicon.ico").permitAll()
+				.antMatchers("/webjars/**", "/css/**", "/js/**", "/img/**", "/error", "/favicon.ico", "/public/**").permitAll()
 				.anyRequest().authenticated()
 				.and()
 				.formLogin()
-				.loginPage("/login")
+				.loginPage("/public/login")
 				.permitAll()
 				.and()
 				.logout()

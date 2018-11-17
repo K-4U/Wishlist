@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Component;
 
 import nl.k4u.jpa.wishlist.pojo.BeckersUser;
@@ -99,4 +100,15 @@ public class AuthSupport {
 		return null;
 	}
 
+	public static String getSessionId() {
+		try {
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			if (auth != null) {
+				return ((WebAuthenticationDetails) auth.getDetails()).getSessionId();
+			}
+		} catch (Throwable t) {
+			LOG.warn("Error getting the principal", t);
+		}
+		return null;
+	}
 }

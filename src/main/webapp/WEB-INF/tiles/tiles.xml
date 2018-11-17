@@ -9,12 +9,27 @@
 		<put-attribute name="activePage" value=""/>
 	</definition>
 
-	<definition name="login" template="/WEB-INF/jsp/templates/login-template.jsp"/>
+	<definition name="login" template="/WEB-INF/jsp/templates/login-template.jsp">
+		<put-attribute name="pageBody" value="/WEB-INF/jsp/login/login.jsp"/>
+	</definition>
+
+	<definition name="reset-pass-page" extends="login">
+		<put-attribute name="pageBody" value="/WEB-INF/jsp/login/password-reset.jsp"/>
+	</definition>
+
+	<definition name="reset-pass-enter-pass" extends="login">
+		<put-attribute name="pageBody" value="/WEB-INF/jsp/login/password-enter.jsp"/>
+	</definition>
 
 
 	<definition name="index" extends="mainLayout">
 		<put-attribute name="pageBody" value="/WEB-INF/jsp/welcome.jsp"/>
 		<put-attribute name="activePage" value="home"/>
+	</definition>
+
+	<definition name="lists-others" extends="mainLayout">
+		<put-attribute name="pageBody" value="/WEB-INF/jsp/list-overview.jsp"/>
+		<put-attribute name="activePage" value="lists"/>
 	</definition>
 
 	<definition name="lists-own" extends="mainLayout">

@@ -73,7 +73,9 @@
 			</div>
 
 			<div class="modal-body">
-				Weet je zeker dat je dit wilt verwijderen? Je kan deze actie niet ongedaan maken!
+				<p>Weet je zeker dat je dit wilt verwijderen? Je kan deze actie niet ongedaan maken!</p>
+				<p>Dit zorgt ervoor dat het item niet meer zichtbaar is om te kopen, maar zal geen bericht sturen naar
+					iemand die dit misschien al heeft gekocht.</p>
 			</div>
 
 			<div class="modal-footer">

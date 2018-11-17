@@ -29,4 +29,8 @@ public class ListService {
 	public Wishlist saveList(Wishlist delegate) {
 		return listDao.save(delegate);
 	}
+
+	public List<Wishlist> getAllWishlistsExceptUser(BeckersUser user) {
+		return listDao.getAllByOwnerNot(user);
+	}
 }

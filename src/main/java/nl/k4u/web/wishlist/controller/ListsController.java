@@ -75,6 +75,16 @@ public class ListsController extends BaseController {
 		return "lists-own";
 	}
 
+	@RequestMapping("")
+	public String otherLists(Model model) {
+		BeckersUser user = AuthSupport.getPrincipalDelegate();
+		List<Wishlist> wishlists = listService.getAllWishlistsExceptUser(user);
+
+		model.addAttribute("lists", wishlists);
+
+		return "lists-others";
+	}
+
 	@RequestMapping(path = "own/add", method = RequestMethod.GET)
 	public String addList(Model model) {
 		BeckersUser user = AuthSupport.getPrincipalDelegate();

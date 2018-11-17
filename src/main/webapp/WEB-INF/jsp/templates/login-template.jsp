@@ -33,31 +33,18 @@
 				<div class="panel-title">Login</div>
 			</div>--%>
 			<div class="panel-body">
-				<div class="row" style="padding-bottom: 10px">
-					<div class="col-md-12">
-						<img src='${base}img/logo.jpg'
-						     class="center-block img-responsive img-circle drop-shadow"
-						     style="height:200px; width:200px"/>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-6 col-sm-10 col-md-offset-3 col-sm-offset-1 col-lg-8 col-lg-offset-2 text-center">
-						<c:if test="${error}">
-							<div class="alert alert-danger">${error}</div>
-						</c:if>
-						<form method="post" action="login">
-							<div class="form-group">
-								<input type="text" name="username" placeholder="Gebruikersnaam"
-								       class="form-control transparent-input"
-								       style="border-bottom-left-radius: 0; border-bottom-right-radius: 0"/>
-								<input type="password" name="password" placeholder="Wachtwoord"
-								       class="form-control transparent-input"
-								       style="border-top-left-radius: 0; border-top-right-radius: 0"/>
+				<%--@elvariable id="messages" type="java.util.List<nl.k4u.web.wishlist.beans.MessagesBean.Message>"--%>
+				<c:if test="${messages.size() > 0}">
+					<c:forEach items="${messages}" var="message">
+						<div class="row">
+							<div class="col-md-12 col-xs-12 col-lg-12 col-sm-12">
+								<div class="alert alert-${message.type}">${message.message}</div>
 							</div>
-							<button type="submit" class="btn btn-primary">Login</button>
-						</form>
-					</div>
-				</div>
+						</div>
+					</c:forEach>
+					<spring:eval expression="@messagesBean.clearMessages()"/>
+				</c:if>
+				<tiles:insertAttribute name="pageBody"/>
 			</div>
 		</div>
 	</div>

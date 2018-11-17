@@ -6,16 +6,16 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import nl.k4u.jpa.wishlist.pojo.BeckersUser;
-import nl.k4u.jpa.wishlist.pojo.Wishlist;
+import nl.k4u.jpa.wishlist.pojo.PasswordToken;
 
 /**
  * @author Koen Beckers (K-4U)
  */
 @Repository
-public interface ListDao extends JpaRepository<Wishlist, Integer> {
+public interface PasswordTokenDao extends JpaRepository<PasswordToken, Integer> {
 
-	List<Wishlist> getAllByOwner(BeckersUser owner);
+	List<PasswordToken> getAllByUser(BeckersUser user);
 
-	List<Wishlist> getAllByOwnerNot(BeckersUser owner);
+	PasswordToken getByToken(String token);
 
 }
