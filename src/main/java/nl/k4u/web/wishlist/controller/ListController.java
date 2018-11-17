@@ -152,4 +152,20 @@ public class ListController extends BaseController {
 		return "redirect:/list/" + listId;
 	}
 
+	@RequestMapping(path = "list/{listId}/buy/{itemId}", method = RequestMethod.GET)
+	public String buyItem(Model model, @PathVariable Integer listId, @PathVariable Integer itemId) {
+		BeckersUser user = AuthSupport.getPrincipalDelegate();
+
+		WishlistItem item = itemService.getItemById(itemId);
+		//item.setPurchaseEvent();
+		item.setPurchasedOn(Calendar.getInstance().getTime());
+		item.setPurchasedBy(user);
+
+		itemService.saveItem(item);
+
+		messagesBean.addSuccesssMessage(item.getDescription() + " gemarkeerd als gekocht!");
+
+		return "redirect:/list/" + listId;
+	}
+
 }

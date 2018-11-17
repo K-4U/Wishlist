@@ -6,5 +6,13 @@
 <%@ taglib prefix="tilesx" uri="http://tiles.apache.org/tags-tiles-extras" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-<c:set scope="request" var="base"
-       value="${pageContext.request.scheme}://${pageContext.request.serverName}:${pageContext.request.serverPort}${pageContext.request.contextPath}/"/>
+<c:if test="${pageContext.request.serverPort != 80}">
+	<%--DEBUG--%>
+	<c:set scope="request" var="base"
+	       value="http://${pageContext.request.serverName}:${pageContext.request.serverPort}${pageContext.request.contextPath}/"/>
+</c:if>
+<c:if test="${pageContext.request.serverPort == 80}">
+	<%--NOT DEBUG--%>
+	<c:set scope="request" var="base"
+	       value="https://${pageContext.request.serverName}${pageContext.request.contextPath}/"/>
+</c:if>

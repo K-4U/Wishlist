@@ -56,6 +56,8 @@ public class WebConfig implements WebMvcConfigurer {
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/static/**")
 				.addResourceLocations("/static/");
+		registry.addResourceHandler("/WEB-INF/jsp/**")
+				.addResourceLocations("/WEB-INF/jsp/");
 
 	}
 

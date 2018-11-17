@@ -10,3 +10,6 @@ $(document).ready(function () {
 $('#confirm').on('show.bs.modal', function (e) {
     $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
 });
+$('#confirm-buy').on('show.bs.modal', function (e) {
+    $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+});

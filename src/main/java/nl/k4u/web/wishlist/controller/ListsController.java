@@ -3,7 +3,9 @@ package nl.k4u.web.wishlist.controller;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -80,7 +82,15 @@ public class ListsController extends BaseController {
 		BeckersUser user = AuthSupport.getPrincipalDelegate();
 		List<Wishlist> wishlists = listService.getAllWishlistsExceptUser(user);
 
-		model.addAttribute("lists", wishlists);
+		Map<BeckersUser, List<Wishlist>> userMap = new HashMap<>();
+		for (Wishlist wishlist : wishlists) {
+			if (!userMap.containsKey(wishlist.getOwner())) {
+				userMap.put(wishlist.getOwner(), new ArrayList<>());
+			}
+			userMap.get(wishlist.getOwner()).add(wishlist);
+		}
+
+		model.addAttribute("owners", userMap);
 
 		return "lists-others";
 	}

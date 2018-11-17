@@ -21,14 +21,12 @@
 					<th>Beschrijving</th>
 					<th>Prijs</th>
 					<th>Winkel</th>
-					<c:if test="${owner}">
-						<th>Acties</th>
-					</c:if>
+					<th>Acties</th>
 				</tr>
 				</thead>
 				<tbody>
 				<c:forEach items="${list.items}" var="item">
-					<c:if test="${!item.deleted}">
+					<c:if test="${!item.deleted && ((!owner && item.purchasedBy == null) || owner || item.purchasedBy == user)}">
 						<tr>
 							<td><c:out value="${item.description}"/></td>
 							<td><fmt:formatNumber value="${item.price}" type="currency" currencySymbol="&euro;"/></td>
@@ -54,6 +52,20 @@
 									</a>
 								</td>
 							</c:if>
+							<c:if test="${!owner && item.purchasedBy == null}">
+								<td>
+									<a href="#" data-href="${base}list/${list.id}/buy/${item.id}"
+									   data-target="#confirm-buy"
+									   data-toggle="modal">
+										<i class="fas fa-shopping-basket" aria-hidden="true"></i>
+									</a>
+								</td>
+							</c:if>
+							<c:if test="${!owner && item.purchasedBy == user}">
+								<td>
+									Al gekocht door jou.
+								</td>
+							</c:if>
 						</tr>
 					</c:if>
 				</c:forEach>
@@ -76,6 +88,30 @@
 				<p>Weet je zeker dat je dit wilt verwijderen? Je kan deze actie niet ongedaan maken!</p>
 				<p>Dit zorgt ervoor dat het item niet meer zichtbaar is om te kopen, maar zal geen bericht sturen naar
 					iemand die dit misschien al heeft gekocht.</p>
+			</div>
+
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Nope!</button>
+				<a class="btn btn-primary btn-ok">Yes please</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="confirm-buy" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">Weet je het zeker?</h4>
+			</div>
+
+			<div class="modal-body">
+				<p>Weet je zeker dat je dit gaat kopen? Je kan deze actie ongedaan maken, maar dat is natuurlijk niet
+					netjes!</p>
+				<p>Dit zal geen berichten sturen naar iemand, en de eigenaar van deze lijst zal hier niet achter
+					komen.</p>
 			</div>
 
 			<div class="modal-footer">

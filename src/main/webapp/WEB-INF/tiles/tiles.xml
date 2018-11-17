@@ -28,7 +28,7 @@
 	</definition>
 
 	<definition name="lists-others" extends="mainLayout">
-		<put-attribute name="pageBody" value="/WEB-INF/jsp/list-overview.jsp"/>
+		<put-attribute name="pageBody" value="/WEB-INF/jsp/lists-per-person.jsp"/>
 		<put-attribute name="activePage" value="lists"/>
 	</definition>
 
