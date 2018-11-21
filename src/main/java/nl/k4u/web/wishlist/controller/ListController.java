@@ -132,6 +132,7 @@ public class ListController extends BaseController {
 		item.setDescription(delegate.getDescription());
 		item.setPrice(delegate.getPrice());
 		item.setUrl(delegate.getUrl());
+		item.setRemarks(delegate.getRemarks());
 
 		itemService.saveItem(item);
 

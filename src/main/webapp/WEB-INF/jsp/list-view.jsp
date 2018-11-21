@@ -14,8 +14,8 @@
 						class="fas fa-plus" aria-hidden="true"></span></a>
 			</c:if>
 		</div>
-		<div class="panel-body">
-			<table class="datatable table">
+		<div>
+			<table class="datatable table" style="max-width: 100% !important;">
 				<thead>
 				<tr>
 					<th>Beschrijving</th>
@@ -27,8 +27,19 @@
 				<tbody>
 				<c:forEach items="${list.items}" var="item">
 					<c:if test="${!item.deleted && ((!owner && item.purchasedBy == null) || owner || item.purchasedBy == user)}">
-						<tr>
-							<td><c:out value="${item.description}"/></td>
+						<tr data-id="${item.id}">
+							<td>
+								<c:if test="${item.remarks != null && !(item.remarks == '')}">
+								<a href="#" data-remarks="${item.remarks}"
+								   data-title="${item.description}"
+								   data-target="#details"
+								   data-toggle="modal">
+									</c:if>
+									<c:out value="${item.description}"/>
+									<c:if test="${item.remarks != null && !(item.remarks == '')}">
+								</a>
+								</c:if>
+							</td>
 							<td><fmt:formatNumber value="${item.price}" type="currency" currencySymbol="&euro;"/></td>
 							<c:if test="${item.hasValidUrl()}">
 								<td>
@@ -117,6 +128,26 @@
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Nope!</button>
 				<a class="btn btn-primary btn-ok">Yes please</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="details" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title"></h4>
+			</div>
+
+			<div class="modal-body">
+
+			</div>
+
+			<div class="modal-footer">
+				<a class="btn btn-primary btn-ok" data-dismiss="modal">Ok</a>
 			</div>
 		</div>
 	</div>

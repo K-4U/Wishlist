@@ -57,6 +57,9 @@ public class WishlistItem {
 	@ManyToOne(optional = false)
 	private Wishlist wishlist;
 
+	@Column(columnDefinition = "text")
+	private String remarks;
+
 
 	public Wishlist getWishlist() {
 		return wishlist;
@@ -180,6 +183,14 @@ public class WishlistItem {
 
 	public void setDeleted(boolean deleted) {
 		this.deleted = deleted;
+	}
+
+	public String getRemarks() {
+		return remarks;
+	}
+
+	public void setRemarks(String remarks) {
+		this.remarks = remarks;
 	}
 
 	public String getStore() {

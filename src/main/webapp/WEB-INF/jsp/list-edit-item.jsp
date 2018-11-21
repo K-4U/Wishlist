@@ -39,6 +39,14 @@
 						<form:errors path="${status.expression}" cssClass="help-block"/>
 					</div>
 				</spring:bind>
+
+				<spring:bind path="delegate.remarks">
+					<div class="form-group ${status.error ? 'has-error' : ''}">
+						<label for="delegate.url">Opmerkingen</label>
+						<form:textarea path="${status.expression}" cssClass="form-control"/>
+						<form:errors path="${status.expression}" cssClass="help-block"/>
+					</div>
+				</spring:bind>
 			</div>
 
 			<div class="panel-footer">
