@@ -2,11 +2,7 @@ package nl.k4u.web.wishlist.mail;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -43,7 +39,7 @@ public abstract class AbstractMailService {
 	private static Map<String, Resource> cachedImages = Collections.synchronizedMap(new HashMap<String, Resource>(0));
 	@Autowired
 	private JavaMailSender mailSender;
-	@Value("${mail.from.address:no-reply@K-4U.nl}")
+	@Value("${mail.from.address:server@triangulation.nl}")
 	private String fromAddress;
 	@Value("${mail.from.addressee:'Wishlist'}")
 	private String fromAddressee;
