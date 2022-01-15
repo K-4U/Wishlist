@@ -2,7 +2,8 @@ $(document).ready(function () {
     var table = $(".datatable").DataTable({
         searching: false,
         lengthChange: false,
-        info: false
+        info: false,
+        pageLength: 50
     });
 
 });
