@@ -1,0 +1,7 @@
+- Makkelijker kunnen zien of er een notitie is
+- Fixen van het invullen van decimalen (komma vs punt)
+- Frontend lostrekken van backend
+- Lijst-management
+    - Lijst verwijderen
+    - Lijst naam veranderen
+- Nieuwe foto's
