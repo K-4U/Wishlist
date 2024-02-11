@@ -1,3 +1,4 @@
+- https://www.bezkoder.com/spring-boot-react-jwt-auth/
 - Makkelijker kunnen zien of er een notitie is
 - Fixen van het invullen van decimalen (komma vs punt)
 - Frontend lostrekken van backend
@@ -5,3 +6,4 @@
     - Lijst verwijderen
     - Lijst naam veranderen
 - Nieuwe foto's
+

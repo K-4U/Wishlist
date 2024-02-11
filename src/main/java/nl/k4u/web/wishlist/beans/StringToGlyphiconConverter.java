@@ -1,8 +1,7 @@
 package nl.k4u.web.wishlist.beans;
 
-import javax.persistence.AttributeConverter;
-import javax.persistence.Converter;
-
+import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
 import nl.k4u.web.wishlist.Glyphicon;
 
 /**

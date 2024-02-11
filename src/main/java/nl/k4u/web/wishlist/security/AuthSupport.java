@@ -1,23 +1,28 @@
 package nl.k4u.web.wishlist.security;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Component;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import nl.k4u.jpa.wishlist.pojo.BeckersUser;
+import nl.k4u.web.wishlist.api.pojo.JwtResponse;
+import nl.k4u.web.wishlist.api.pojo.LoginRequest;
 
 /**
  * @author Koen Beckers (K-4U)
  */
 @Component("authSupport")
+@Log4j2
+@RequiredArgsConstructor
 public class AuthSupport {
 
-	// Log instance for this class
-	private static Logger LOG = LogManager.getLogger();
+	public final AuthenticationManager authenticationManager;
+	public final JwtUtils jwtUtils;
 
 	/**
 	 * We need to update the existing principal; we either have new assignments
@@ -38,7 +43,7 @@ public class AuthSupport {
 				SecurityContextHolder.getContext().setAuthentication(newToken);
 			}
 		} catch (Throwable t) {
-			LOG.warn("Error updating the principal", t);
+			log.warn("Error updating the principal", t);
 		}
 	}
 
@@ -58,7 +63,7 @@ public class AuthSupport {
 				}
 			}
 		} catch (Throwable t) {
-			LOG.warn("Error updating the principal delegate", t);
+			log.warn("Error updating the principal delegate", t);
 		}
 	}
 
@@ -76,7 +81,7 @@ public class AuthSupport {
 				}
 			}
 		} catch (Throwable t) {
-			LOG.warn("Error getting the principal delegate", t);
+			log.warn("Error getting the principal delegate", t);
 		}
 		return null;
 	}
@@ -95,7 +100,7 @@ public class AuthSupport {
 				}
 			}
 		} catch (Throwable t) {
-			LOG.warn("Error getting the principal", t);
+			log.warn("Error getting the principal", t);
 		}
 		return null;
 	}
@@ -107,8 +112,23 @@ public class AuthSupport {
 				return ((WebAuthenticationDetails) auth.getDetails()).getSessionId();
 			}
 		} catch (Throwable t) {
-			LOG.warn("Error getting the principal", t);
+			log.warn("Error getting the principal", t);
 		}
 		return null;
+	}
+
+	public JwtResponse authenticate(LoginRequest loginRequest) {
+		Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.username(),
+				loginRequest.password()));
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+		String jwt = jwtUtils.generateJwtToken(authentication);
+
+		LoginPrincipal userDetails = (LoginPrincipal) authentication.getPrincipal();
+
+		return JwtResponse.builder()
+				.token(jwt)
+				.type("bearer")
+				.delegate(userDetails.getDelegate())
+				.build();
 	}
 }

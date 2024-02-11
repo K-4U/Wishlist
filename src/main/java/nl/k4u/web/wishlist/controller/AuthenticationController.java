@@ -3,43 +3,39 @@ package nl.k4u.web.wishlist.controller;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import javax.validation.Valid;
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import lombok.RequiredArgsConstructor;
 import nl.k4u.jpa.wishlist.pojo.BeckersUser;
 import nl.k4u.jpa.wishlist.pojo.PasswordToken;
 import nl.k4u.jpa.wishlist.service.LoginService;
+import nl.k4u.web.wishlist.api.pojo.JwtResponse;
+import nl.k4u.web.wishlist.api.pojo.LoginRequest;
 import nl.k4u.web.wishlist.mail.MailService;
+import nl.k4u.web.wishlist.security.AuthSupport;
 import nl.k4u.web.wishlist.security.PasswordSupport;
 
 /**
  * @author Koen Beckers (K-4U)
  */
-@Controller
-@RequestMapping("public")
-public class Authentication extends BaseController {
+@RestController
+@RequestMapping("/api/auth")
+@RequiredArgsConstructor
+public class AuthenticationController extends BaseController {
 
-	@Autowired
-	private LoginService loginService;
+	private final LoginService loginService;
+	private final MailService mailService;
+	private final AuthSupport authSupport;
 
-	@Autowired
-	private MailService mailService;
+	@PostMapping("login")
+	public ResponseEntity<JwtResponse> doLogin(@Valid @RequestBody LoginRequest request) {
+		JwtResponse jwtResponse = authSupport.authenticate(request);
 
-	@RequestMapping(value = "login", method = {RequestMethod.GET, RequestMethod.POST})
-	public String loginPage(String error, String logout) {
-		if (null != error) {
-			messagesBean.addErrorMessage("Verkeerde combinatie gebruikersnaam/wachtwoord");
-		}
-		if (null != logout) {
-			messagesBean.addSuccesssMessage("Uitgelogd");
-		}
-
-		return "login";
+		return ResponseEntity.ok(jwtResponse);
 	}
 
 	@RequestMapping(value = "reset-pass", method = RequestMethod.GET)
