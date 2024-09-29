@@ -1,14 +1,14 @@
 package nl.k4u.web.wishlist.controller;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.validation.Valid;
-
+import jakarta.validation.Valid;
+import nl.k4u.jpa.wishlist.pojo.BeckersUser;
+import nl.k4u.jpa.wishlist.pojo.Wishlist;
+import nl.k4u.jpa.wishlist.service.ListService;
+import nl.k4u.web.wishlist.Glyphicon;
+import nl.k4u.web.wishlist.beans.GlyphiconEditor;
+import nl.k4u.web.wishlist.fbo.ListFBO;
+import nl.k4u.web.wishlist.security.AuthSupport;
+import nl.k4u.web.wishlist.validators.ListValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,14 +19,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import nl.k4u.jpa.wishlist.pojo.BeckersUser;
-import nl.k4u.jpa.wishlist.pojo.Wishlist;
-import nl.k4u.jpa.wishlist.service.ListService;
-import nl.k4u.web.wishlist.Glyphicon;
-import nl.k4u.web.wishlist.beans.GlyphiconEditor;
-import nl.k4u.web.wishlist.fbo.ListFBO;
-import nl.k4u.web.wishlist.security.AuthSupport;
-import nl.k4u.web.wishlist.validators.ListValidator;
+import java.util.*;
 
 /**
  * @author Koen Beckers (K-4U)

@@ -1,5 +1,12 @@
 package nl.k4u.web.wishlist.config;
 
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import nl.k4u.web.wishlist.security.AuthEntryPointJwt;
+import nl.k4u.web.wishlist.security.AuthTokenFilter;
+import nl.k4u.web.wishlist.security.JwtUtils;
+import nl.k4u.web.wishlist.security.LoginPasswordEncoder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,11 +21,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
-import nl.k4u.web.wishlist.security.*;
 
 /**
  * @author Koen Beckers (K-4U)
@@ -61,7 +63,7 @@ public class SecurityConfig {
 		});
 		http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 		http.authorizeHttpRequests(requests -> {
-			requests.requestMatchers("/api/auth/**", "/api/test/**").permitAll();
+			requests.requestMatchers("/api/auth/**", "/api/test/**", "/swagger-ui.html", "/v3/**", "/swagger-ui*/**").permitAll();
 			requests.anyRequest().authenticated();
 		});
 

@@ -1,17 +1,13 @@
 package nl.k4u.web.wishlist.mail;
 
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
+import jakarta.mail.internet.MimeMessage;
+import nl.k4u.jpa.wishlist.pojo.BeckersUser;
+import org.apache.hc.client5.http.classic.methods.HttpGet;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.core5.http.HttpEntity;
+import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +19,11 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.util.StringUtils;
 
-import jakarta.mail.internet.MimeMessage;
-import nl.k4u.jpa.wishlist.pojo.BeckersUser;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author Koen Beckers (K-4U)
@@ -290,7 +289,6 @@ public abstract class AbstractMailService {
 				CloseableHttpResponse proxiedResponse = null;
 				try {
 					proxiedResponse = httpClient.execute(httpGet);
-					LOG.debug(proxiedResponse.getStatusLine());
 
 					HttpEntity entity = proxiedResponse.getEntity();
 					cachedImages.put(fullUrl, new ByteArrayResource(EntityUtils.toByteArray(entity)));

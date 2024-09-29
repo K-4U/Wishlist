@@ -2,6 +2,8 @@ package nl.k4u.web.wishlist.config;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -29,12 +31,21 @@ public class WebConfig implements WebMvcConfigurer {
 		registry.viewResolver(jspViewResolver);
 	}*/
 
-	@Override
-	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/static/**")
-				.addResourceLocations("/static/");
-		registry.addResourceHandler("/WEB-INF/jsp/**")
-				.addResourceLocations("/WEB-INF/jsp/");
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/static/**")
+                .addResourceLocations("/static/");
+        registry.addResourceHandler("/WEB-INF/jsp/**")
+                .addResourceLocations("/WEB-INF/jsp/");
 
-	}
+    }
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry
+                .addMapping("/**")
+                .allowedMethods(CorsConfiguration.ALL)
+                .allowedHeaders(CorsConfiguration.ALL)
+                .allowedOriginPatterns(CorsConfiguration.ALL);
+    }
 }

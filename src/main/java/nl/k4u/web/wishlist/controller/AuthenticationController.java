@@ -1,23 +1,15 @@
 package nl.k4u.web.wishlist.controller;
 
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
-
-import javax.validation.Valid;
-
-import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import nl.k4u.jpa.wishlist.pojo.BeckersUser;
-import nl.k4u.jpa.wishlist.pojo.PasswordToken;
 import nl.k4u.jpa.wishlist.service.LoginService;
 import nl.k4u.web.wishlist.api.pojo.JwtResponse;
 import nl.k4u.web.wishlist.api.pojo.LoginRequest;
 import nl.k4u.web.wishlist.mail.MailService;
 import nl.k4u.web.wishlist.security.AuthSupport;
-import nl.k4u.web.wishlist.security.PasswordSupport;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author Koen Beckers (K-4U)
@@ -25,6 +17,7 @@ import nl.k4u.web.wishlist.security.PasswordSupport;
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
+@Tag(name = "Authentication")
 public class AuthenticationController extends BaseController {
 
 	private final LoginService loginService;
@@ -44,7 +37,7 @@ public class AuthenticationController extends BaseController {
 
 		return "reset-pass-page";
 	}
-
+/*
 	@RequestMapping(value = "reset-pass", method = RequestMethod.POST)
 	public String resetPassSubmit(@RequestParam("email") String emailAddress) throws NoSuchAlgorithmException {
 		//Find the user:
@@ -95,5 +88,5 @@ public class AuthenticationController extends BaseController {
 		messagesBean.addSuccesssMessage("Wachtwoord gewijzigd!");
 
 		return "redirect:/public/login";
-	}
+	}*/
 }
