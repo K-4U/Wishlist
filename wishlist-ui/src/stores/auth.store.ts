@@ -2,6 +2,7 @@ import {defineStore} from 'pinia';
 import {AuthenticationApi, BeckersUser, JwtResponse} from "@/api";
 import type {AxiosPromise} from 'axios';
 import router from "@/router";
+import {jwtDecode} from "jwt-decode";
 
 
 export const useAuthStore = defineStore({
@@ -9,10 +10,18 @@ export const useAuthStore = defineStore({
   state: (): { api: AuthenticationApi, user: BeckersUser, returnUrl: string, token: string } => ({
     // initialize state from local storage to enable user to stay logged in
     user: JSON.parse(localStorage.getItem('user')),
-    token: JSON.parse(localStorage.getItem('token')),
+    token: localStorage.getItem('token'),
     returnUrl: null,
     api: new AuthenticationApi()
   }),
+  getters: {
+    decodedToken() {
+      return jwtDecode(this.token);
+    },
+    isLoggedIn() {
+      return this.user !== null && this.token != null && this.decodedToken.exp > Date.now() / 1000;
+    },
+  },
   actions: {
     async login(username, password) {
       const response: JwtResponse = await this.api.doLogin({
@@ -29,7 +38,7 @@ export const useAuthStore = defineStore({
 
       // store user details and jwt in local storage to keep user logged in between page refreshes
       localStorage.setItem('user', JSON.stringify(response.delegate));
-      localStorage.setItem('token', JSON.stringify(response.token));
+      localStorage.setItem('token', response.token);
 
       // redirect to previous url or default to home page
       router.push(this.returnUrl || '/');

@@ -7,11 +7,12 @@
 // Composables
 import {createRouter, createWebHistory} from 'vue-router/auto'
 import {routes} from 'vue-router/auto-routes'
+import {setupLayouts} from 'virtual:generated-layouts'
 import {useAuthStore} from "@/stores";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes,
+  routes: setupLayouts(routes),
 })
 
 // Workaround for https://github.com/vitejs/vite/issues/11804
@@ -44,5 +45,13 @@ router.beforeEach(async (to) => {
     return '/login';
   }
 });
+
+router.afterEach((to, from) => {
+  if (to.meta.title) {
+    document.title = 'Wishlist :: ' + to.meta.title;
+  } else {
+    document.title = 'Wishlist';
+  }
+})
 
 export default router

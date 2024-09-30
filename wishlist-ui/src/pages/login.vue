@@ -1,8 +1,15 @@
 <script lang="ts" setup>
 import {Field, Form} from 'vee-validate';
 import * as Yup from 'yup';
-
 import {useAuthStore} from '@/stores';
+import {definePage} from "unplugin-vue-router/runtime";
+
+definePage({
+  meta: {
+    layout: 'no-footer'
+  }
+})
+
 
 const schema = Yup.object().shape({
   username: Yup.string().required('Username is required'),
@@ -16,6 +23,7 @@ function onSubmit(values, {setErrors}) {
   return authStore.login(username, password)
     .catch(error => setErrors({apiError: error}));
 }
+
 </script>
 
 <template>
