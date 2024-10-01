@@ -3,6 +3,8 @@ import {AuthenticationApi, BeckersUser, JwtResponse} from "@/api";
 import type {AxiosPromise} from 'axios';
 import router from "@/router";
 import {jwtDecode} from "jwt-decode";
+import {RequiredError} from "@/api/base";
+import {LoginError} from "@/exceptions/LoginError";
 
 
 export const useAuthStore = defineStore({
@@ -19,6 +21,7 @@ export const useAuthStore = defineStore({
       return jwtDecode(this.token);
     },
     isLoggedIn() {
+      //TODO: If we WERE logged in, but the token has expired, show a message to the user
       return this.user !== null && this.token != null && this.decodedToken.exp > Date.now() / 1000;
     },
   },
@@ -27,7 +30,10 @@ export const useAuthStore = defineStore({
       const response: JwtResponse = await this.api.doLogin({
         username,
         password
-      }).then((response: AxiosPromise<JwtResponse>) => {
+      }).catch((response: RequiredError) => {
+        throw new LoginError(response.response.data.message, response.response.data.status, response.response.data.error);
+      })
+        .then((response: AxiosPromise<JwtResponse>) => {
         return response.data;
       });
 

@@ -6,4 +6,4 @@
     - Lijst verwijderen
     - Lijst naam veranderen
 - Nieuwe foto's
-
+- Item van lijst verplaatsen naar andere lijst
