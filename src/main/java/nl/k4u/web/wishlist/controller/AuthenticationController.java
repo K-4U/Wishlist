@@ -24,6 +24,7 @@ public class AuthenticationController extends BaseController {
 	private final MailService mailService;
 	private final AuthSupport authSupport;
 
+	@CrossOrigin
 	@PostMapping("login")
 	public ResponseEntity<JwtResponse> doLogin(@Valid @RequestBody LoginRequest request) {
 		JwtResponse jwtResponse = authSupport.authenticate(request);

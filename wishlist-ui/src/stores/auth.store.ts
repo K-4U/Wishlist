@@ -14,7 +14,7 @@ export const useAuthStore = defineStore({
     user: JSON.parse(localStorage.getItem('user')),
     token: localStorage.getItem('token'),
     returnUrl: null,
-    api: new AuthenticationApi()
+    api: new AuthenticationApi({basePath: (window.location.protocol === 'https' ? 'https' : 'http') + "://" + window.location.hostname + ':8081'})
   }),
   getters: {
     decodedToken() {
@@ -37,7 +37,6 @@ export const useAuthStore = defineStore({
         return response.data;
       });
 
-      console.log(response)
       // update pinia state
       this.user = response.delegate;
       this.token = response.token;
@@ -52,7 +51,10 @@ export const useAuthStore = defineStore({
     logout() {
       this.user = null;
       localStorage.removeItem('user');
-      router.push('/login');
+      localStorage.removeItem('token');
+      router.push('/login').then(() => {
+        window.location.reload();
+      });
     }
   }
 });

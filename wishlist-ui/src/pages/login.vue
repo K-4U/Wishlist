@@ -8,7 +8,7 @@ import {LoginError} from "@/exceptions/LoginError";
 
 definePage({
   meta: {
-    layout: 'no-footer'
+    layout: 'login'
   }
 })
 
@@ -17,14 +17,6 @@ const schema = Yup.object().shape({
   username: Yup.string().email('Voer geldig e-mail adres in').required('Voer een e-mail adres in'),
   password: Yup.string().required('Voer een wachtwoord in')
 });
-
-function onSubmit(values, {setErrors}) {
-  const authStore = useAuthStore();
-  const {username, password} = values;
-
-  return authStore.login(username, password)
-    .catch(error => setErrors({apiError: error}));
-}
 
 const vuetifyConfig = (state) => ({
   props: {
@@ -42,7 +34,6 @@ const [password, passwordProps] = defineField('password', vuetifyConfig);
 const isSubmitting = ref(false);
 const visible = ref(false);
 const onSubmitHandler = handleSubmit((values, actions) => {
-  console.log(values)
   isSubmitting.value = true;
   const authStore = useAuthStore();
   const {username, password} = values;
