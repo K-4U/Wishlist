@@ -9,6 +9,7 @@ import nl.k4u.web.wishlist.security.JwtUtils;
 import nl.k4u.web.wishlist.security.LoginPasswordEncoder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -64,6 +65,7 @@ public class SecurityConfig {
 		http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 		http.authorizeHttpRequests(requests -> {
 			requests.requestMatchers("/api/auth/**", "/api/test/**", "/swagger-ui.html", "/v3/**", "/swagger-ui*/**").permitAll();
+			requests.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();//Allow all preflight requests
 			requests.anyRequest().authenticated();
 		});
 

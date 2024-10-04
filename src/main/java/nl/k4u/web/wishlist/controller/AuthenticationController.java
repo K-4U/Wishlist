@@ -1,9 +1,13 @@
 package nl.k4u.web.wishlist.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import nl.k4u.jpa.wishlist.service.LoginService;
+import nl.k4u.web.wishlist.api.annotations.ResponseOk;
+import nl.k4u.web.wishlist.api.annotations.ResponseUnauthorized;
 import nl.k4u.web.wishlist.api.pojo.JwtResponse;
 import nl.k4u.web.wishlist.api.pojo.LoginRequest;
 import nl.k4u.web.wishlist.mail.MailService;
@@ -24,8 +28,11 @@ public class AuthenticationController extends BaseController {
 	private final MailService mailService;
 	private final AuthSupport authSupport;
 
-	@CrossOrigin
 	@PostMapping("login")
+	@Operation(summary = "Login")
+	@ResponseOk
+	@ResponseUnauthorized
+	@SecurityRequirements
 	public ResponseEntity<JwtResponse> doLogin(@Valid @RequestBody LoginRequest request) {
 		JwtResponse jwtResponse = authSupport.authenticate(request);
 

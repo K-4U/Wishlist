@@ -41,7 +41,7 @@ public class ListController extends BaseController {
 		binder.addValidators(validator);
 	}
 
-	private ItemFBO getItemFBO(Integer listId, Integer itemId) {
+    private ItemFBO getItemFBO(Long listId, Integer itemId) {
 		Wishlist wishListById = listService.getWishListById(listId);
 		ItemFBO fbo = new ItemFBO(wishListById);
 		fbo.getDelegate().setOwner(AuthSupport.getPrincipalDelegate());
@@ -54,7 +54,7 @@ public class ListController extends BaseController {
 
 
 	@RequestMapping("/list/{id}")
-	public String showList(Model model, @PathVariable Integer id) {
+    public String showList(Model model, @PathVariable Long id) {
 		BeckersUser user = AuthSupport.getPrincipalDelegate();
 
 		Wishlist wishListById = listService.getWishListById(id);
@@ -69,7 +69,7 @@ public class ListController extends BaseController {
 
 
 	@RequestMapping(path = "list/{listId}/add", method = RequestMethod.GET)
-	public String addList(Model model, @PathVariable Integer listId) {
+    public String addList(Model model, @PathVariable Long listId) {
 		BeckersUser user = AuthSupport.getPrincipalDelegate();
 		//May need it. Doubt it
 
@@ -80,7 +80,7 @@ public class ListController extends BaseController {
 
 	@RequestMapping(path = "list/{listId}/add", method = RequestMethod.POST)
 	public String saveList(@Valid @ModelAttribute(COMMAND_NAME) ItemFBO obj, BindingResult result,
-	                       Model model, @PathVariable Integer listId) {
+                           Model model, @PathVariable Long listId) {
 		BeckersUser user = AuthSupport.getPrincipalDelegate();
 
 		if (result.hasErrors()) {
@@ -102,7 +102,7 @@ public class ListController extends BaseController {
 	}
 
 	@RequestMapping(path = "list/{listId}/edit/{itemId}", method = RequestMethod.GET)
-	public String editItem(Model model, @PathVariable Integer listId, @PathVariable Integer itemId) {
+    public String editItem(Model model, @PathVariable Long listId, @PathVariable Integer itemId) {
 		BeckersUser user = AuthSupport.getPrincipalDelegate();
 		//May need it. Doubt it
 

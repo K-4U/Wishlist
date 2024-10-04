@@ -5,6 +5,7 @@ import Vuetify, {transformAssetUrls} from 'vite-plugin-vuetify'
 import ViteFonts from 'unplugin-fonts/vite'
 import VueRouter from 'unplugin-vue-router/vite'
 import Layouts from 'vite-plugin-vue-layouts'
+import vueDevTools from 'vite-plugin-vue-devtools'
 
 // Utilities
 import {defineConfig} from 'vite'
@@ -36,6 +37,7 @@ export default defineConfig({
                 }],
             },
         }),
+        vueDevTools(),
     ],
     define: {'process.env': {}},
     resolve: {

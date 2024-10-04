@@ -51,7 +51,7 @@ public class ListsController extends BaseController {
 	}
 
 
-	private ListFBO getListFBO(Integer id) {
+	private ListFBO getListFBO(Long id) {
 		ListFBO fbo = new ListFBO();
 		fbo.getDelegate().setOwner(AuthSupport.getPrincipalDelegate());
 		if (null != id) {

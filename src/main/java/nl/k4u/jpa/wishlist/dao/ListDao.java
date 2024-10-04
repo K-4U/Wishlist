@@ -12,7 +12,7 @@ import nl.k4u.jpa.wishlist.pojo.Wishlist;
  * @author Koen Beckers (K-4U)
  */
 @Repository
-public interface ListDao extends JpaRepository<Wishlist, Integer> {
+public interface ListDao extends JpaRepository<Wishlist, Long> {
 
 	List<Wishlist> getAllByOwner(BeckersUser owner);
 

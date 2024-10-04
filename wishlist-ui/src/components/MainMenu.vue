@@ -1,9 +1,12 @@
 <script lang="ts" setup>
 import {useAuthStore} from "@/stores";
-import {computed} from "vue";
+import ThemeSwitcher from "@/components/ThemeSwitcher.vue";
+import {getAvatarUrl} from "@/helpers";
+
 
 const auth = useAuthStore();
-const avatar = computed(() => new URL("/src/assets/avatar/" + auth.user.avatarName, import.meta.url).href);
+const avatar = getAvatarUrl(auth.user);
+
 </script>
 
 <template>
@@ -12,12 +15,14 @@ const avatar = computed(() => new URL("/src/assets/avatar/" + auth.user.avatarNa
       <v-app-bar-nav-icon></v-app-bar-nav-icon>
       <v-toolbar-title>Wishlist</v-toolbar-title>
       <v-spacer></v-spacer>
+
+      <ThemeSwitcher/>
       <span class="mr-2">{{ auth.user.name }}</span>
 
       <v-menu class="d-none d-md-flex">
         <template v-slot:activator="{ props }">
           <v-btn class="d-none mr-10 d-md-flex" icon v-bind="props">
-            <v-avatar :image="avatar" size="large"/>
+            <v-avatar :image="avatar" class="elevation-5" size="large"/>
           </v-btn>
         </template>
 
@@ -31,7 +36,7 @@ const avatar = computed(() => new URL("/src/assets/avatar/" + auth.user.avatarNa
       <v-bottom-sheet class="d-flex d-md-none">
         <template v-slot:activator="{ props }">
           <v-btn class="mr-10 d-flex d-md-none" icon v-bind="props">
-            <v-avatar :image="avatar" size="large"/>
+            <v-avatar :image="avatar" class="elevation-5" size="large"/>
           </v-btn>
         </template>
 

@@ -7,3 +7,5 @@
     - Lijst naam veranderen
 - Nieuwe foto's
 - Item van lijst verplaatsen naar andere lijst
+- PWA maken
+- Zorgen dat je dingen kan toevoegen aan een lijst door te delen (android/ios?)

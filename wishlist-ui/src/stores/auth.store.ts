@@ -24,6 +24,10 @@ export const useAuthStore = defineStore({
       //TODO: If we WERE logged in, but the token has expired, show a message to the user
       return this.user !== null && this.token != null && this.decodedToken.exp > Date.now() / 1000;
     },
+    currentUserId(): number {
+      // return this.user.id;
+      return 3;
+    }
   },
   actions: {
     async login(username, password) {

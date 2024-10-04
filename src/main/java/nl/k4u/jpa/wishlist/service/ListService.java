@@ -18,12 +18,16 @@ public class ListService {
 	@Autowired
 	private ListDao listDao;
 
+	public List<Wishlist> getAllWishlists() {
+		return listDao.findAll();
+	}
+
 	public List<Wishlist> getAllWishlistsByUser(BeckersUser user) {
 		return listDao.getAllByOwner(user);
 	}
 
-	public Wishlist getWishListById(Integer id) {
-		return listDao.getOne(id);
+	public Wishlist getWishListById(Long id) {
+		return listDao.getReferenceById(id);
 	}
 
 	public Wishlist saveList(Wishlist delegate) {
