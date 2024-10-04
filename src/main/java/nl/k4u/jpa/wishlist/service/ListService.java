@@ -1,13 +1,12 @@
 package nl.k4u.jpa.wishlist.service;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import nl.k4u.jpa.wishlist.dao.ListDao;
 import nl.k4u.jpa.wishlist.pojo.BeckersUser;
 import nl.k4u.jpa.wishlist.pojo.Wishlist;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author Koen Beckers (K-4U)
@@ -27,7 +26,7 @@ public class ListService {
 	}
 
 	public Wishlist getWishListById(Long id) {
-		return listDao.getReferenceById(id);
+		return listDao.findById(id).orElseThrow();
 	}
 
 	public Wishlist saveList(Wishlist delegate) {

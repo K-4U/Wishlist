@@ -39,7 +39,7 @@ onMounted(() => {
 <template>
   <v-row>
     <h1>Lists Overview</h1>
-    <UserLists v-if="currentUserListRef" :lists="currentUserListRef" :user="usersRef[authStore.currentUserId]"/>
+    <UserLists v-if="currentUserListRef" :lists="currentUserListRef" :user="usersRef[authStore.currentUserId]" own/>
     <UserLists v-for="(lists, userId) in listsRef" :key="userId" :lists="lists" :user="usersRef[userId]"/>
   </v-row>
 </template>

@@ -64,10 +64,12 @@ onMounted(() => {
 
 <template>
   <v-btn
-    :prepend-icon="icon"
     slim
+    icon
     @click="toggleTheme"
-  ></v-btn>
+  >
+    <v-icon :icon="icon"/>
+  </v-btn>
 </template>
 
 <style scoped>

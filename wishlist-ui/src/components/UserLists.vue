@@ -1,31 +1,52 @@
 <script lang="ts" setup>
 import {Wishlist} from "@/api";
-import {defineProps, onMounted} from "vue";
+import {computed, defineProps, onMounted} from "vue";
 import {BeckersUserProp} from "@/proptypes";
 import {getAvatarUrl} from "@/helpers";
+import {useRouter} from "vue-router";
 
+const router = useRouter();
 
-defineProps({
+const props = defineProps({
   user: BeckersUserProp,
   lists: Array<Wishlist>,
+  own: {
+    type: Boolean,
+    default: false
+  }
 })
 onMounted(() => {
-  console.log('UserLists mounted')
+
 });
+const ownText = computed(() => {
+  return props.own ? 'Je eigen lijsten' : '';
+});
+
+function openList(target, e) {
+  console.log(target.id);
+  router.push({path: `/list/${target.id}`});
+}
 
 </script>
 
 <template>
   <v-col cols="12">
-    <v-card :prepend-avatar="getAvatarUrl(user)" :title="user.name" class="mx-auto">
-      <v-card-text class="bg-surface-light">
-
-        <ul>
-          <li v-for="list in lists" :key="list.id">
-            {{ list.listName }}
-          </li>
-        </ul>
+    <v-card :prepend-avatar="getAvatarUrl(props.user)" :subtitle="ownText" :title="props.user.name" class="mx-auto"
+            color="primary">
+      <v-card-text class="bg-surface-light pa-0 pl-2">
+        <v-list>
+          <v-list-item v-for="list in props.lists" :key="list.id" :prepend-icon="list.icon ?? 'mdi-view-list'"
+                       @click="e => openList(list, e)">
+            <v-list-item-title>{{ list.listName }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
       </v-card-text>
+      <v-card-actions v-if="own">
+        <v-btn color="success" variant="tonal">
+          Edit
+          <!--          <v-icon color="success">mdi-pencil</v-icon> &lt;!&ndash; TODO: Edit mode &ndash;&gt;-->
+        </v-btn>
+      </v-card-actions>
     </v-card>
   </v-col>
 </template>

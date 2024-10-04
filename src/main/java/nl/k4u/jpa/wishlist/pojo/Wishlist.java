@@ -1,11 +1,12 @@
 package nl.k4u.jpa.wishlist.pojo;
 
-import java.util.List;
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 import nl.k4u.web.wishlist.Glyphicon;
 import nl.k4u.web.wishlist.beans.StringToGlyphiconConverter;
+
+import java.util.List;
 
 /**
  * @author Koen Beckers (K-4U)
@@ -27,6 +28,7 @@ public class Wishlist {
 	private String listName;
 
 	@OneToMany(targetEntity = WishlistItem.class, mappedBy = "wishlist")
+	@JsonIgnoreProperties("wishlist")
 	private List<WishlistItem> items;
 
 	@Column

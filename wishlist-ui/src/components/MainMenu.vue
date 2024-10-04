@@ -2,17 +2,27 @@
 import {useAuthStore} from "@/stores";
 import ThemeSwitcher from "@/components/ThemeSwitcher.vue";
 import {getAvatarUrl} from "@/helpers";
+import {useRouter} from "vue-router";
 
 
 const auth = useAuthStore();
 const avatar = getAvatarUrl(auth.user);
+
+const router = useRouter();
 
 </script>
 
 <template>
   <v-app-bar scroll-behavior="collapse">
     <v-toolbar>
-      <v-app-bar-nav-icon></v-app-bar-nav-icon>
+      <span class="ml-4"></span>
+      <v-btn v-if="router.currentRoute.value.name == '/'" icon>
+        <v-icon>mdi-home</v-icon>
+      </v-btn>
+      <v-btn v-else icon @click="$router.push('/')">
+        <v-icon>mdi-arrow-left</v-icon>
+      </v-btn>
+
       <v-toolbar-title>Wishlist</v-toolbar-title>
       <v-spacer></v-spacer>
 

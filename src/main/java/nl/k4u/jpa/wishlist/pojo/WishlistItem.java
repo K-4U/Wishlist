@@ -1,12 +1,13 @@
 package nl.k4u.jpa.wishlist.pojo;
 
-import java.net.URISyntaxException;
-import java.util.Date;
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 import nl.k4u.jpa.wishlist.enums.Event;
 import nl.k4u.web.wishlist.WishlistApplication;
+
+import java.net.URISyntaxException;
+import java.util.Date;
 
 /**
  * @author Koen Beckers (K-4U)
@@ -49,6 +50,7 @@ public class WishlistItem {
 	private boolean deleted;
 	@JoinColumn(nullable = false)
 	@ManyToOne(optional = false)
+	@JsonIgnoreProperties("items")
 	private Wishlist wishlist;
 
 	@Column(columnDefinition = "text")

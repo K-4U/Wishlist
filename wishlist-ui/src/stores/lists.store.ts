@@ -1,7 +1,6 @@
-import {defineStore, StoreDefinition} from 'pinia';
-import {BeckersUser, Configuration, ListsApi, Wishlist} from "@/api";
+import {defineStore} from 'pinia';
+import {Configuration, ListsApi, Wishlist} from "@/api";
 import type {AxiosPromise} from 'axios';
-import router from "@/router";
 import {RequiredError} from "@/api/base";
 import {useAuthStore} from "@/stores/auth.store";
 
@@ -40,6 +39,14 @@ export const useListsStore = defineStore({
 
           return listsByUser;
         })
+    },
+    async getListById(id: number): Promise<Wishlist> {
+      return await this.api.getListById(id)
+        .catch((response: RequiredError) => {
+        })
+        .then((response: AxiosPromise<Wishlist>) => {
+          return response.data
+        });
     }
   }
 });

@@ -25,8 +25,8 @@ export const useAuthStore = defineStore({
       return this.user !== null && this.token != null && this.decodedToken.exp > Date.now() / 1000;
     },
     currentUserId(): number {
-      // return this.user.id;
-      return 3;
+      return this.user.id;
+      // return 3;
     }
   },
   actions: {
