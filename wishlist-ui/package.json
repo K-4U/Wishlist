@@ -2,11 +2,11 @@
   "name": "wishlist-ui",
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite",
-    "build": "vue-tsc --noEmit && vite build",
+    "dev": "vite --mode development",
+    "build": "vue-tsc --noEmit && vite build --mode production",
     "preview": "vite preview",
     "lint": "eslint . --fix --ignore-path .gitignore",
-    "generate-api": "openapi-generator-cli generate -i api-docs.json -g typescript-axios -o src/api --additional-properties=supportsES6=true,npmVersion=6.9.0,typescriptThreePlus=true"
+    "generate-api": "openapi-generator-cli generate -i api-docs.json -g typescript-axios -o src/api/generated --additional-properties=supportsES6=true,npmVersion=6.9.0,typescriptThreePlus=true"
   },
   "dependencies": {
     "@mdi/font": "7.4.47",
@@ -22,7 +22,7 @@
   "devDependencies": {
     "@babel/types": "^7.24.7",
     "@openapitools/openapi-generator-cli": "2.13.12",
-    "@types/node": "^20.14.10",
+    "@types/node": "^20.16.10",
     "@vitejs/plugin-vue": "^5.0.5",
     "@vue/eslint-config-typescript": "^13.0.0",
     "eslint": "^8.57.0",

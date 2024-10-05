@@ -22,7 +22,7 @@ const ownText = computed(() => {
   return props.own ? 'Je eigen lijsten' : '';
 });
 
-function openList(target, e) {
+function openList(target: Wishlist) {
   console.log(target.id);
   router.push({path: `/list/${target.id}`});
 }
@@ -30,13 +30,13 @@ function openList(target, e) {
 </script>
 
 <template>
-  <v-col cols="12">
-    <v-card :prepend-avatar="getAvatarUrl(props.user)" :subtitle="ownText" :title="props.user.name" class="mx-auto"
-            color="primary">
+  <v-col cols="12" md="6">
+    <v-card :prepend-avatar="getAvatarUrl(props.user)" :subtitle="ownText" :title="props.user?.name" class="mx-auto"
+            color="surface-variant">
       <v-card-text class="bg-surface-light pa-0 pl-2">
         <v-list>
           <v-list-item v-for="list in props.lists" :key="list.id" :prepend-icon="list.icon ?? 'mdi-view-list'"
-                       @click="e => openList(list, e)">
+                       @click="e => openList(list)">
             <v-list-item-title>{{ list.listName }}</v-list-item-title>
           </v-list-item>
         </v-list>

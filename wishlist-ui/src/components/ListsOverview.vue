@@ -2,44 +2,51 @@
 
 import {useListsStore} from "@/stores/lists.store";
 import {onMounted, ref} from "vue";
-import {BeckersUser, Wishlist} from "@/api";
+import {BeckersUser, listsApi, Wishlist} from "@/api";
 import {useAuthStore} from "@/stores";
 import UserLists from "@/components/UserLists.vue";
 
 const authStore = useAuthStore();
 
+console.log(authStore.currentUserId);
 const listsStore = useListsStore();
 const listsRef = ref<{ [user: number]: Wishlist[] }>([])
-const currentUserListRef = ref<Wishlist[]>(null)
+const currentUserListsRef = ref<Wishlist[]>([])
 const usersRef = ref<{ [user: number]: BeckersUser }>([])
 
 onMounted(() => {
+  listsApi.getAllLists().then((lists) => {
+    console.log(lists);
+  });
+
+  console.log('fetching lists');
   listsStore.getAllListsGroupedByUser().then((lists) => {
     listsRef.value = {};
     usersRef.value = [];
     console.log(lists);
-    for (let key: number in lists) {
+    Object.keys(lists).map(Number).forEach((key: number) => {
       //Check if the key for userId is in the usersRef. If not, add the current list owner to it.
       if (!usersRef.value[key]) {
-        usersRef.value[key] = lists[key][0].owner;
+        usersRef.value[key] = lists[key][0].owner ?? {};
       }
       if (authStore.currentUserId == key) {
-        currentUserListRef.value = lists[key];
+        currentUserListsRef.value = lists[key];
       } else {
         if (!listsRef.value[key]) {
           listsRef.value[key] = lists[key];
         }
       }
-    }
+    })
   });
 });
 
 </script>
 
 <template>
+  <h1>Lists Overview</h1>
   <v-row>
-    <h1>Lists Overview</h1>
-    <UserLists v-if="currentUserListRef" :lists="currentUserListRef" :user="usersRef[authStore.currentUserId]" own/>
+    <UserLists v-if="currentUserListsRef" :lists="currentUserListsRef" :user="usersRef[authStore.currentUserId ?? 0]"
+               own/>
     <UserLists v-for="(lists, userId) in listsRef" :key="userId" :lists="lists" :user="usersRef[userId]"/>
   </v-row>
 </template>

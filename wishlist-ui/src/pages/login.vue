@@ -18,7 +18,7 @@ const schema = Yup.object().shape({
   password: Yup.string().required('Voer een wachtwoord in')
 });
 
-const vuetifyConfig = (state) => ({
+const vuetifyConfig = (state: any) => ({
   props: {
     'error-messages': state.errors,
   },

@@ -1,45 +1,47 @@
 import {defineStore} from 'pinia';
-import {AuthenticationApi, BeckersUser, JwtResponse} from "@/api";
-import type {AxiosPromise} from 'axios';
+import {authenticationApi, BeckersUser, JwtResponse, RequiredError} from "@/api";
+import type {AxiosResponse} from 'axios';
 import router from "@/router";
-import {jwtDecode} from "jwt-decode";
-import {RequiredError} from "@/api/base";
+import {jwtDecode, JwtPayload} from "jwt-decode";
 import {LoginError} from "@/exceptions/LoginError";
 
 
 export const useAuthStore = defineStore({
   id: 'auth',
-  state: (): { api: AuthenticationApi, user: BeckersUser, returnUrl: string, token: string } => ({
+  state: (): { user: BeckersUser | null, returnUrl: string | null, token: string | null } => ({
     // initialize state from local storage to enable user to stay logged in
-    user: JSON.parse(localStorage.getItem('user')),
+    user: JSON.parse(localStorage.getItem('user') ?? "{}"),
     token: localStorage.getItem('token'),
     returnUrl: null,
-    api: new AuthenticationApi({basePath: (window.location.protocol === 'https' ? 'https' : 'http') + "://" + window.location.hostname + ':8081'})
   }),
   getters: {
-    decodedToken() {
-      return jwtDecode(this.token);
+    decodedToken(): JwtPayload | null {
+      return this.token !== null ? jwtDecode(this.token) : null;
     },
-    isLoggedIn() {
+    isLoggedIn(): boolean {
       //TODO: If we WERE logged in, but the token has expired, show a message to the user
-      return this.user !== null && this.token != null && this.decodedToken.exp > Date.now() / 1000;
+      return (this.user !== null) &&
+        (this.token != null) &&
+        (this.decodedToken !== null) &&
+        ((this.decodedToken.exp ?? 0) > Date.now() / 1000);
     },
-    currentUserId(): number {
-      return this.user.id;
+    currentUserId(): number | undefined {
+      return this.user?.id;
       // return 3;
     }
   },
   actions: {
-    async login(username, password) {
-      const response: JwtResponse = await this.api.doLogin({
+    async login(username: string, password: string) {
+      const response: JwtResponse = await authenticationApi.doLogin({
         username,
         password
       }).catch((response: RequiredError) => {
+        //@ts-ignore
         throw new LoginError(response.response.data.message, response.response.data.status, response.response.data.error);
       })
-        .then((response: AxiosPromise<JwtResponse>) => {
-        return response.data;
-      });
+        .then((value: AxiosResponse<JwtResponse, any>) => {
+          return value.data as JwtResponse;
+        });
 
       // update pinia state
       this.user = response.delegate;
@@ -54,6 +56,7 @@ export const useAuthStore = defineStore({
     },
     logout() {
       this.user = null;
+      this.token = null;
       localStorage.removeItem('user');
       localStorage.removeItem('token');
       router.push('/login').then(() => {

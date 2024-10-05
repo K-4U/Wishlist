@@ -1,15 +1,16 @@
 <script setup lang="ts">
 import {useTheme} from "vuetify";
-import {computed, onMounted, ref} from "vue";
+import {computed, onMounted, Ref, ref} from "vue";
 
 const theme = useTheme();
-const mode: ThemeMode = ref(localStorage.getItem('themeMode') ?? ThemeMode.AUTO)
 
 enum ThemeMode {
   LIGHT = 'light',
   DARK = 'dark',
   AUTO = 'auto'
 }
+
+const mode: Ref<ThemeMode> = ref(localStorage.getItem('themeMode') as ThemeMode ?? ThemeMode.AUTO)
 
 const icon = computed(() => {
   switch (mode.value) {

@@ -5,14 +5,18 @@ import {useAuthStore, useListsStore} from "@/stores";
 import {onMounted, ref} from "vue";
 import {Wishlist} from "@/api";
 import {formatCurrency} from "@/helpers";
+import ListItemCard from "@/components/ListItemCard.vue";
+import ListItemActions from "@/components/ListItemActions.vue";
 
 const route = useRoute()
-const list = ref<Wishlist>(null);
+const list = ref<Wishlist | null>(null);
 const listsStore = useListsStore();
 const authStore = useAuthStore();
 const own = ref<Boolean>(false);
+const tableView = ref<Boolean>(false);
 
 onMounted(() => {
+  //@ts-ignore
   listsStore.getListById(route.params.id).then((listFromApi) => {
     console.log(listFromApi);
     list.value = listFromApi
@@ -20,13 +24,24 @@ onMounted(() => {
   });
 });
 
+function toggleView() {
+  tableView.value = !tableView.value;
+}
+
 </script>
 
 <template>
+
   <h1>
-    Lijst van {{ list?.owner.name }}: {{ list?.listName }}
+    Lijst van {{ list?.owner?.name }}: {{ list?.listName }}
   </h1>
-  <v-table>
+
+  <v-row v-if="tableView == false">
+    <ListItemCard v-for="item in list.items" v-if="list" :key="item.id"
+                  :item="item" :own="own == true"/>
+  </v-row>
+
+  <v-table v-if="tableView == true">
     <thead>
     <tr>
       <th>Beschrijving</th>
@@ -51,26 +66,19 @@ onMounted(() => {
         </v-bottom-sheet>
       </td>
       <td>{{ formatCurrency(item.price) }}</td>
-      <td><a v-if="item.hasValidUrl" :href="item.url" target="_blank">{{ item.store }}</a>
-        <span v-else>{{ item.store }}</span></td>
       <td>
-        <v-btn-group v-if="own">
-          <v-btn color="primary" icon variant="tonal">
-            <v-icon>mdi-pencil</v-icon>
-          </v-btn>
-          <v-btn color="error" icon variant="tonal">
-            <v-icon>mdi-delete</v-icon>
-          </v-btn>
-        </v-btn-group>
-        <v-btn-group v-else>
-          <v-btn color="primary" icon variant="tonal">
-            <v-icon>mdi-cart-plus</v-icon>
-          </v-btn>
-        </v-btn-group>
+        <a v-if="item.hasValidUrl" :href="item.url" target="_blank">{{ item.store }}</a>
+        <span v-else>{{ item.store }}</span>
+      </td>
+      <td>
+        <ListItemActions :item="item" :own="own == true"/>
       </td>
     </tr>
     </tbody>
   </v-table>
+
+  <v-btn :icon="!tableView ? 'mdi-table' : 'mdi-view-grid'" class="ma-16" location="bottom end" position="fixed"
+         @click="toggleView"></v-btn>
 </template>
 
 <style scoped>

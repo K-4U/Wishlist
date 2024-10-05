@@ -1,17 +1,16 @@
 package nl.k4u.web.wishlist.security;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import nl.k4u.jpa.wishlist.pojo.BeckersUser;
+import nl.k4u.web.wishlist.api.pojo.JwtResponse;
+import nl.k4u.web.wishlist.api.pojo.LoginRequest;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Component;
-
-import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
-import nl.k4u.jpa.wishlist.pojo.BeckersUser;
-import nl.k4u.web.wishlist.api.pojo.JwtResponse;
-import nl.k4u.web.wishlist.api.pojo.LoginRequest;
 
 /**
  * @author Koen Beckers (K-4U)
@@ -127,7 +126,6 @@ public class AuthSupport {
 
 		return JwtResponse.builder()
 				.token(jwt)
-				.type("bearer")
 				.delegate(userDetails.getDelegate())
 				.build();
 	}

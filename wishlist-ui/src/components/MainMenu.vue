@@ -27,7 +27,7 @@ const router = useRouter();
       <v-spacer></v-spacer>
 
       <ThemeSwitcher/>
-      <span class="mr-2">{{ auth.user.name }}</span>
+      <span class="mr-2">{{ auth.user?.name }}</span>
 
       <v-menu class="d-none d-md-flex">
         <template v-slot:activator="{ props }">

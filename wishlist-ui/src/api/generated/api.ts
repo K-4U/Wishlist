@@ -19,16 +19,16 @@ import globalAxios from 'axios';
 // Some imports not used depending on template conditions
 // @ts-ignore
 import {
-    assertParamExists,
-    createRequestFunction,
-    DUMMY_BASE_URL,
-    serializeDataIfNeeded,
-    setApiKeyToObject,
-    setBasicAuthToObject,
-    setBearerAuthToObject,
-    setOAuthToObject,
-    setSearchParams,
-    toPathString
+  assertParamExists,
+  createRequestFunction,
+  DUMMY_BASE_URL,
+  serializeDataIfNeeded,
+  setApiKeyToObject,
+  setBasicAuthToObject,
+  setBearerAuthToObject,
+  setOAuthToObject,
+  setSearchParams,
+  toPathString
 } from './common';
 import type {RequestArgs} from './base';
 // @ts-ignore
@@ -45,33 +45,32 @@ export interface BeckersUser {
      * @type {number}
      * @memberof BeckersUser
      */
-    'id'?: number;
+    'id': number;
     /**
      *
      * @type {string}
      * @memberof BeckersUser
      */
-    'name'?: string;
+    'name': string;
     /**
      *
      * @type {string}
      * @memberof BeckersUser
      */
-    'email'?: string;
+    'email': string;
     /**
      *
      * @type {string}
      * @memberof BeckersUser
      */
-    'dateOfBirth'?: string;
+    'dateOfBirth': string;
     /**
      *
      * @type {string}
      * @memberof BeckersUser
      */
-    'avatarName'?: string;
+    'avatarName': string;
 }
-
 /**
  *
  * @export
@@ -103,7 +102,6 @@ export interface ErrorResponse {
      */
     'message'?: string;
 }
-
 /**
  *
  * @export
@@ -129,7 +127,6 @@ export interface ErrorResponseExceptionsInner {
      */
     'localizedMessage'?: string;
 }
-
 /**
  *
  * @export
@@ -185,7 +182,6 @@ export interface ErrorResponseExceptionsInnerStackTraceInner {
      */
     'nativeMethod'?: boolean;
 }
-
 /**
  *
  * @export
@@ -197,21 +193,14 @@ export interface JwtResponse {
      * @type {string}
      * @memberof JwtResponse
      */
-    'token'?: string;
-    /**
-     *
-     * @type {string}
-     * @memberof JwtResponse
-     */
-    'type'?: string;
+    'token': string;
     /**
      *
      * @type {BeckersUser}
      * @memberof JwtResponse
      */
-    'delegate'?: BeckersUser;
+    'delegate': BeckersUser;
 }
-
 /**
  *
  * @export
@@ -225,7 +214,6 @@ export interface ListFBO {
      */
     'delegate'?: Wishlist;
 }
-
 /**
  *
  * @export
@@ -245,7 +233,6 @@ export interface LoginRequest {
      */
     'password': string;
 }
-
 /**
  *
  * @export
@@ -257,25 +244,25 @@ export interface Wishlist {
      * @type {number}
      * @memberof Wishlist
      */
-    'id'?: number;
+    'id': number;
     /**
      *
      * @type {BeckersUser}
      * @memberof Wishlist
      */
-    'owner'?: BeckersUser;
+    'owner': BeckersUser;
     /**
      *
      * @type {string}
      * @memberof Wishlist
      */
-    'listName'?: string;
+    'listName': string;
     /**
      *
      * @type {Array<WishlistItem>}
      * @memberof Wishlist
      */
-    'items'?: Array<WishlistItem>;
+    'items': Array<WishlistItem>;
     /**
      *
      * @type {string}
@@ -1549,37 +1536,37 @@ export interface WishlistItem {
      * @type {number}
      * @memberof WishlistItem
      */
-    'id'?: number;
+    'id': number;
     /**
      *
      * @type {BeckersUser}
      * @memberof WishlistItem
      */
-    'owner'?: BeckersUser;
+    'owner': BeckersUser;
     /**
      *
      * @type {string}
      * @memberof WishlistItem
      */
-    'description'?: string;
+    'description': string;
     /**
      *
      * @type {string}
      * @memberof WishlistItem
      */
-    'url'?: string;
+    'url': string;
     /**
      *
      * @type {number}
      * @memberof WishlistItem
      */
-    'price'?: number;
+    'price': number;
     /**
      *
      * @type {string}
      * @memberof WishlistItem
      */
-    'addedOn'?: string;
+    'addedOn': string;
     /**
      *
      * @type {BeckersUser}
@@ -1606,12 +1593,6 @@ export interface WishlistItem {
     'deleted'?: boolean;
     /**
      *
-     * @type {Wishlist}
-     * @memberof WishlistItem
-     */
-    'wishlist'?: Wishlist;
-    /**
-     *
      * @type {string}
      * @memberof WishlistItem
      */
@@ -1621,7 +1602,13 @@ export interface WishlistItem {
      * @type {string}
      * @memberof WishlistItem
      */
-    'store'?: string;
+    'store': string;
+  /**
+   * Indicates if the URL is a valid URL
+   * @type {boolean}
+   * @memberof WishlistItem
+   */
+  'hasValidUrl': boolean;
 }
 
 export const WishlistItemPurchaseEventEnum = {
@@ -1656,9 +1643,10 @@ export const AuthenticationApiAxiosParamCreator = function (configuration?: Conf
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = {method: 'POST', ...baseOptions, ...options};
+          const localVarRequestOptions = {method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
 
 
             localVarHeaderParameter['Content-Type'] = 'application/json';
@@ -1687,13 +1675,14 @@ export const AuthenticationApiAxiosParamCreator = function (configuration?: Conf
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = {method: 'GET', ...baseOptions, ...options};
+          const localVarRequestOptions = {method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
             // authentication jwt required
             // http bearer authentication required
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
 
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -1801,6 +1790,7 @@ export class AuthenticationApi extends BaseAPI {
 }
 
 
+
 /**
  * ListsApi - axios parameter creator
  * @export
@@ -1821,13 +1811,14 @@ export const ListsApiAxiosParamCreator = function (configuration?: Configuration
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = {method: 'GET', ...baseOptions, ...options};
+          const localVarRequestOptions = {method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
             // authentication jwt required
             // http bearer authentication required
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
 
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -1854,7 +1845,7 @@ export const ListsApiAxiosParamCreator = function (configuration?: Configuration
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = {method: 'GET', ...baseOptions, ...options};
+          const localVarRequestOptions = {method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -1863,7 +1854,7 @@ export const ListsApiAxiosParamCreator = function (configuration?: Configuration
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
+          setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
@@ -1891,7 +1882,7 @@ export const ListsApiAxiosParamCreator = function (configuration?: Configuration
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = {method: 'GET', ...baseOptions, ...options};
+          const localVarRequestOptions = {method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -1900,7 +1891,7 @@ export const ListsApiAxiosParamCreator = function (configuration?: Configuration
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
+          setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
@@ -1924,7 +1915,7 @@ export const ListsApiAxiosParamCreator = function (configuration?: Configuration
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = {method: 'GET', ...baseOptions, ...options};
+          const localVarRequestOptions = {method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -1933,7 +1924,7 @@ export const ListsApiAxiosParamCreator = function (configuration?: Configuration
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
+          setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
@@ -1959,7 +1950,7 @@ export const ListsApiAxiosParamCreator = function (configuration?: Configuration
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = {method: 'POST', ...baseOptions, ...options};
+          const localVarRequestOptions = {method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -1974,7 +1965,7 @@ export const ListsApiAxiosParamCreator = function (configuration?: Configuration
             }
 
 
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
+          setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
