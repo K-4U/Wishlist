@@ -16,9 +16,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Koen Beckers (K-4U)
@@ -55,13 +53,6 @@ public class ListsRestController extends BaseController {
     @ResponseOk
     public List<Wishlist> getAllLists() {
         return listService.getAllWishlists();
-    }
-
-    @GetMapping("{id}")
-    @Operation(summary = "Get list by ID")
-    @ResponseOk
-    public Wishlist getListById(@PathVariable("id") Long id) {
-        return listService.getWishListById(id);
     }
 
     @RequestMapping(path = "own/add", method = RequestMethod.GET)

@@ -129,4 +129,8 @@ public class AuthSupport {
 				.delegate(userDetails.getDelegate())
 				.build();
 	}
+
+    public boolean canEdit(BeckersUser owner) {
+        return getPrincipalDelegate().getId().equals(owner.getId());
+    }
 }

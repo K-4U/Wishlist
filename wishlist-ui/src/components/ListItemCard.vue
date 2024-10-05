@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 
 import {defineProps, onMounted} from "vue";
-import {WishlistItemProp} from "@/proptypes";
+import {WishlistItemProp, WishlistProp} from "@/proptypes";
 import {useRouter} from "vue-router";
 import ListItemActions from "@/components/ListItemActions.vue";
 import {formatCurrency} from "../helpers";
@@ -10,6 +10,7 @@ const router = useRouter();
 
 const props = defineProps({
   item: WishlistItemProp,
+  list: WishlistProp,
   own: {
     type: Boolean,
     default: false
@@ -39,7 +40,7 @@ onMounted(() => {
         {{ props.item?.remarks }}
       </v-card-text>
       <v-card-actions>
-        <ListItemActions :item="props.item" :own="own"/>
+        <ListItemActions :item="props.item" :list="list" :own="own"/>
       </v-card-actions>
     </v-card>
   </v-col>

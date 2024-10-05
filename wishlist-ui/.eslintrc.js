@@ -9,6 +9,9 @@ module.exports = {
   env: {
     node: true,
   },
+  settings: {
+    "import/core-modules": ["vue-router/auto-routes"]
+  },
   extends: [
     'plugin:vue/vue3-essential',
     'eslint:recommended',

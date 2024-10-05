@@ -1,5 +1,4 @@
 /* tslint:disable */
-
 /* eslint-disable */
 /**
  * Apply Default Global SecurityScheme in springdoc-openapi

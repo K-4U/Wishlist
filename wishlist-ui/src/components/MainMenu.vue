@@ -3,6 +3,7 @@ import {useAuthStore} from "@/stores";
 import ThemeSwitcher from "@/components/ThemeSwitcher.vue";
 import {getAvatarUrl} from "@/helpers";
 import {useRouter} from "vue-router";
+import {computed} from "vue";
 
 
 const auth = useAuthStore();
@@ -10,16 +11,29 @@ const avatar = getAvatarUrl(auth.user);
 
 const router = useRouter();
 
+const showHomeButton = computed(() => {
+  return router.currentRoute.value.name == '/';
+});
+const showBackButton = computed(() => {
+  return !showHomeButton.value && !router.currentRoute.value.meta.previousPage;
+});
+const showPreviousButton = computed(() => {
+  return !showHomeButton.value && router.currentRoute.value.meta.previousPage;
+});
+
 </script>
 
 <template>
   <v-app-bar scroll-behavior="collapse">
     <v-toolbar>
       <span class="ml-4"></span>
-      <v-btn v-if="router.currentRoute.value.name == '/'" icon>
+      <v-btn v-if="showHomeButton" icon>
         <v-icon>mdi-home</v-icon>
       </v-btn>
-      <v-btn v-else icon @click="$router.push('/')">
+      <v-btn v-if="showBackButton" icon @click="$router.push('/')">
+        <v-icon>mdi-arrow-left</v-icon>
+      </v-btn>
+      <v-btn v-else v-if="showPreviousButton" icon @click="$router.push(router.currentRoute.value.meta.previousPage)">
         <v-icon>mdi-arrow-left</v-icon>
       </v-btn>
 

@@ -1,12 +1,11 @@
 import {defineStore} from 'pinia';
-import {listsApi, RequiredError, Wishlist} from "@/api";
+import {listsApi, RequiredError, Wishlist, WishlistItem, WishlistItemUpdate} from "@/api";
 import type {AxiosResponse} from 'axios';
 
 
 export const useListsStore = defineStore({
   id: 'lists',
-  state: (): {} => ({
-  }),
+  state: (): {} => ({}),
   getters: {},
   actions: {
     async getAllLists(): Promise<Array<Wishlist>> {
@@ -52,6 +51,26 @@ export const useListsStore = defineStore({
           }
           return response.data
         });
+    },
+    async getItemFromList(listId: number, itemId: number): Promise<WishlistItem> {
+      return await listsApi.getItem(listId, itemId)
+        .catch((response: RequiredError) => {
+          console.error(response);
+        })
+        .then((response: void | AxiosResponse<WishlistItem, any>) => {
+          console.log(response);
+          if (!response) {
+            return {} as WishlistItem
+          }
+          return response.data
+        });
+    },
+    async updateItem(listId: number, itemId: number, item: WishlistItemUpdate) {
+      return await listsApi.saveItem(listId, itemId, item).catch((response: RequiredError) => {
+        console.error(response)
+      }).then((response: void | AxiosResponse<WishlistItem, any>) => {
+        return response.data;
+      });
     }
   }
 });

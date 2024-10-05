@@ -16,6 +16,166 @@
     }
   ],
   "paths": {
+    "/api/lists/{listId}/items": {
+      "put": {
+        "tags": [
+          "Lists"
+        ],
+        "operationId": "addItem",
+        "parameters": [
+          {
+            "name": "listId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WishlistItemCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/WishlistItem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/lists/{listId}/items/{itemId}": {
+      "get": {
+        "tags": [
+          "Lists"
+        ],
+        "operationId": "getItem",
+        "parameters": [
+          {
+            "name": "listId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "itemId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/WishlistItem"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Lists"
+        ],
+        "operationId": "saveItem",
+        "parameters": [
+          {
+            "name": "listId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "itemId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WishlistItemUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/WishlistItem"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Lists"
+        ],
+        "operationId": "deleteItem",
+        "parameters": [
+          {
+            "name": "listId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "itemId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    },
     "/api/lists/own/add": {
       "get": {
         "tags": [
@@ -82,22 +242,22 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/JwtResponse"
-                }
-              }
-            }
-          },
           "401": {
             "description": "Unauthorized",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/JwtResponse"
                 }
               }
             }
@@ -209,6 +369,29 @@
   },
   "components": {
     "schemas": {
+      "WishlistItemCreate": {
+        "required": [
+          "description",
+          "price",
+          "url"
+        ],
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number",
+            "format": "double"
+          },
+          "remarks": {
+            "type": "string"
+          }
+        }
+      },
       "BeckersUser": {
         "required": [
           "avatarName",
@@ -238,18 +421,9 @@
           }
         }
       },
-      "ListFBO": {
-        "type": "object",
-        "properties": {
-          "delegate": {
-            "$ref": "#/components/schemas/Wishlist"
-          }
-        }
-      },
       "Wishlist": {
         "required": [
           "id",
-          "items",
           "listName",
           "owner"
         ],
@@ -264,12 +438,6 @@
           },
           "listName": {
             "type": "string"
-          },
-          "items": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/WishlistItem"
-            }
           },
           "icon": {
             "type": "string",
@@ -1530,13 +1698,15 @@
       "WishlistItem": {
         "required": [
           "addedOn",
+          "deleted",
           "description",
           "hasValidUrl",
           "id",
           "owner",
           "price",
           "store",
-          "url"
+          "url",
+          "wishlist"
         ],
         "type": "object",
         "properties": {
@@ -1578,6 +1748,9 @@
           "deleted": {
             "type": "boolean"
           },
+          "wishlist": {
+            "$ref": "#/components/schemas/Wishlist"
+          },
           "remarks": {
             "type": "string"
           },
@@ -1587,6 +1760,47 @@
           "hasValidUrl": {
             "type": "boolean",
             "description": "Indicates if the URL is a valid URL"
+          }
+        }
+      },
+      "WishlistItemUpdate": {
+        "required": [
+          "description",
+          "itemId",
+          "price",
+          "url",
+          "wishlistId"
+        ],
+        "type": "object",
+        "properties": {
+          "wishlistId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "itemId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "description": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number",
+            "format": "double"
+          },
+          "remarks": {
+            "type": "string"
+          }
+        }
+      },
+      "ListFBO": {
+        "type": "object",
+        "properties": {
+          "delegate": {
+            "$ref": "#/components/schemas/Wishlist"
           }
         }
       },

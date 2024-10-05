@@ -36,9 +36,12 @@ function toggleView() {
     Lijst van {{ list?.owner?.name }}: {{ list?.listName }}
   </h1>
 
+  <!-- TODO:
+  <c:if test="${!item.deleted && ((!owner && item.purchasedBy == null) || owner || item.purchasedBy == user)}">
+  -->
   <v-row v-if="tableView == false">
     <ListItemCard v-for="item in list.items" v-if="list" :key="item.id"
-                  :item="item" :own="own == true"/>
+                  :item="item" :list="list" :own="own == true"/>
   </v-row>
 
   <v-table v-if="tableView == true">
@@ -71,14 +74,32 @@ function toggleView() {
         <span v-else>{{ item.store }}</span>
       </td>
       <td>
-        <ListItemActions :item="item" :own="own == true"/>
+        <ListItemActions :item="item" :list="list" :own="own == true"/>
       </td>
     </tr>
     </tbody>
   </v-table>
 
-  <v-btn :icon="!tableView ? 'mdi-table' : 'mdi-view-grid'" class="ma-16" location="bottom end" position="fixed"
-         @click="toggleView"></v-btn>
+  <v-speed-dial
+    :close-on-content-click="false"
+    location="top center"
+    transition="slide-y-reverse-transition"
+  >
+    <template v-slot:activator="{ props: activatorProps }">
+      <v-btn class="ma-16" color="primary"
+             dark icon="mdi-cog"
+             location="bottom end" position="fixed" size="large" v-bind="activatorProps">
+      </v-btn>
+    </template>
+
+    <v-btn key="1"
+           :icon="!tableView ? 'mdi-view-list-outline' : 'mdi-view-grid'" color="warning" size="large" @click="toggleView"></v-btn>
+
+    <v-btn key="2"
+           color="success" icon="mdi-plus" size="large"></v-btn>
+  </v-speed-dial>
+
+
 </template>
 
 <style scoped>

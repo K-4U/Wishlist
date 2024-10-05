@@ -55,6 +55,7 @@ public class WishlistItem {
 	private Event purchaseEvent;
 
 	@Column(nullable = false)
+	@Schema(requiredMode = Schema.RequiredMode.REQUIRED)
 	private boolean deleted;
 
 	@JoinColumn(nullable = false)
