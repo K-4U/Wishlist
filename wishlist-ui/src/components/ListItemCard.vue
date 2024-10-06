@@ -1,12 +1,15 @@
 <script lang="ts" setup>
 
-import {defineProps, onMounted} from "vue";
+import {defineProps, onMounted, ref} from "vue";
 import {WishlistItemProp, WishlistProp} from "@/proptypes";
 import {useRouter} from "vue-router";
 import ListItemActions from "@/components/ListItemActions.vue";
-import {formatCurrency} from "../helpers";
+import {formatCurrency} from "@/helpers";
+import {Wishlist, WishlistItem} from "@/api";
 
 const router = useRouter();
+const item = ref<WishlistItem>({});
+const list = ref<Wishlist>({})
 
 const props = defineProps({
   item: WishlistItemProp,
@@ -17,35 +20,41 @@ const props = defineProps({
   }
 })
 onMounted(() => {
-
+  item.value = props.item;
+  list.value = props.list;
 });
 
 </script>
 
 <template>
   <v-col cols="12">
-    <v-card :title="props.item?.description" class="mx-auto v-col-12">
+    <v-card :title="item?.description" class="mx-auto v-col-12">
       <v-card-text>
         <v-table>
           <tr>
-            <td>Prijs:</td>
-            <td>{{ formatCurrency(props.item?.price) }}</td>
-          </tr>
-          <tr>
-            <td>Winkel:</td>
-            <td><a v-if="props.item?.hasValidUrl" :href="props.item?.url" target="_blank">{{ props.item?.store }}</a>
-              <span v-else>{{ props.item?.store }}</span></td>
+            <td class="leftHeader ma-auto pr-2">Prijs:</td>
+            <td class="valueColumn">{{ formatCurrency(item?.price) }}</td>
+            <td class="leftHeader ma-auto pr-2">Winkel:</td>
+            <td class="valueColumn"><a v-if="item?.hasValidUrl" :href="item?.url" target="_blank">{{ item?.store }}</a>
+              <span v-else>{{ item?.store }}</span></td>
           </tr>
         </v-table>
-        {{ props.item?.remarks }}
+        {{ item?.remarks }}
       </v-card-text>
       <v-card-actions>
-        <ListItemActions :item="props.item" :list="list" :own="own"/>
+        <ListItemActions :item="item" :list="list" :own="own"/>
       </v-card-actions>
     </v-card>
   </v-col>
 </template>
 
 <style scoped>
+.leftHeader {
+  font-weight: bold;
+  width: 5%;
+}
 
+.valueColumn {
+  width: 40%
+}
 </style>

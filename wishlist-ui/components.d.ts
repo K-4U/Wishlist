@@ -9,6 +9,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     AppFooter: typeof import('./src/components/AppFooter.vue')['default']
     ConfirmDialog: typeof import('./src/components/ConfirmDialog.vue')['default']
+    CreateItemView: typeof import('./src/components/CreateItemView.vue')['default']
     CurrencyInput: typeof import('./src/components/form/CurrencyInput.vue')['default']
     EditItemView: typeof import('./src/components/EditItemView.vue')['default']
     ListItemActions: typeof import('./src/components/ListItemActions.vue')['default']

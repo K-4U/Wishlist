@@ -2,7 +2,7 @@
 
 import {useRoute} from 'vue-router'
 import {useAuthStore, useListsStore} from "@/stores";
-import {onMounted, ref} from "vue";
+import {computed, onMounted, ref} from "vue";
 import {Wishlist} from "@/api";
 import {formatCurrency} from "@/helpers";
 import ListItemCard from "@/components/ListItemCard.vue";
@@ -28,6 +28,10 @@ function toggleView() {
   tableView.value = !tableView.value;
 }
 
+const items = computed(() => {
+  return list.value?.items.filter(item => !item.deleted && ((!own.value && item.purchasedBy == null) || own.value || item.purchasedBy == authStore.currentUserId));
+})
+
 </script>
 
 <template>
@@ -36,11 +40,8 @@ function toggleView() {
     Lijst van {{ list?.owner?.name }}: {{ list?.listName }}
   </h1>
 
-  <!-- TODO:
-  <c:if test="${!item.deleted && ((!owner && item.purchasedBy == null) || owner || item.purchasedBy == user)}">
-  -->
   <v-row v-if="tableView == false">
-    <ListItemCard v-for="item in list.items" v-if="list" :key="item.id"
+    <ListItemCard v-for="item in items" v-if="list" :key="item.id"
                   :item="item" :list="list" :own="own == true"/>
   </v-row>
 
@@ -54,7 +55,7 @@ function toggleView() {
     </tr>
     </thead>
     <tbody>
-    <tr v-for="item in list.items" v-if="list" :key="item.id">
+    <tr v-for="item in items" v-if="list" :key="item.id">
       <td><span class="mr-3">{{ item.description }}</span>
         <v-bottom-sheet v-if="item.remarks">
           <template v-slot:activator="{props}">
@@ -86,6 +87,7 @@ function toggleView() {
     transition="slide-y-reverse-transition"
   >
     <template v-slot:activator="{ props: activatorProps }">
+      <!-- TODO: Rotate on click -->
       <v-btn class="ma-16" color="primary"
              dark icon="mdi-cog"
              location="bottom end" position="fixed" size="large" v-bind="activatorProps">

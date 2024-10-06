@@ -2,34 +2,23 @@
 
 import {onMounted, ref} from "vue";
 import {useRoute, useRouter} from "vue-router";
-import {Wishlist, WishlistItemUpdate} from "@/api";
+import {Wishlist, WishlistItemCreate} from "@/api";
 import {useAuthStore, useListsStore} from "@/stores";
 import * as Yup from "yup";
 import {useForm} from "vee-validate";
 import CurrencyInput from "@/components/form/CurrencyInput.vue";
-import ConfirmDialog from "@/components/ConfirmDialog.vue";
+import ConfirmDialog, {openDialog} from "@/components/ConfirmDialog.vue";
 
 const route = useRoute()
 const router = useRouter();
 const list = ref<Wishlist | null>(null);
-const editItem = ref<WishlistItemUpdate | null>(null);
+const createItem = ref<WishlistItemCreate>({});
 const listsStore = useListsStore();
 const authStore = useAuthStore();
 const own = ref<Boolean>(false);
-const confirmDialogRef = ref<InstanceType<typeof ConfirmDialog> | null>(null);
 
 onMounted(() => {
   //@ts-ignore
-  listsStore.getItemFromList(route.params.listId, route.params.itemId).then((itemFromApi) => {
-    editItem.value = itemFromApi
-    own.value = itemFromApi.list?.owner?.id == authStore.currentUserId;
-    setValues({
-      description: editItem.value?.description,
-      price: editItem.value?.price,
-      url: editItem.value?.url,
-      remarks: editItem.value?.remarks ?? '',
-    });
-  });
   listsStore.getListById(route.params.listId).then((listFromApi) => {
     list.value = listFromApi;
   });
@@ -37,11 +26,10 @@ onMounted(() => {
 
 function returnToList() {
   if (isFieldTouched('description') || isFieldTouched('price') || isFieldTouched('url') || isFieldTouched('remarks')) {
-    confirmDialogRef.value.open('Weet je zeker dat je terug wilt gaan?', 'Je hebt wijzigingen gemaakt die nog niet zijn opgeslagen.')
+    openDialog('Weet je zeker dat je terug wilt gaan?', 'Je hebt wijzigingen gemaakt die nog niet zijn opgeslagen.')
     return;
   }
   handleConfirm();
-
 }
 
 function doTheThing(arg) {
@@ -79,8 +67,8 @@ const [remarks, remarksProps] = defineField('remarks', vuetifyConfig);
 const test: Number = 20;
 
 const onSubmitHandler = handleSubmit((values, actions) => {
-  if (editItem.value) {
-    listsStore.updateItem(list.value.id, editItem.value.id, {
+  if (createItem.value) {
+    listsStore.createItem(list.value.id, createItem.value.id, {
       description: description.value,
       price: price.value,
       url: url.value,
@@ -94,7 +82,7 @@ const onSubmitHandler = handleSubmit((values, actions) => {
 </script>
 
 <template>
-  <v-card :title="`Bewerk item in lijst ${list?.listName}`">
+  <v-card :title="`Nieuw item in lijst ${list?.listName}`">
     <v-form @submit="onSubmitHandler">
       <v-text-field
         v-model="description"
@@ -122,8 +110,7 @@ const onSubmitHandler = handleSubmit((values, actions) => {
     </v-form>
   </v-card>
 
-  <ConfirmDialog ref="confirmDialogRef"
-                 :buttons="[{title: 'Oke!', color: 'success'}, {title: 'Woepsie', color: 'error'}]"
+  <ConfirmDialog :buttons="[{title: 'Oke!', color: 'success'}, {title: 'Woepsie', color: 'error'}]"
                  @button-pressed="doTheThing"/>
 </template>
 
