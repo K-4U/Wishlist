@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 
-import {useRoute} from 'vue-router'
+import {useRoute, useRouter} from 'vue-router'
 import {useAuthStore, useListsStore} from "@/stores";
 import {computed, onMounted, ref} from "vue";
 import {Wishlist} from "@/api";
@@ -9,6 +9,7 @@ import ListItemCard from "@/components/ListItemCard.vue";
 import ListItemActions from "@/components/ListItemActions.vue";
 
 const route = useRoute()
+const router = useRouter();
 const list = ref<Wishlist | null>(null);
 const listsStore = useListsStore();
 const authStore = useAuthStore();
@@ -98,7 +99,7 @@ const items = computed(() => {
            :icon="!tableView ? 'mdi-view-list-outline' : 'mdi-view-grid'" color="warning" size="large" @click="toggleView"></v-btn>
 
     <v-btn key="2"
-           color="success" icon="mdi-plus" size="large"></v-btn>
+           color="success" icon="mdi-plus" size="large" @click="router.push(`/list/${list.id}/item/new`)"></v-btn>
   </v-speed-dial>
 
 

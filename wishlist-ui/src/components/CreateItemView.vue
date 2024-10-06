@@ -7,7 +7,7 @@ import {useAuthStore, useListsStore} from "@/stores";
 import * as Yup from "yup";
 import {useForm} from "vee-validate";
 import CurrencyInput from "@/components/form/CurrencyInput.vue";
-import ConfirmDialog, {openDialog} from "@/components/ConfirmDialog.vue";
+import ConfirmDialog from "@/components/ConfirmDialog.vue";
 
 const route = useRoute()
 const router = useRouter();
@@ -16,6 +16,7 @@ const createItem = ref<WishlistItemCreate>({});
 const listsStore = useListsStore();
 const authStore = useAuthStore();
 const own = ref<Boolean>(false);
+const confirmDialogRef = ref<InstanceType<typeof ConfirmDialog> | null>(null);
 
 onMounted(() => {
   //@ts-ignore
@@ -26,7 +27,7 @@ onMounted(() => {
 
 function returnToList() {
   if (isFieldTouched('description') || isFieldTouched('price') || isFieldTouched('url') || isFieldTouched('remarks')) {
-    openDialog('Weet je zeker dat je terug wilt gaan?', 'Je hebt wijzigingen gemaakt die nog niet zijn opgeslagen.')
+    confirmDialogRef.value.open('Weet je zeker dat je terug wilt gaan?', 'Je hebt wijzigingen gemaakt die nog niet zijn opgeslagen.')
     return;
   }
   handleConfirm();
@@ -68,7 +69,7 @@ const test: Number = 20;
 
 const onSubmitHandler = handleSubmit((values, actions) => {
   if (createItem.value) {
-    listsStore.createItem(list.value.id, createItem.value.id, {
+    listsStore.createItem(list.value.id, {
       description: description.value,
       price: price.value,
       url: url.value,
@@ -110,7 +111,8 @@ const onSubmitHandler = handleSubmit((values, actions) => {
     </v-form>
   </v-card>
 
-  <ConfirmDialog :buttons="[{title: 'Oke!', color: 'success'}, {title: 'Woepsie', color: 'error'}]"
+  <ConfirmDialog ref="confirmDialogRef"
+                 :buttons="[{title: 'Oke!', color: 'success'}, {title: 'Woepsie', color: 'error'}]"
                  @button-pressed="doTheThing"/>
 </template>
 
