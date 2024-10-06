@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {useCurrencyInput} from 'vue-currency-input';
+import {CurrencyDisplay, useCurrencyInput} from 'vue-currency-input';
 import {watch} from 'vue';
 
 const props = defineProps({modelValue: Number, label: String, prependInnerIcon: String});
@@ -10,7 +10,7 @@ const {inputRef, formattedValue, numberValue, setValue} = useCurrencyInput({
   hideCurrencySymbolOnFocus: false,
   hideNegligibleDecimalDigitsOnFocus: false,
   useGrouping: false,
-  currencyDisplay: 'hidden',
+  currencyDisplay: CurrencyDisplay.hidden,
   precision: 2,
   valueRange: {min: 0},
 });
@@ -18,7 +18,7 @@ const {inputRef, formattedValue, numberValue, setValue} = useCurrencyInput({
 watch(
   () => props.modelValue,
   (value) => {
-    setValue(value);
+    setValue(value ?? 0);
   }
 );
 </script>

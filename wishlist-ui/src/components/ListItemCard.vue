@@ -8,8 +8,8 @@ import {formatCurrency} from "@/helpers";
 import {Wishlist, WishlistItem} from "@/api";
 
 const router = useRouter();
-const item = ref<WishlistItem>({});
-const list = ref<Wishlist>({})
+const item = ref<WishlistItem>();
+const list = ref<Wishlist>()
 
 const props = defineProps({
   item: WishlistItemProp,

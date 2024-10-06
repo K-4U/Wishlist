@@ -66,7 +66,8 @@ defineExpose({
         <v-btn color="error" @click="cancel">Nee</v-btn>
       </v-card-actions>
       <v-card-actions v-else>
-        <v-btn v-for="button in buttons" :color="button.color" :text="button.title" @click="e => eventHandler(button)"/>
+        <v-btn v-for="button in buttons" :color="button.color" :text="button.title"
+               @click="(e:any) => eventHandler(button)"/>
       </v-card-actions>
     </v-card>
   </v-dialog>

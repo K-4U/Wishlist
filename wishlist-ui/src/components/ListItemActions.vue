@@ -21,16 +21,16 @@ const {item, list, own} = defineProps({
 const confirmDialogRef = ref<InstanceType<typeof ConfirmDialog> | null>(null);
 
 function openEditPage() {
-  router.push(`/list/${list.id}/item/${item.id}`);
+  router.push(`/list/${list?.id}/item/${item?.id}`);
 }
 
 function removeItem() {
-  confirmDialogRef.value.open('Weet je zeker dat je dit item wilt verwijderen?', 'Dit zorgt ervoor dat het item niet meer zichtbaar is om te kopen, maar zal geen bericht sturen naar iemand die dit misschien al heeft gekocht.');
+  confirmDialogRef.value?.open('Weet je zeker dat je dit item wilt verwijderen?', 'Dit zorgt ervoor dat het item niet meer zichtbaar is om te kopen, maar zal geen bericht sturen naar iemand die dit misschien al heeft gekocht.');
 }
 
-function doTheThing(arg) {
-  console.log("afterDoTheThing:", item.id);
+function dialogCallback(arg: string) {
   if (arg === 'oke!') {
+    //@ts-ignore if list or item are null here, it should throw an error
     listsStore.deleteItem(list.id, item.id).then(() => {
       window.location.reload();
     });
@@ -57,7 +57,7 @@ function doTheThing(arg) {
   <ConfirmDialog
     ref="confirmDialogRef"
     :buttons="[{title: 'Oke!', color: 'success'}, {title: 'Misschien niet', color: 'error'}]"
-    @button-pressed="e => doTheThing(e)"/>
+    @button-pressed="e => dialogCallback(e)"/>
 </template>
 
 <style scoped>

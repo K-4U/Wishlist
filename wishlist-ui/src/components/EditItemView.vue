@@ -2,7 +2,7 @@
 
 import {onMounted, ref} from "vue";
 import {useRoute, useRouter} from "vue-router";
-import {Wishlist, WishlistItemUpdate} from "@/api";
+import {Wishlist, WishlistItem, WishlistItemUpdate} from "@/api";
 import {useAuthStore, useListsStore} from "@/stores";
 import * as Yup from "yup";
 import {useForm} from "vee-validate";
@@ -20,9 +20,15 @@ const confirmDialogRef = ref<InstanceType<typeof ConfirmDialog> | null>(null);
 
 onMounted(() => {
   //@ts-ignore
-  listsStore.getItemFromList(route.params.listId, route.params.itemId).then((itemFromApi) => {
-    editItem.value = itemFromApi
-    own.value = itemFromApi.list?.owner?.id == authStore.currentUserId;
+  listsStore.getItemFromList(route.params.listId, route.params.itemId).then((itemFromApi: WishlistItem) => {
+    editItem.value = {
+      itemId: itemFromApi.id,
+      description: itemFromApi.description,
+      price: itemFromApi.price,
+      url: itemFromApi.url,
+      remarks: itemFromApi.remarks,
+      wishlistId: itemFromApi.wishlist.id,
+    };
     setValues({
       description: editItem.value?.description,
       price: editItem.value?.price,
@@ -30,27 +36,30 @@ onMounted(() => {
       remarks: editItem.value?.remarks ?? '',
     });
   });
+  //@ts-ignore the fact that params doesn't contain listId
   listsStore.getListById(route.params.listId).then((listFromApi) => {
+    own.value = listFromApi.owner?.id == authStore.currentUserId;
     list.value = listFromApi;
   });
 });
 
 function returnToList() {
   if (isFieldTouched('description') || isFieldTouched('price') || isFieldTouched('url') || isFieldTouched('remarks')) {
-    confirmDialogRef.value.open('Weet je zeker dat je terug wilt gaan?', 'Je hebt wijzigingen gemaakt die nog niet zijn opgeslagen.')
+    confirmDialogRef.value?.open('Weet je zeker dat je terug wilt gaan?', 'Je hebt wijzigingen gemaakt die nog niet zijn opgeslagen.')
     return;
   }
   handleConfirm();
 
 }
 
-function doTheThing(arg) {
+function dialogCallback(arg: string) {
   if (arg === 'oke!') {
     handleConfirm();
   }
 }
 
 function handleConfirm() {
+  //@ts-ignore the fact that params doesn't contain listId
   router.push(`/list/${route.params.listId}`);
 }
 
@@ -80,12 +89,16 @@ const test: Number = 20;
 
 const onSubmitHandler = handleSubmit((values, actions) => {
   if (editItem.value) {
-    listsStore.updateItem(list.value.id, editItem.value.id, {
+    //@ts-ignore the fact that list can be null. If it is, it's in error.
+    listsStore.updateItem(list.value.id, editItem.value.itemId, {
       description: description.value,
       price: price.value,
       url: url.value,
       remarks: remarks.value,
+      wishlistId: editItem.value.wishlistId,
+      itemId: editItem.value.itemId,
     }).then(() => {
+      //@ts-ignore the fact that params doesn't have listId
       router.push(`/list/${route.params.listId}`);
     });
   }
@@ -124,7 +137,7 @@ const onSubmitHandler = handleSubmit((values, actions) => {
 
   <ConfirmDialog ref="confirmDialogRef"
                  :buttons="[{title: 'Oke!', color: 'success'}, {title: 'Woepsie', color: 'error'}]"
-                 @button-pressed="doTheThing"/>
+                 @button-pressed="dialogCallback"/>
 </template>
 
 <style scoped>

@@ -16,29 +16,29 @@ import java.util.List;
 @Entity
 public class Wishlist {
 
-	@Id
-	@Column
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Schema(requiredMode = Schema.RequiredMode.REQUIRED)
+    @Id
+    @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
     private Long id;
 
-	@JoinColumn
-	@ManyToOne(optional = false)
-	@Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-	private BeckersUser owner;
+    @JoinColumn
+    @ManyToOne(optional = false)
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
+    private BeckersUser owner;
 
-	@Column
-	@Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-	private String listName;
+    @Column
+    @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
+    private String listName;
 
-	@OneToMany(targetEntity = WishlistItem.class, mappedBy = "wishlist")
-	@JsonIgnoreProperties("wishlist")
-	@Schema(requiredMode = Schema.RequiredMode.REQUIRED)
-	private List<WishlistItem> items;
+    @OneToMany(targetEntity = WishlistItem.class, mappedBy = "wishlist")
+    @JsonIgnoreProperties("wishlist")
+    @Schema(requiredMode = Schema.RequiredMode.NOT_REQUIRED, name = "items", description = "The items in the wishlist")
+    private List<WishlistItem> items;
 
-	@Column
-	@Convert(converter = StringToGlyphiconConverter.class)
-	@Enumerated(EnumType.STRING)
-	private Glyphicon icon;
+    @Column
+    @Convert(converter = StringToGlyphiconConverter.class)
+    @Enumerated(EnumType.STRING)
+    private Glyphicon icon;
 
 }

@@ -12,7 +12,7 @@ import ConfirmDialog from "@/components/ConfirmDialog.vue";
 const route = useRoute()
 const router = useRouter();
 const list = ref<Wishlist | null>(null);
-const createItem = ref<WishlistItemCreate>({});
+const createItem = ref<WishlistItemCreate>();
 const listsStore = useListsStore();
 const authStore = useAuthStore();
 const own = ref<Boolean>(false);
@@ -27,19 +27,20 @@ onMounted(() => {
 
 function returnToList() {
   if (isFieldTouched('description') || isFieldTouched('price') || isFieldTouched('url') || isFieldTouched('remarks')) {
-    confirmDialogRef.value.open('Weet je zeker dat je terug wilt gaan?', 'Je hebt wijzigingen gemaakt die nog niet zijn opgeslagen.')
+    confirmDialogRef.value?.open('Weet je zeker dat je terug wilt gaan?', 'Je hebt wijzigingen gemaakt die nog niet zijn opgeslagen.')
     return;
   }
   handleConfirm();
 }
 
-function doTheThing(arg) {
+function dialogCallback(arg: string) {
   if (arg === 'oke!') {
     handleConfirm();
   }
 }
 
 function handleConfirm() {
+  //@ts-ignore
   router.push(`/list/${route.params.listId}`);
 }
 
@@ -69,12 +70,14 @@ const test: Number = 20;
 
 const onSubmitHandler = handleSubmit((values, actions) => {
   if (createItem.value) {
+    //@ts-ignore the fact that list can be null.
     listsStore.createItem(list.value.id, {
       description: description.value,
       price: price.value,
       url: url.value,
       remarks: remarks.value,
     }).then(() => {
+      //@ts-ignore the fact that params doesn't have listId
       router.push(`/list/${route.params.listId}`);
     });
   }
@@ -113,7 +116,7 @@ const onSubmitHandler = handleSubmit((values, actions) => {
 
   <ConfirmDialog ref="confirmDialogRef"
                  :buttons="[{title: 'Oke!', color: 'success'}, {title: 'Woepsie', color: 'error'}]"
-                 @button-pressed="doTheThing"/>
+                 @button-pressed="dialogCallback"/>
 </template>
 
 <style scoped>

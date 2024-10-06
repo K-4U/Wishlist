@@ -33,7 +33,8 @@ const showPreviousButton = computed(() => {
       <v-btn v-if="showBackButton" icon @click="$router.push('/')">
         <v-icon>mdi-arrow-left</v-icon>
       </v-btn>
-      <v-btn v-else v-if="showPreviousButton" icon @click="$router.push(router.currentRoute.value.meta.previousPage)">
+      <v-btn v-else v-if="showPreviousButton" icon
+             @click="$router.push(router.currentRoute.value.meta.previousPage ?? '/')">
         <v-icon>mdi-arrow-left</v-icon>
       </v-btn>
 
