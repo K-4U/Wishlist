@@ -1,5 +1,5 @@
 import {defineStore} from 'pinia';
-import {authenticationApi, BeckersUser, JwtResponse, RequiredError} from "@/api";
+import {authenticationApi, BeckersUser, JwtResponse} from "@/api";
 import type {AxiosResponse} from 'axios';
 import router from "@/router";
 import {jwtDecode, JwtPayload} from "jwt-decode";
@@ -35,13 +35,12 @@ export const useAuthStore = defineStore({
       const response: JwtResponse = await authenticationApi.doLogin({
         username,
         password
-      }).catch((response: RequiredError) => {
-        //@ts-ignore
-        throw new LoginError(response.response.data.message, response.response.data.status, response.response.data.error);
-      })
-        .then((value: AxiosResponse<JwtResponse, any>) => {
-          return value.data as JwtResponse;
-        });
+      }).then((value: AxiosResponse<JwtResponse, any>) => {
+        if (value.data === undefined && value.status === 401) {
+          throw new LoginError("Invalid username or password", 401);
+        }
+        return value.data as JwtResponse;
+      });
 
       // update pinia state
       this.user = response.delegate;

@@ -1,9 +1,5 @@
-- Makkelijker kunnen zien of er een notitie is
-- Fixen van het invullen van decimalen (komma vs punt)
-- Frontend lostrekken van backend
 - Lijst-management
     - Lijst verwijderen
     - Lijst naam veranderen
 - Item van lijst verplaatsen naar andere lijst
-- PWA maken
 - Zorgen dat je dingen kan toevoegen aan een lijst door te delen (android/ios?)

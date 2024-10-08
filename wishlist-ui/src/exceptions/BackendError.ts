@@ -1,10 +1,10 @@
-export class LoginError extends Error {
+export class BackendError extends Error {
   code: number;
   error: string;
 
   constructor(message: string, code: number) {
     super(message);
-    this.name = 'LoginError';
+    this.name = 'BackendError';
     this.code = code;
   }
 }

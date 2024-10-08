@@ -1,7 +1,6 @@
 package nl.k4u.web.wishlist.api;
 
-import java.util.UUID;
-
+import com.fasterxml.jackson.databind.JsonMappingException;
 import nl.k4u.web.wishlist.api.pojo.ErrorResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,12 +12,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.HttpMessageNotWritableException;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import com.fasterxml.jackson.databind.JsonMappingException;
+import java.util.UUID;
 
 
 @ControllerAdvice
@@ -27,6 +27,7 @@ public class RestResponseEntityExceptionHandler
 
     public static final int UNKNOWN_ERROR = -1;
     public static final int NOT_FOUND = -2;
+    public static final int AUTHENTICATION_ERROR = 401;
     public static final int ACCESS_DENIED = 403;
     public static final int CONFLICT = 409;
     public static final int MALFORMED_REQUEST = -3;
@@ -69,6 +70,12 @@ public class RestResponseEntityExceptionHandler
         return handleInternalError(ex, request, body);
     }
 
+    @ExceptionHandler(BadCredentialsException.class)
+    protected ResponseEntity<Object> handleException(BadCredentialsException ex, WebRequest request) {
+        ErrorResponse body = getErrorResponse(ex, AUTHENTICATION_ERROR);
+        return handleInternalError(ex, request, body);
+    }
+
     /**
      * This method handles any other error that is not expected before the result is returned by the controller
      */
@@ -88,7 +95,7 @@ public class RestResponseEntityExceptionHandler
     private ResponseEntity<Object> handleInternalError(Exception ex, WebRequest request, ErrorResponse body) {
         //log internal errors
         LOG.error(body.getId(), ex);
-        return handleExceptionInternal(ex, body, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
+        return handleExceptionInternal(ex, body, new HttpHeaders(), HttpStatus.valueOf(body.getCode()), request);
     }
 
     @Override

@@ -4,6 +4,7 @@ import ThemeSwitcher from "@/components/ThemeSwitcher.vue";
 import {getAvatarUrl} from "@/helpers";
 import {useRouter} from "vue-router";
 import {computed} from "vue";
+import LoaderIndicator from "@/components/LoaderIndicator.vue";
 
 
 const auth = useAuthStore();
@@ -39,6 +40,8 @@ const showPreviousButton = computed(() => {
       </v-btn>
 
       <v-toolbar-title>Wishlist</v-toolbar-title>
+      <LoaderIndicator/>
+
       <v-spacer></v-spacer>
 
       <ThemeSwitcher/>

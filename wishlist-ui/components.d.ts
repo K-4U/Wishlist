@@ -7,6 +7,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    ApiErrorHandler: typeof import('./src/components/ApiErrorHandler.vue')['default']
     AppFooter: typeof import('./src/components/AppFooter.vue')['default']
     ConfirmDialog: typeof import('./src/components/ConfirmDialog.vue')['default']
     CreateItemView: typeof import('./src/components/CreateItemView.vue')['default']
@@ -16,6 +17,7 @@ declare module 'vue' {
     ListItemCard: typeof import('./src/components/ListItemCard.vue')['default']
     ListsOverview: typeof import('./src/components/ListsOverview.vue')['default']
     ListView: typeof import('./src/components/ListView.vue')['default']
+    LoaderIndicator: typeof import('./src/components/LoaderIndicator.vue')['default']
     MainMenu: typeof import('./src/components/MainMenu.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

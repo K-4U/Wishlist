@@ -2,12 +2,14 @@
   <v-app class="login-app">
     <v-main>
       <router-view/>
+      <ApiErrorHandler/>
     </v-main>
   </v-app>
 </template>
 
 <script lang="ts" setup>
 //
+import ApiErrorHandler from "@/components/ApiErrorHandler.vue";
 </script>
 
 <style scoped>

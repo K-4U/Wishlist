@@ -19,6 +19,9 @@ const configurationWithAuth: Configuration = new Configuration({
   //@ts-ignore
   accessToken: () => {
     return localStorage.getItem('token');
+  },
+  baseOptions: {
+
   }
 });
 

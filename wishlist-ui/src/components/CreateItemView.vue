@@ -2,7 +2,7 @@
 
 import {onMounted, ref} from "vue";
 import {useRoute, useRouter} from "vue-router";
-import {Wishlist, WishlistItemCreate} from "@/api";
+import {Wishlist} from "@/api";
 import {useAuthStore, useListsStore} from "@/stores";
 import * as Yup from "yup";
 import {useForm} from "vee-validate";
@@ -12,7 +12,6 @@ import ConfirmDialog from "@/components/ConfirmDialog.vue";
 const route = useRoute()
 const router = useRouter();
 const list = ref<Wishlist | null>(null);
-const createItem = ref<WishlistItemCreate>();
 const listsStore = useListsStore();
 const authStore = useAuthStore();
 const own = ref<Boolean>(false);
@@ -69,18 +68,16 @@ const [remarks, remarksProps] = defineField('remarks', vuetifyConfig);
 const test: Number = 20;
 
 const onSubmitHandler = handleSubmit((values, actions) => {
-  if (createItem.value) {
-    //@ts-ignore the fact that list can be null.
-    listsStore.createItem(list.value.id, {
-      description: description.value,
-      price: price.value,
-      url: url.value,
-      remarks: remarks.value,
-    }).then(() => {
-      //@ts-ignore the fact that params doesn't have listId
-      router.push(`/list/${route.params.listId}`);
-    });
-  }
+  //@ts-ignore the fact that list can be null.
+  listsStore.createItem(list.value.id, {
+    description: description.value,
+    price: price.value,
+    url: url.value,
+    remarks: remarks.value,
+  }).then(() => {
+    //@ts-ignore the fact that params doesn't have listId
+    router.push(`/list/${route.params.listId}`);
+  });
 });
 
 </script>
