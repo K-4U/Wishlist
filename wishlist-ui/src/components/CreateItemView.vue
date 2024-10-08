@@ -8,6 +8,8 @@ import * as Yup from "yup";
 import {useForm} from "vee-validate";
 import CurrencyInput from "@/components/form/CurrencyInput.vue";
 import ConfirmDialog from "@/components/ConfirmDialog.vue";
+import Messages from "@/components/Messages.vue";
+import {useMessagesStore} from "@/stores/messages.store";
 
 const route = useRoute()
 const router = useRouter();
@@ -76,6 +78,7 @@ const onSubmitHandler = handleSubmit((values, actions) => {
     remarks: remarks.value,
   }).then(() => {
     //@ts-ignore the fact that params doesn't have listId
+    useMessagesStore().showMessage('Item toegevoegd', 'success');
     router.push(`/list/${route.params.listId}`);
   });
 });
@@ -83,6 +86,7 @@ const onSubmitHandler = handleSubmit((values, actions) => {
 </script>
 
 <template>
+  <Messages/>
   <v-card :title="`Nieuw item in lijst ${list?.listName}`">
     <v-form @submit="onSubmitHandler">
       <v-text-field

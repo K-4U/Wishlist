@@ -5,6 +5,7 @@ import {onMounted, ref} from "vue";
 import {BeckersUser, listsApi, Wishlist} from "@/api";
 import {useAuthStore} from "@/stores";
 import UserLists from "@/components/UserLists.vue";
+import Messages from "@/components/Messages.vue";
 
 const authStore = useAuthStore();
 
@@ -44,6 +45,7 @@ onMounted(() => {
 
 <template>
   <h1>Lists Overview</h1>
+  <Messages/>
   <v-row>
     <UserLists v-if="currentUserListsRef" :lists="currentUserListsRef" :user="usersRef[authStore.currentUserId ?? 0]"
                own/>

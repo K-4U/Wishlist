@@ -5,6 +5,7 @@ import {WishlistItemProp, WishlistProp} from "@/proptypes";
 import {useRouter} from "vue-router";
 import ConfirmDialog from "@/components/ConfirmDialog.vue";
 import {useListsStore} from "@/stores";
+import {useMessagesStore} from "@/stores/messages.store";
 
 const router = useRouter();
 const listsStore = useListsStore();
@@ -32,6 +33,7 @@ function dialogCallback(arg: string) {
   if (arg === 'oke!') {
     //@ts-ignore if list or item are null here, it should throw an error
     listsStore.deleteItem(list.id, item.id).then(() => {
+      useMessagesStore().showMessage('Het item is verwijderd van de lijst.', 'success');
       window.location.reload();
     });
   }

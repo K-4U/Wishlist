@@ -7,6 +7,7 @@ import {Wishlist} from "@/api";
 import {formatCurrency} from "@/helpers";
 import ListItemCard from "@/components/ListItemCard.vue";
 import ListItemActions from "@/components/ListItemActions.vue";
+import Messages from "@/components/Messages.vue";
 
 const route = useRoute()
 const router = useRouter();
@@ -41,6 +42,8 @@ const items = computed(() => {
   <h1>
     Lijst van {{ list?.owner?.name }}: {{ list?.listName }}
   </h1>
+
+  <Messages/>
 
   <v-row v-if="tableView == false">
     <ListItemCard v-for="item in items" v-if="list" :key="item.id"
