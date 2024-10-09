@@ -20,6 +20,7 @@ export const useAuthStore = defineStore({
     },
     isLoggedIn(): boolean {
       //TODO: If we WERE logged in, but the token has expired, show a message to the user
+      console.log(this.user !== null, this.token != null, this.decodedToken !== null, (this.decodedToken?.exp ?? 0) > Date.now() / 1000);
       return (this.user !== null) &&
         (this.token != null) &&
         (this.decodedToken !== null) &&

@@ -6,7 +6,7 @@ const messagesStore = useMessagesStore();
 const messageList = ref<Message[]>([]);
 onMounted(() => {
   //We do this, so that it only fetches the messages once, when the component is mounted.
-  messageList.value = messagesStore.allMessages;
+  messageList.value = messagesStore.getAllMessages();
 });
 
 </script>

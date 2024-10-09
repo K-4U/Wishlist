@@ -13,11 +13,6 @@ export const useMessagesStore = defineStore({
     messages: JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')
   }),
   getters: {
-    allMessages() {
-      const msgTemp = this.messages;
-      this.clearMessages();
-      return msgTemp;
-    }
   },
   actions: {
     showMessage(message: string, messageType?: 'success' | 'error' | 'info' | 'warning') {
@@ -31,6 +26,11 @@ export const useMessagesStore = defineStore({
     clearMessages() {
       this.messages = [];
       localStorage.setItem(STORAGE_KEY, JSON.stringify(this.messages));
+    },
+    getAllMessages(): Message[] {
+      const msgTemp: Message[] = this.messages;
+      this.clearMessages();
+      return msgTemp;
     }
   }
 });

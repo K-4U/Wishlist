@@ -100,8 +100,8 @@ const onSubmitHandler = handleSubmit((values, actions) => {
       wishlistId: editItem.value.wishlistId,
       itemId: editItem.value.itemId,
     }).then(() => {
-      //@ts-ignore the fact that params doesn't have listId
       useMessagesStore().showMessage('Item bijgewerkt', 'success');
+      //@ts-ignore the fact that params doesn't have listId
       router.push(`/list/${route.params.listId}`);
     });
   }

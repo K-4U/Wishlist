@@ -77,8 +77,8 @@ const onSubmitHandler = handleSubmit((values, actions) => {
     url: url.value,
     remarks: remarks.value,
   }).then(() => {
-    //@ts-ignore the fact that params doesn't have listId
     useMessagesStore().showMessage('Item toegevoegd', 'success');
+    //@ts-ignore the fact that params doesn't have listId
     router.push(`/list/${route.params.listId}`);
   });
 });

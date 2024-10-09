@@ -19,7 +19,6 @@ declare module 'vue' {
     ListView: typeof import('./src/components/ListView.vue')['default']
     LoaderIndicator: typeof import('./src/components/LoaderIndicator.vue')['default']
     MainMenu: typeof import('./src/components/MainMenu.vue')['default']
-    MessageComponent: typeof import('./src/components/MessageComponent.vue')['default']
     Messages: typeof import('./src/components/Messages.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

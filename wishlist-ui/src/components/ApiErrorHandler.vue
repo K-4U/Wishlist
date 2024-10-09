@@ -11,7 +11,7 @@ axios.interceptors.response.use((response) => {
   details.value = [`Bericht: ${error.response.data.message}`,
     `Code: ${error.response.data.code}`,
     `Id: ${error.response.data.id}`,
-    `Exceptions: ${error.response.data.exceptions.map(e => e.message).join(', ')}`];
+    `Exceptions: ${error.response.data.exceptions.map((e: any) => e.message).join(', ')}`];
 
   visible.value = true;
 
@@ -20,7 +20,7 @@ axios.interceptors.response.use((response) => {
 
 const visible = ref(false);
 const subtitle = ref('');
-const details = ref('');
+const details = ref<String[]>([]);
 
 </script>
 
