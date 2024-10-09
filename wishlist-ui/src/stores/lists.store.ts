@@ -19,6 +19,17 @@ export const useListsStore = defineStore({
           return response.data
         });
     },
+    async getOwnLists(): Promise<Array<Wishlist>> {
+      return await listsApi.ownLists()
+        .catch((response: RequiredError) => {
+        })
+        .then((response: void | AxiosResponse<Array<Wishlist>, any>) => {
+          if (!response) {
+            return []
+          }
+          return response.data
+        });
+    },
     async getAllListsGroupedByUser(): Promise<{ [user: number]: Wishlist[] }> {
       console.log("Getting all lists grouped by user")
       console.log(listsApi)
@@ -107,6 +118,16 @@ export const useListsStore = defineStore({
     },
     async unbuyItem(listId: number, itemId: number) {
       return await listsApi.unbuyItem(listId, itemId).catch((response: RequiredError) => {
+        console.error(response)
+      }).then((response: AxiosResponse<void, any> | void) => {
+        if (!response) {
+          return {} as WishlistItem
+        }
+        return response.data;
+      });
+    },
+    async moveItem(listId: number, itemId: number, targetListId: number) {
+      return await listsApi.moveItem(listId, itemId, {value: targetListId}).catch((response: RequiredError) => {
         console.error(response)
       }).then((response: AxiosResponse<void, any> | void) => {
         if (!response) {

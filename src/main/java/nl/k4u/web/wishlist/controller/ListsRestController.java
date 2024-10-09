@@ -43,7 +43,7 @@ public class ListsRestController extends BaseController {
     @GetMapping("own")
     @Operation(summary = "Get own lists")
     @ResponseOk
-    public List<Wishlist> lists(Model model) {
+    public List<Wishlist> ownLists(Model model) {
         BeckersUser user = AuthSupport.getPrincipalDelegate();
         return listService.getAllWishlistsByUser(user);
     }

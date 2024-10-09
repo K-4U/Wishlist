@@ -44,22 +44,22 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/WishlistItem"
-                }
-              }
-            }
-          },
           "403": {
             "description": "Forbidden",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/WishlistItem"
                 }
               }
             }
@@ -94,22 +94,22 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/WishlistItem"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Not found",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/WishlistItem"
                 }
               }
             }
@@ -190,9 +190,6 @@
           }
         ],
         "responses": {
-          "204": {
-            "description": "No Content"
-          },
           "403": {
             "description": "Forbidden",
             "content": {
@@ -202,6 +199,9 @@
                 }
               }
             }
+          },
+          "204": {
+            "description": "No Content"
           }
         }
       }
@@ -233,9 +233,6 @@
           }
         ],
         "responses": {
-          "204": {
-            "description": "No Content"
-          },
           "403": {
             "description": "Forbidden",
             "content": {
@@ -255,6 +252,72 @@
                 }
               }
             }
+          },
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    },
+    "/api/lists/{listId}/items/{itemId}/move": {
+      "post": {
+        "tags": [
+          "Lists"
+        ],
+        "operationId": "moveItem",
+        "parameters": [
+          {
+            "name": "listId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "itemId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SingleValueWrapperLong"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
           }
         }
       }
@@ -286,9 +349,6 @@
           }
         ],
         "responses": {
-          "204": {
-            "description": "No Content"
-          },
           "404": {
             "description": "Not found",
             "content": {
@@ -298,6 +358,9 @@
                 }
               }
             }
+          },
+          "204": {
+            "description": "No Content"
           }
         }
       }
@@ -368,22 +431,22 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/JwtResponse"
-                }
-              }
-            }
-          },
           "401": {
             "description": "Unauthorized",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/JwtResponse"
                 }
               }
             }
@@ -454,7 +517,7 @@
           "Lists"
         ],
         "summary": "Get own lists",
-        "operationId": "lists",
+        "operationId": "ownLists",
         "responses": {
           "200": {
             "description": "OK",
@@ -1942,12 +2005,12 @@
           "remarks": {
             "type": "string"
           },
-          "store": {
-            "type": "string"
-          },
           "hasValidUrl": {
             "type": "boolean",
             "description": "Indicates if the URL is a valid URL"
+          },
+          "store": {
+            "type": "string"
           }
         }
       },
@@ -1981,6 +2044,18 @@
           },
           "remarks": {
             "type": "string"
+          }
+        }
+      },
+      "SingleValueWrapperLong": {
+        "required": [
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "integer",
+            "format": "int64"
           }
         }
       },

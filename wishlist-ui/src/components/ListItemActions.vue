@@ -21,6 +21,9 @@ const {item, list, own} = defineProps({
 
 const confirmDialogRef = ref<InstanceType<typeof ConfirmDialog> | null>(null);
 const auth = useAuthStore();
+const moveDialogVisible = ref(false);
+// const selectedMoveList = ref();
+const selectedMoveList = defineModel();
 
 function openEditPage() {
   router.push(`/list/${list?.id}/item/${item?.id}`);
@@ -65,6 +68,26 @@ function unbuy() {
     }, {title: 'Nee', color: 'error'}]);
 }
 
+const ownLists = ref<WishlistProp[]>([]);
+
+function moveItem() {
+  listsStore.getOwnLists().then((lists) => {
+    //Filter out the current list
+    ownLists.value = lists.filter((l) => l.id != list.id);
+    moveDialogVisible.value = true;
+  });
+}
+
+function confirmMove() {
+  const selectedList = selectedMoveList.value;
+  const listName = ownLists.value.filter((l) => l.id == selectedList)[0].listName;
+  console.log('Moving item', item.id, 'to list', selectedList);
+  listsStore.moveItem(list.id, item.id, selectedList).then(() => {
+    useMessagesStore().showMessage(`Het item is verplaatst naar ${listName}.`, 'success');
+    window.location.reload();
+  });
+}
+
 </script>
 
 <template>
@@ -74,6 +97,9 @@ function unbuy() {
     </v-btn>
     <v-btn color="error" icon size="small" variant="tonal" @click="removeItem">
       <v-icon>mdi-delete</v-icon>
+    </v-btn>
+    <v-btn color="warning" icon size="small" variant="tonal" @click="moveItem">
+      <v-icon>mdi-folder-move</v-icon>
     </v-btn>
   </v-btn-group>
   <v-btn-group v-else-if="!own && item?.purchasedBy?.id != auth.currentUserId">
@@ -88,6 +114,19 @@ function unbuy() {
   </v-btn-group>
 
   <ConfirmDialog ref="confirmDialogRef"/>
+
+  <v-dialog v-model="moveDialogVisible" max-width="800">
+    <v-card :title="`Verplaats ${item.description} van lijst`" prepend-icon="mdi-folder-move">
+      <v-card-text>
+        <v-select v-model="selectedMoveList" :items="ownLists" item-title="listName" item-value="id"
+                  label="Naar lijst"/>
+      </v-card-text>
+      <v-card-actions>
+        <v-btn color="success" @click="confirmMove">Verplaats</v-btn>
+        <v-btn color="error" @click="moveDialogVisible = false">Annuleren</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 
 <style scoped>

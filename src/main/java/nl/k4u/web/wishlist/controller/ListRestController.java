@@ -12,6 +12,7 @@ import nl.k4u.web.wishlist.api.annotations.ResponseForbidden;
 import nl.k4u.web.wishlist.api.annotations.ResponseNoContent;
 import nl.k4u.web.wishlist.api.annotations.ResponseNotFound;
 import nl.k4u.web.wishlist.api.annotations.ResponseOk;
+import nl.k4u.web.wishlist.api.pojo.SingleValueWrapper;
 import nl.k4u.web.wishlist.api.pojo.WishlistItemCreate;
 import nl.k4u.web.wishlist.api.pojo.WishlistItemUpdate;
 import nl.k4u.web.wishlist.security.AuthSupport;
@@ -182,6 +183,35 @@ public class ListRestController extends BaseController {
         //item.setPurchaseEvent();
         item.setPurchasedOn(null);
         item.setPurchasedBy(null);
+
+        itemService.saveItem(item);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{listId}/items/{itemId}/move")
+    @ResponseNoContent
+    @ResponseForbidden
+    @ResponseNotFound
+    public ResponseEntity<Void> moveItem(@PathVariable Long listId, @PathVariable Long itemId, @RequestBody SingleValueWrapper<Long> targetListId) {
+        BeckersUser user = AuthSupport.getPrincipalDelegate();
+
+        WishlistItem item = itemService.getItemById(itemId);
+        if (!item.getWishlist().getId().equals(listId)) {
+            return ResponseEntity.notFound().build();
+        }
+        if (!authSupport.canEdit(item.getOwner())) {
+            return ResponseEntity.status(403).build(); //TODO: Maybe just deal with this in the authSupport and throw exceptions
+        }
+        Wishlist targetList = listService.getWishListById(targetListId.getValue());
+        if (targetList == null) {
+            return ResponseEntity.notFound().build();
+        }
+        if (!authSupport.canEdit(targetList.getOwner())) {
+            return ResponseEntity.status(403).build(); //TODO: Maybe just deal with this in the authSupport and throw exceptions
+        }
+
+        item.setWishlist(targetList);
 
         itemService.saveItem(item);
 
