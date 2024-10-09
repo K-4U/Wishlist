@@ -31,8 +31,13 @@ function changeListName(e: any, listId: number) {
 }
 
 function removeList(e: any, listId: number) {
-  confirmDialogRef.value?.open('Weet je zeker dat je deze lijst wilt verwijderen?', 'Dit kan niet ongedaan worden gemaakt.');
-  console.log('remove list', listId);
+  confirmDialogRef.value?.open(
+    'Weet je zeker dat je deze lijst wilt verwijderen?', 'Dit kan niet ongedaan worden gemaakt.',
+    [{
+      title: 'Ja', color: 'success', handler: () => actuallyRemoveList(listId)
+    },
+      {title: 'Nee', color: 'error'}
+    ]);
 }
 
 function actuallyRemoveList() {

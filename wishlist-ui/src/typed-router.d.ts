@@ -14,13 +14,13 @@ declare module 'vue-router/auto-routes' {
   export interface RouteNamedMap {
     '/': RouteRecordInfo<'/', '/', Record<never, never>, Record<never, never>>,
     '/list/[id]': RouteRecordInfo<'/list/[id]', '/list/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
-      '/list/[listId]/item/[itemId]': RouteRecordInfo<'/list/[listId]/item/[itemId]', '/list/:listId/item/:itemId', {
-          listId: ParamValue<true>,
-          itemId: ParamValue<true>
-      }, { listId: ParamValue<false>, itemId: ParamValue<false> }>,
-      '/list/[listId]/item/new': RouteRecordInfo<'/list/[listId]/item/new', '/list/:listId/item/new', {
-          listId: ParamValue<true>
-      }, { listId: ParamValue<false> }>,
+        '/list/[listId]/item/[itemId]': RouteRecordInfo<'/list/[listId]/item/[itemId]', '/list/:listId/item/:itemId', {
+            listId: ParamValue<true>,
+            itemId: ParamValue<true>
+        }, { listId: ParamValue<false>, itemId: ParamValue<false> }>,
+        '/list/[listId]/item/new': RouteRecordInfo<'/list/[listId]/item/new', '/list/:listId/item/new', {
+            listId: ParamValue<true>
+        }, { listId: ParamValue<false> }>,
     '/login': RouteRecordInfo<'/login', '/login', Record<never, never>, Record<never, never>>,
   }
 }

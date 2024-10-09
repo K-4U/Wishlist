@@ -34,35 +34,11 @@ public class ListRestController extends BaseController {
 
     @Autowired
     private ListService listService;
-
     @Autowired
     private ItemService itemService;
     @Autowired
     private AuthSupport authSupport;
 
-
-/*	@RequestMapping(path = "list/{listId}/add", method = RequestMethod.POST)
-	public String saveList(@Valid @ModelAttribute(COMMAND_NAME) ItemFBO obj, BindingResult result,
-                           Model model, @PathVariable Long listId) {
-		BeckersUser user = AuthSupport.getPrincipalDelegate();
-
-		if (result.hasErrors()) {
-			model.addAttribute(COMMAND_NAME, obj);
-			return "list-add-item";
-		}
-		Wishlist wishListById = listService.getWishListById(listId);
-
-		WishlistItem delegate = obj.getDelegate();
-		delegate.setAddedOn(Calendar.getInstance().getTime());
-		delegate.setOwner(user);
-		delegate.setWishlist(wishListById);
-
-		itemService.saveItem(delegate);
-
-		messagesBean.addSuccesssMessage(delegate.getDescription() + " toegevoegd aan " + wishListById.getListName());
-
-		return "redirect:/list/" + listId;
-	}*/
 
     @GetMapping("/{id}")
     @Operation(summary = "Get list by ID")
@@ -170,20 +146,45 @@ public class ListRestController extends BaseController {
         return ResponseEntity.ok(itemById);
     }
 
-	/*@RequestMapping(path = "list/{listId}/buy/{itemId}", method = RequestMethod.GET)
-	public String buyItem(Model model, @PathVariable Integer listId, @PathVariable Integer itemId) {
+    @PostMapping("/{listId}/items/{itemId}/buy")
+    @ResponseNoContent
+    @ResponseNotFound
+    public ResponseEntity<Void> buyItem(@PathVariable Long listId, @PathVariable Long itemId) {
 		BeckersUser user = AuthSupport.getPrincipalDelegate();
 
 		WishlistItem item = itemService.getItemById(itemId);
+        if (!item.getWishlist().getId().equals(listId)) {
+            return ResponseEntity.notFound().build();
+        }
 		//item.setPurchaseEvent();
 		item.setPurchasedOn(Calendar.getInstance().getTime());
 		item.setPurchasedBy(user);
 
 		itemService.saveItem(item);
 
-		messagesBean.addSuccesssMessage(item.getDescription() + " gemarkeerd als gekocht!");
+        return ResponseEntity.noContent().build();
+    }
 
-		return "redirect:/list/" + listId;
-	}*/
+    @PostMapping("/{listId}/items/{itemId}/unbuy")
+    @ResponseNoContent
+    @ResponseForbidden
+    @ResponseNotFound
+    public ResponseEntity<Void> unbuyItem(@PathVariable Long listId, @PathVariable Long itemId) {
+        BeckersUser user = AuthSupport.getPrincipalDelegate();
 
+        WishlistItem item = itemService.getItemById(itemId);
+        if (!item.getWishlist().getId().equals(listId)) {
+            return ResponseEntity.notFound().build();
+        }
+        if (!item.getPurchasedBy().equals(user)) {
+            return ResponseEntity.status(403).build();
+        }
+        //item.setPurchaseEvent();
+        item.setPurchasedOn(null);
+        item.setPurchasedBy(null);
+
+        itemService.saveItem(item);
+
+        return ResponseEntity.noContent().build();
+    }
 }

@@ -94,6 +94,26 @@ export const useListsStore = defineStore({
         }
         return response.data;
       });
-    }
+    },
+    async buyItem(listId: number, itemId: number) {
+      return await listsApi.buyItem(listId, itemId).catch((response: RequiredError) => {
+        console.error(response)
+      }).then((response: AxiosResponse<void, any> | void) => {
+        if (!response) {
+          return {} as WishlistItem
+        }
+        return response.data;
+      });
+    },
+    async unbuyItem(listId: number, itemId: number) {
+      return await listsApi.unbuyItem(listId, itemId).catch((response: RequiredError) => {
+        console.error(response)
+      }).then((response: AxiosResponse<void, any> | void) => {
+        if (!response) {
+          return {} as WishlistItem
+        }
+        return response.data;
+      });
+    },
   }
 });

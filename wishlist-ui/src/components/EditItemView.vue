@@ -47,21 +47,15 @@ onMounted(() => {
 
 function returnToList() {
   if (isFieldTouched('description') || isFieldTouched('price') || isFieldTouched('url') || isFieldTouched('remarks')) {
-    confirmDialogRef.value?.open('Weet je zeker dat je terug wilt gaan?', 'Je hebt wijzigingen gemaakt die nog niet zijn opgeslagen.')
+    confirmDialogRef.value?.open('Weet je zeker dat je terug wilt gaan?', 'Je hebt wijzigingen gemaakt die nog niet zijn opgeslagen.',
+      [{title: 'Oke!', color: 'success', handler: (e) => handleConfirm()}, {title: 'Woepsie', color: 'error'}]);
     return;
   }
   handleConfirm();
-
-}
-
-function dialogCallback(arg: string) {
-  if (arg === 'oke!') {
-    handleConfirm();
-  }
 }
 
 function handleConfirm() {
-  //@ts-ignore the fact that params doesn't contain listId
+  //@ts-ignore
   router.push(`/list/${route.params.listId}`);
 }
 
@@ -139,9 +133,7 @@ const onSubmitHandler = handleSubmit((values, actions) => {
     </v-form>
   </v-card>
 
-  <ConfirmDialog ref="confirmDialogRef"
-                 :buttons="[{title: 'Oke!', color: 'success'}, {title: 'Woepsie', color: 'error'}]"
-                 @button-pressed="dialogCallback"/>
+  <ConfirmDialog ref="confirmDialogRef"/>
 </template>
 
 <style scoped>

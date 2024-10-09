@@ -32,7 +32,7 @@ function toggleView() {
 
 const items = computed(() => {
   //@ts-ignore Lists can't have items? TODO
-  return list.value?.items.filter((item: WishlistItem) => !item.deleted && ((!own.value && item.purchasedBy == undefined) || own.value || item.purchasedBy == authStore.currentUserId));
+  return list.value?.items.filter((item: WishlistItem) => !item.deleted && ((!own.value && item.purchasedBy == undefined) || own.value || item.purchasedBy?.id == authStore.currentUserId));
 })
 
 </script>
@@ -103,7 +103,8 @@ const items = computed(() => {
            :icon="!tableView ? 'mdi-view-list-outline' : 'mdi-view-grid'" color="warning" size="large" @click="toggleView"></v-btn>
 
     <v-btn key="2"
-           color="success" icon="mdi-plus" size="large" @click="router.push(`/list/${list?.id}/item/new`)"></v-btn>
+           v-if="own" color="success" icon="mdi-plus" size="large"
+           @click="router.push(`/list/${list?.id}/item/new`)"></v-btn>
   </v-speed-dial>
 
 

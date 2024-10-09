@@ -1649,7 +1649,6 @@ export interface WishlistItemCreate {
    */
   'remarks'?: string;
 }
-
 /**
  *
  * @export
@@ -1951,6 +1950,46 @@ export const ListsApiAxiosParamCreator = function (configuration?: Configuration
        * @param {*} [options] Override http request option.
        * @throws {RequiredError}
        */
+      buyItem: async (listId: number, itemId: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        // verify required parameter 'listId' is not null or undefined
+        assertParamExists('buyItem', 'listId', listId)
+        // verify required parameter 'itemId' is not null or undefined
+        assertParamExists('buyItem', 'itemId', itemId)
+        const localVarPath = `/api/lists/{listId}/items/{itemId}/buy`
+          .replace(`{${"listId"}}`, encodeURIComponent(String(listId)))
+          .replace(`{${"itemId"}}`, encodeURIComponent(String(itemId)));
+        // use dummy base URL string because the URL constructor only accepts absolute URLs.
+        const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+        let baseOptions;
+        if (configuration) {
+          baseOptions = configuration.baseOptions;
+        }
+
+        const localVarRequestOptions = {method: 'POST', ...baseOptions, ...options};
+        const localVarHeaderParameter = {} as any;
+        const localVarQueryParameter = {} as any;
+
+        // authentication jwt required
+        // http bearer authentication required
+        await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+        setSearchParams(localVarUrlObj, localVarQueryParameter);
+        let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+        localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+        return {
+          url: toPathString(localVarUrlObj),
+          options: localVarRequestOptions,
+        };
+        },
+      /**
+       *
+       * @param {number} listId
+       * @param {number} itemId
+       * @param {*} [options] Override http request option.
+       * @throws {RequiredError}
+       */
       deleteItem: async (listId: number, itemId: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
         // verify required parameter 'listId' is not null or undefined
         assertParamExists('deleteItem', 'listId', listId)
@@ -2206,6 +2245,46 @@ export const ListsApiAxiosParamCreator = function (configuration?: Configuration
 
 
           setSearchParams(localVarUrlObj, localVarQueryParameter);
+          let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+          localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+          return {
+            url: toPathString(localVarUrlObj),
+            options: localVarRequestOptions,
+          };
+        },
+      /**
+       *
+       * @param {number} listId
+       * @param {number} itemId
+       * @param {*} [options] Override http request option.
+       * @throws {RequiredError}
+       */
+      unbuyItem: async (listId: number, itemId: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        // verify required parameter 'listId' is not null or undefined
+        assertParamExists('unbuyItem', 'listId', listId)
+        // verify required parameter 'itemId' is not null or undefined
+        assertParamExists('unbuyItem', 'itemId', itemId)
+        const localVarPath = `/api/lists/{listId}/items/{itemId}/unbuy`
+          .replace(`{${"listId"}}`, encodeURIComponent(String(listId)))
+          .replace(`{${"itemId"}}`, encodeURIComponent(String(itemId)));
+        // use dummy base URL string because the URL constructor only accepts absolute URLs.
+        const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+        let baseOptions;
+        if (configuration) {
+          baseOptions = configuration.baseOptions;
+        }
+
+        const localVarRequestOptions = {method: 'POST', ...baseOptions, ...options};
+        const localVarHeaderParameter = {} as any;
+        const localVarQueryParameter = {} as any;
+
+        // authentication jwt required
+        // http bearer authentication required
+        await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+        setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
@@ -2247,6 +2326,19 @@ export const ListsApiFp = function (configuration?: Configuration) {
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ListsApi.addList']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+      },
+      /**
+       *
+       * @param {number} listId
+       * @param {number} itemId
+       * @param {*} [options] Override http request option.
+       * @throws {RequiredError}
+       */
+      async buyItem(listId: number, itemId: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        const localVarAxiosArgs = await localVarAxiosParamCreator.buyItem(listId, itemId, options);
+        const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+        const localVarOperationServerBasePath = operationServerMap['ListsApi.buyItem']?.[localVarOperationServerIndex]?.url;
+        return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          *
@@ -2336,6 +2428,19 @@ export const ListsApiFp = function (configuration?: Configuration) {
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ListsApi.saveList']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+      },
+      /**
+       *
+       * @param {number} listId
+       * @param {number} itemId
+       * @param {*} [options] Override http request option.
+       * @throws {RequiredError}
+       */
+      async unbuyItem(listId: number, itemId: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        const localVarAxiosArgs = await localVarAxiosParamCreator.unbuyItem(listId, itemId, options);
+        const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+        const localVarOperationServerBasePath = operationServerMap['ListsApi.unbuyItem']?.[localVarOperationServerIndex]?.url;
+        return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
@@ -2372,8 +2477,18 @@ export const ListsApiFactory = function (configuration?: Configuration, basePath
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
+        buyItem(listId: number, itemId: number, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+          return localVarFp.buyItem(listId, itemId, options).then((request) => request(axios, basePath));
+        },
+      /**
+       *
+       * @param {number} listId
+       * @param {number} itemId
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
         deleteItem(listId: number, itemId: number, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-          return localVarFp.deleteItem(listId, itemId, options).then((request) => request(axios, basePath));
+        return localVarFp.deleteItem(listId, itemId, options).then((request) => request(axios, basePath));
         },
       /**
        *
@@ -2433,6 +2548,16 @@ export const ListsApiFactory = function (configuration?: Configuration, basePath
         saveList(obj: ListFBO, options?: RawAxiosRequestConfig): AxiosPromise<string> {
             return localVarFp.saveList(obj, options).then((request) => request(axios, basePath));
         },
+      /**
+       *
+       * @param {number} listId
+       * @param {number} itemId
+       * @param {*} [options] Override http request option.
+       * @throws {RequiredError}
+       */
+      unbuyItem(listId: number, itemId: number, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+        return localVarFp.unbuyItem(listId, itemId, options).then((request) => request(axios, basePath));
+      },
     };
 };
 
@@ -2464,6 +2589,18 @@ export class ListsApi extends BaseAPI {
     public addList(options?: RawAxiosRequestConfig) {
         return ListsApiFp(this.configuration).addList(options).then((request) => request(this.axios, this.basePath));
     }
+
+  /**
+   *
+   * @param {number} listId
+   * @param {number} itemId
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof ListsApi
+   */
+  public buyItem(listId: number, itemId: number, options?: RawAxiosRequestConfig) {
+    return ListsApiFp(this.configuration).buyItem(listId, itemId, options).then((request) => request(this.axios, this.basePath));
+  }
 
   /**
    *
@@ -2546,6 +2683,18 @@ export class ListsApi extends BaseAPI {
     public saveList(obj: ListFBO, options?: RawAxiosRequestConfig) {
         return ListsApiFp(this.configuration).saveList(obj, options).then((request) => request(this.axios, this.basePath));
     }
+
+  /**
+   *
+   * @param {number} listId
+   * @param {number} itemId
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof ListsApi
+   */
+  public unbuyItem(listId: number, itemId: number, options?: RawAxiosRequestConfig) {
+    return ListsApiFp(this.configuration).unbuyItem(listId, itemId, options).then((request) => request(this.axios, this.basePath));
+  }
 }
 
 
