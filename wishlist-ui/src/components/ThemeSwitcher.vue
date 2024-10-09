@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import {useTheme} from "vuetify";
 import {computed, onMounted, Ref, ref} from "vue";
+import {useSettingsStore} from "@/stores/settings.store";
 
 const theme = useTheme();
+const settings = useSettingsStore();
 
 enum ThemeMode {
   LIGHT = 'light',
@@ -10,7 +12,7 @@ enum ThemeMode {
   AUTO = 'auto'
 }
 
-const mode: Ref<ThemeMode> = ref(localStorage.getItem('themeMode') as ThemeMode ?? ThemeMode.AUTO)
+const mode: Ref<ThemeMode> = ref(settings.getSetting('themeMode') as ThemeMode ?? ThemeMode.AUTO)
 
 const icon = computed(() => {
   switch (mode.value) {
@@ -36,7 +38,7 @@ function toggleTheme() {
       break
   }
   console.log(mode.value);
-  localStorage.setItem('themeMode', mode.value)
+  settings.setSetting('themeMode', mode.value);
   setThemeInBrowser();
 }
 
