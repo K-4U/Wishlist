@@ -8,14 +8,16 @@ import {formatCurrency} from "@/helpers";
 import ListItemCard from "@/components/ListItemCard.vue";
 import ListItemActions from "@/components/ListItemActions.vue";
 import Messages from "@/components/Messages.vue";
+import {useSettingsStore} from "@/stores/settings.store";
 
 const route = useRoute()
 const router = useRouter();
 const list = ref<Wishlist | null>(null);
 const listsStore = useListsStore();
 const authStore = useAuthStore();
+const settingsStore = useSettingsStore();
 const own = ref<Boolean>(false);
-const tableView = ref<Boolean>(false);
+const tableView = ref<Boolean>(settingsStore.getSetting('tableView') ?? false);
 
 onMounted(() => {
   //@ts-ignore
@@ -28,6 +30,7 @@ onMounted(() => {
 
 function toggleView() {
   tableView.value = !tableView.value;
+  settingsStore.setSetting('tableView', tableView.value);
 }
 
 const items = computed(() => {
