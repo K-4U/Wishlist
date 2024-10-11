@@ -47,7 +47,9 @@ export const useDialogStore = defineStore({
     },
     alertCallback() {
       this.alert.visible = false
-      this.alert.callback();
+      if (this.alert.callback) {
+        this.alert.callback();
+      }
     },
     confirmCallback(button: Button) {
       this.confirm.visible = false

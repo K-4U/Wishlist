@@ -26,15 +26,16 @@ function openList(target: WishlistDTO) {
 const isEditModeOpen = ref(false);
 
 function changeListName(e: any, listId: number) {
-  e.preventDefault()
   console.log('change list name', listId);
+  router.push({path: `/list/${listId}/edit`});
 }
 
 function removeList(e: any, listId: number) {
-  for (const list in props.lists) {
+  for (const listItr in props.lists) {
+    const list = props.lists[listItr];
     if (list.id === listId) {
-      if (list.items.length == 0) {
-        //Show an error dialog
+      if (list.items.length > 0) {
+        dialogStore.showAlert('Let op, deze lijst niet leeg is!', 'Je kan alleen lege lijsten verwijderen.');
       } else {
         dialogStore.showConfirm(
           'Weet je zeker dat je deze lijst wilt verwijderen?', 'Dit kan niet ongedaan worden gemaakt.',
@@ -47,7 +48,6 @@ function removeList(e: any, listId: number) {
       break;
     }
   }
-
 }
 
 function actuallyRemoveList(listId: Number) {
@@ -62,28 +62,34 @@ function actuallyRemoveList(listId: Number) {
             :title="props.user?.name" class="mx-auto">
       <v-card-text class="bg-surface-light pa-0 pl-2">
         <v-list>
-          <v-list-item v-for="list in props.lists" :key="list.id" :prepend-icon="list.icon ?? 'mdi-view-list'"
-                       @click="e => openList(list)">
-            <v-list-item-title>{{ list.listName }}</v-list-item-title>
-            <template v-if="isEditModeOpen" v-slot:append>
-              <v-btn-group>
-                <v-btn color="primary" icon size="small" variant="tonal"
-                       @click.stop="(e:any) => changeListName(e, list.id)">
-                  <v-icon>mdi-pencil</v-icon>
-                </v-btn>
-                <v-btn color="error" icon size="small" variant="tonal" @click.stop="(e:any) => removeList(e, list.id)">
-                  <v-icon>mdi-delete</v-icon>
-                </v-btn>
-              </v-btn-group>
+          <v-list-item v-for="list in props.lists" :key="list.id" :prepend-icon="`mdi-${list.icon ?? 'view-list'}`"
+                       @click.self="e => openList(list)">
+            <v-list-item-title @click.self="e => openList(list)">{{ list.listName }}</v-list-item-title>
+            <template v-slot:append>
+              <v-scroll-x-transition>
+                <v-list-item-action v-show="isEditModeOpen">
+                  <v-btn-group>
+                    <v-btn color="primary" icon size="small" variant="tonal"
+                           @click.prevent="(e:any) => changeListName(e, list.id)">
+                      <v-icon>mdi-pencil</v-icon>
+                    </v-btn>
+                    <v-btn color="error" icon size="small" variant="tonal"
+                           @click.prevent="(e:any) => removeList(e, list.id)">
+                      <v-icon>mdi-delete</v-icon>
+                    </v-btn>
+                  </v-btn-group>
+                </v-list-item-action>
+              </v-scroll-x-transition>
             </template>
           </v-list-item>
         </v-list>
       </v-card-text>
       <v-card-actions v-if="own">
-        <v-speed-dial ref="editRef"
+        <v-speed-dial v-model="isEditModeOpen"
                       location="right center"
                       transition="fade-transition"
-                      @update:modelValue="val => isEditModeOpen = val"
+                      persistent
+
         >
           <template v-slot:activator="{ props: activatorProps }">
             <v-btn color="warning" icon v-bind="activatorProps">
@@ -91,7 +97,7 @@ function actuallyRemoveList(listId: Number) {
             </v-btn>
 
           </template>
-          <v-btn key="1" color="success" icon="mdi-plus"></v-btn>
+          <v-btn key="1" color="success" icon="mdi-plus" @click="router.push('/list/new')"></v-btn>
 
         </v-speed-dial>
 

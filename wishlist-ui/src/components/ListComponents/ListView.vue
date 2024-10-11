@@ -72,7 +72,7 @@ const items = computed(() => {
           </template>
           <v-card>
             <v-card-title>Opmerkingen</v-card-title>
-            <v-card-text>{{ item.remarks }}</v-card-text>
+            <v-card-text style="white-space: pre-line;">{{ item.remarks }}</v-card-text>
           </v-card>
         </v-bottom-sheet>
       </td>

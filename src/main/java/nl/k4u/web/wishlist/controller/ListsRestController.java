@@ -2,20 +2,22 @@ package nl.k4u.web.wishlist.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import nl.k4u.jpa.wishlist.pojo.BeckersUser;
 import nl.k4u.jpa.wishlist.service.ListService;
+import nl.k4u.web.wishlist.api.annotations.ResponseForbidden;
+import nl.k4u.web.wishlist.api.annotations.ResponseNoContent;
+import nl.k4u.web.wishlist.api.annotations.ResponseNotFound;
 import nl.k4u.web.wishlist.api.annotations.ResponseOk;
 import nl.k4u.web.wishlist.api.mappers.WishlistMapper;
+import nl.k4u.web.wishlist.api.pojo.WishlistCreate;
 import nl.k4u.web.wishlist.api.pojo.WishlistDTO;
+import nl.k4u.web.wishlist.api.pojo.WishlistUpdate;
 import nl.k4u.web.wishlist.security.AuthSupport;
 import nl.k4u.web.wishlist.validators.ListValidator;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,18 +27,15 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/lists")
 @Tag(name = "Lists")
+@RequiredArgsConstructor
 public class ListsRestController extends BaseController {
 
     private static final String COMMAND_NAME = "listAddCommand";
 
-    @Autowired
-    private ListService listService;
-
-    @Autowired
-    private ListValidator validator;
-
-    @Autowired
-    private WishlistMapper mapper;
+    private final ListService listService;
+    private final ListValidator validator;
+    private final WishlistMapper mapper;
+    private final AuthSupport authSupport;
 
 
     @InitBinder(COMMAND_NAME)
@@ -47,7 +46,7 @@ public class ListsRestController extends BaseController {
     @GetMapping("own")
     @Operation(summary = "Get own lists")
     @ResponseOk
-    public List<WishlistDTO> ownLists(Model model) {
+    public List<WishlistDTO> ownLists() {
         BeckersUser user = AuthSupport.getPrincipalDelegate();
         return mapper.toDTOList(listService.getAllWishlistsByUser(user));
     }
@@ -59,5 +58,38 @@ public class ListsRestController extends BaseController {
         return mapper.toDTOList(listService.getAllWishlists());
     }
 
-    //TODO: Add basic edit functionality
+    @GetMapping("/{id}")
+    @Operation(summary = "Get list by ID")
+    @ResponseOk
+    public WishlistDTO getListById(@PathVariable("id") Long id) {
+        return mapper.toDTO(listService.getWishListById(id));
+    }
+
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Delete list by ID")
+    @ResponseNoContent
+    @ResponseForbidden
+    @ResponseNotFound
+    public ResponseEntity<Void> deleteList(@PathVariable("id") Long id) {
+        listService.deleteWishListById(id);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{id}")
+    @Operation(summary = "Update list by ID")
+    @ResponseOk
+    @ResponseForbidden
+    @ResponseNotFound
+    public WishlistDTO updateList(@PathVariable("id") Long id, @RequestBody WishlistUpdate dto) {
+        return mapper.toDTO(listService.updateList(id, dto));
+    }
+
+    @PutMapping("/")
+    @Operation(summary = "Create list")
+    @ResponseOk
+    public WishlistDTO createList(@RequestBody WishlistCreate dto) {
+        return mapper.toDTO(listService.createList(dto));
+    }
+
 }

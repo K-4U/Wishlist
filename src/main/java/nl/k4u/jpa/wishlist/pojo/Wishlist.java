@@ -3,8 +3,6 @@ package nl.k4u.jpa.wishlist.pojo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
-import nl.k4u.web.wishlist.Glyphicon;
-import nl.k4u.web.wishlist.beans.StringToGlyphiconConverter;
 
 import java.util.List;
 
@@ -32,8 +30,6 @@ public class Wishlist {
     private List<WishlistItem> items;
 
     @Column
-    @Convert(converter = StringToGlyphiconConverter.class)
-    @Enumerated(EnumType.STRING)
-    private Glyphicon icon;
+    private String icon;
 
 }

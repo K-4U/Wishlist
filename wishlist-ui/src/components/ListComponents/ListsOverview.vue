@@ -38,7 +38,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <h1>Lists Overview</h1>
+  <h1>Alle wenslijsten</h1>
   <Messages/>
   <v-row>
     <UserLists v-if="currentUserListsRef" :lists="currentUserListsRef" :user="usersRef[authStore.currentUserId ?? 0]"

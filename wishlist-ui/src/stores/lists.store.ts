@@ -1,5 +1,14 @@
 import {defineStore} from 'pinia';
-import {listsApi, RequiredError, WishlistDTO, WishlistItemCreate, WishlistItemDTO, WishlistItemUpdate} from "@/api";
+import {
+  listsApi,
+  RequiredError,
+  WishlistCreate,
+  WishlistDTO,
+  WishlistItemCreate,
+  WishlistItemDTO,
+  WishlistItemUpdate,
+  WishlistUpdate
+} from "@/api";
 import type {AxiosResponse} from 'axios';
 
 
@@ -136,5 +145,25 @@ export const useListsStore = defineStore({
         return response.data;
       });
     },
+    async updateList(listId: number, list: WishlistUpdate) {
+      return await listsApi.updateList(listId, list).catch((response: RequiredError) => {
+        console.error(response)
+      }).then((response: AxiosResponse<WishlistDTO, any> | void) => {
+        if (!response) {
+          return {} as WishlistDTO
+        }
+        return response.data;
+      });
+    },
+    async createList(list: WishlistCreate) {
+      return await listsApi.createList(list).catch((response: RequiredError) => {
+        console.error(response)
+      }).then((response: AxiosResponse<WishlistDTO, any> | void) => {
+        if (!response) {
+          return {} as WishlistDTO
+        }
+        return response.data;
+      });
+    }
   }
 });

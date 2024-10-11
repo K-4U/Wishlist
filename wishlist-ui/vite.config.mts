@@ -43,6 +43,7 @@ export default defineConfig(({command, mode}) => {
             vueDevTools(),
             VitePWA({
                 registerType: 'autoUpdate',
+                includeAssets: ['favicon.ico', 'icon.png'],
                 manifest: {
                     name: 'Wishlist',
                     short_name: 'wishlist',
@@ -50,17 +51,22 @@ export default defineConfig(({command, mode}) => {
                     theme_color: '#4DBA87',
                     icons: [
                         {
-                            src: '/assets/icon.png',
+                            src: '/icon.png',
                             sizes: '512x512',
+                            type: 'image/png'
+                        },
+                        {
+                            src: '/icon-192.png',
+                            sizes: '192x192',
                             type: 'image/png'
                         }
                     ]
                 }
             })
         ],
-        build: {
+        /*build: {
             minify: false,
-        },
+        },*/
         define: {'process.env': {...env, ...{mode: mode}}},
         resolve: {
             alias: {

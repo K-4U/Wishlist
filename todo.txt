@@ -1,5 +1,1 @@
-- Lijst-management
-    - Lijst verwijderen
-    - Lijst naam veranderen
-- Item van lijst verplaatsen naar andere lijst
 - Zorgen dat je dingen kan toevoegen aan een lijst door te delen (android/ios?)

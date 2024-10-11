@@ -29,7 +29,7 @@ onMounted(() => {
 <template>
   <v-col cols="12">
     <v-card :title="item?.description" class="mx-auto v-col-12">
-      <v-card-text>
+      <v-card-text style="white-space: pre-line;">
         <v-table>
           <tr>
             <td class="leftHeader ma-auto pr-2">Prijs:</td>

@@ -3,7 +3,6 @@ package nl.k4u.web.wishlist.api.pojo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import nl.k4u.web.wishlist.Glyphicon;
 
 import java.util.List;
 
@@ -23,11 +22,10 @@ public class WishlistDTO {
     private String listName;
 
     @JsonIgnoreProperties("wishlist")
-//    @Schema(requiredMode = Schema.RequiredMode.NOT_REQUIRED, name = "items", description = "The items in the wishlist", hidden = false, implementation = WishlistItemDTO.class, accessMode = Schema.AccessMode.READ_ONLY)
     private List<WishlistItemDTO> items;
 
     @Schema(enumAsRef = true, requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private Glyphicon icon;
+    private String icon;
 
     @JsonIgnoreProperties("wishlist")
     @Schema(requiredMode = Schema.RequiredMode.NOT_REQUIRED, name = "items")

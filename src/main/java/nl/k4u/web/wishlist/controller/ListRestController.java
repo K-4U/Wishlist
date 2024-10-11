@@ -1,6 +1,5 @@
 package nl.k4u.web.wishlist.controller;
 
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +14,10 @@ import nl.k4u.web.wishlist.api.annotations.ResponseNotFound;
 import nl.k4u.web.wishlist.api.annotations.ResponseOk;
 import nl.k4u.web.wishlist.api.mappers.WishlistItemMapper;
 import nl.k4u.web.wishlist.api.mappers.WishlistMapper;
-import nl.k4u.web.wishlist.api.pojo.*;
+import nl.k4u.web.wishlist.api.pojo.SingleValueWrapper;
+import nl.k4u.web.wishlist.api.pojo.WishlistItemCreate;
+import nl.k4u.web.wishlist.api.pojo.WishlistItemDTO;
+import nl.k4u.web.wishlist.api.pojo.WishlistItemUpdate;
 import nl.k4u.web.wishlist.security.AuthSupport;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -40,14 +42,6 @@ public class ListRestController extends BaseController {
     private final WishlistMapper listMapper;
     private final WishlistItemMapper itemMapper;
 
-
-    @GetMapping("/{id}")
-    @Operation(summary = "Get list by ID")
-    @ResponseOk
-    public WishlistDTO getListById(@PathVariable("id") Long id) {
-        return listMapper.toDTO(listService.getWishListById(id));
-    }
-
     @PostMapping("/{listId}/items/{itemId}")
     @ResponseOk
     public ResponseEntity<WishlistItemDTO> saveItem(@Valid @RequestBody WishlistItemUpdate update,
@@ -62,9 +56,7 @@ public class ListRestController extends BaseController {
 
         WishlistItem item = itemService.getItemById(itemId);
 
-        if (!authSupport.canEdit(item.getOwner())) {
-            return ResponseEntity.status(403).build(); //TODO: Maybe just deal with this in the authSupport and throw exceptions
-        }
+        authSupport.assertEdit(item.getOwner());
 
         if (!item.getWishlist().getId().equals(listId)) {
             return ResponseEntity.notFound().build();
@@ -97,9 +89,7 @@ public class ListRestController extends BaseController {
         WishlistItem item = new WishlistItem();
         Wishlist wishListById = listService.getWishListById(listId);
 
-        if (!authSupport.canEdit(wishListById.getOwner())) {
-            return ResponseEntity.status(403).build(); //TODO: Maybe just deal with this in the authSupport and throw exceptions
-        }
+        authSupport.assertEdit(wishListById.getOwner());
 
         item.setAddedOn(Calendar.getInstance().getTime());
         item.setOwner(user);
@@ -122,9 +112,7 @@ public class ListRestController extends BaseController {
 
         WishlistItem item = itemService.getItemById(itemId);
 
-        if (!authSupport.canEdit(item.getOwner())) {
-            return ResponseEntity.status(403).build();
-        }
+        authSupport.assertEdit(item.getOwner());
         if (!item.getWishlist().getId().equals(listId)) {
             return ResponseEntity.notFound().build();
         }
@@ -200,16 +188,12 @@ public class ListRestController extends BaseController {
         if (!item.getWishlist().getId().equals(listId)) {
             return ResponseEntity.notFound().build();
         }
-        if (!authSupport.canEdit(item.getOwner())) {
-            return ResponseEntity.status(403).build(); //TODO: Maybe just deal with this in the authSupport and throw exceptions
-        }
+        authSupport.assertEdit(item.getOwner());
         Wishlist targetList = listService.getWishListById(targetListId.getValue());
         if (targetList == null) {
             return ResponseEntity.notFound().build();
         }
-        if (!authSupport.canEdit(targetList.getOwner())) {
-            return ResponseEntity.status(403).build(); //TODO: Maybe just deal with this in the authSupport and throw exceptions
-        }
+        authSupport.assertEdit(targetList.getOwner());
 
         item.setWishlist(targetList);
 

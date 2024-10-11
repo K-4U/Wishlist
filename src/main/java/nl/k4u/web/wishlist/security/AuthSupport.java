@@ -6,6 +6,7 @@ import nl.k4u.jpa.wishlist.pojo.BeckersUser;
 import nl.k4u.web.wishlist.api.mappers.UserMapper;
 import nl.k4u.web.wishlist.api.pojo.JwtResponse;
 import nl.k4u.web.wishlist.api.pojo.LoginRequest;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -132,7 +133,13 @@ public class AuthSupport {
 				.build();
 	}
 
-    public boolean canEdit(BeckersUser owner) {
+	private boolean canEdit(BeckersUser owner) {
         return getPrincipalDelegate().getId().equals(owner.getId());
     }
+
+	public void assertEdit(BeckersUser owner) {
+		if (!canEdit(owner)) {
+			throw new AccessDeniedException("You are not allowed to edit this item");
+		}
+	}
 }
