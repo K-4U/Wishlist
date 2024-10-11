@@ -5,10 +5,10 @@ import {BeckersUserProp} from "@/proptypes";
 import {getAvatarUrl} from "@/helpers";
 import {useRouter} from "vue-router";
 import {VSpeedDial} from "vuetify/components";
-import ConfirmDialog from "@/components/ConfirmDialog.vue";
+import {useDialogStore} from "@/stores/dialog.store";
 
 const router = useRouter();
-const confirmDialogRef = ref<InstanceType<typeof ConfirmDialog> | null>(null);
+const dialogStore = useDialogStore();
 
 const props = defineProps({
   user: BeckersUserProp,
@@ -31,19 +31,23 @@ function changeListName(e: any, listId: number) {
 }
 
 function removeList(e: any, listId: number) {
-  props.lists.forEach((list) => {
+  for (const list in props.lists) {
     if (list.id === listId) {
-      // if(list.items)
-      //TODO: Continue here
+      if (list.items.length == 0) {
+        //Show an error dialog
+      } else {
+        dialogStore.showConfirm(
+          'Weet je zeker dat je deze lijst wilt verwijderen?', 'Dit kan niet ongedaan worden gemaakt.',
+          [{
+            title: 'Ja', color: 'success', handler: () => actuallyRemoveList(listId)
+          },
+            {title: 'Nee', color: 'error'}
+          ]);
+      }
+      break;
     }
-  });
-  confirmDialogRef.value?.open(
-    'Weet je zeker dat je deze lijst wilt verwijderen?', 'Dit kan niet ongedaan worden gemaakt.',
-    [{
-      title: 'Ja', color: 'success', handler: () => actuallyRemoveList(listId)
-    },
-      {title: 'Nee', color: 'error'}
-    ]);
+  }
+
 }
 
 function actuallyRemoveList(listId: Number) {
@@ -94,7 +98,6 @@ function actuallyRemoveList(listId: Number) {
       </v-card-actions>
     </v-card>
   </v-col>
-  <ConfirmDialog ref="confirmDialogRef"/>
 </template>
 
 <style scoped>

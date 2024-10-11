@@ -5,9 +5,11 @@ import {getAvatarUrl} from "@/helpers";
 import {useRouter} from "vue-router";
 import {computed} from "vue";
 import LoaderIndicator from "@/components/LoaderIndicator.vue";
+import {useDialogStore} from "@/stores/dialog.store";
 
 
 const auth = useAuthStore();
+const dialogStore = useDialogStore();
 const avatar = getAvatarUrl(auth.user);
 
 const router = useRouter();
@@ -21,6 +23,12 @@ const showBackButton = computed(() => {
 const showPreviousButton = computed(() => {
   return !showHomeButton.value && router.currentRoute.value.meta.previousPage;
 });
+
+function doTest() {
+  dialogStore.showAlert('test', 'Dit is een test', () => {
+    console.log('callback');
+  }, null);
+}
 
 </script>
 
@@ -45,6 +53,7 @@ const showPreviousButton = computed(() => {
       <v-spacer></v-spacer>
 
       <ThemeSwitcher/>
+      <v-btn @click="doTest">Click me</v-btn>
       <span class="mr-2">{{ auth.user?.name }}</span>
 
       <v-menu class="d-none d-md-flex">

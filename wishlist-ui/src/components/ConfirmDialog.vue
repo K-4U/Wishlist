@@ -1,71 +1,19 @@
 <script lang="ts" setup>
-import {defineEmits, defineExpose, defineProps, ref} from 'vue';
 
-interface Button {
-  title: string;
-  color: string;
-  handler?: (e: any) => void;
-}
+import {useDialogStore} from "@/stores/dialog.store";
 
-const props = defineProps({
-  icon: {
-    type: String,
-    default: 'mdi-alert-circle',
-  },
-  color: {
-    type: String,
-    default: '',
-  },
-  yesNo: {
-    type: Boolean,
-    default: true,
-  }
-});
-
-const emit = defineEmits(['confirm', 'cancel']);
-
-const visible = ref(false);
-const buttons = ref<Button[]>([]);
-const title = ref('');
-const message = ref('');
-
-function confirm() {
-  visible.value = false;
-  emit('confirm');
-}
-
-function cancel() {
-  visible.value = false;
-  emit('cancel');
-}
-
-defineExpose({
-  open(_title: string, _message: string, _buttons: Button[]) {
-    console.log("Opening dialog with title", _title, "and message", _message, _buttons);
-    title.value = _title
-    message.value = _message
-    visible.value = true;
-    buttons.value = _buttons;
-  },
-});
+const store = useDialogStore();
 
 </script>
 
 
 <template>
-  <v-dialog v-model="visible" max-width="800">
-    <v-card :color="color" :prepend-icon="icon" :title="title">
-      <v-card-text>{{ message }}</v-card-text>
-      <v-card-actions v-if="buttons.length == 0">
-        <v-btn color="success" @click="confirm">Ja</v-btn>
-        <v-btn color="error" @click="cancel">Nee</v-btn>
-      </v-card-actions>
-      <v-card-actions v-else>
-        <v-btn v-for="button in buttons" :color="button.color" :text="button.title"
-               @click="(e:any) => {
-                 visible = false;
-                 if(button.handler) button.handler(e);
-               }"/>
+  <v-dialog v-model="store.confirm.visible" max-width="800">
+    <v-card :color="store.confirm.color" :prepend-icon="store.confirm.icon" :title="store.confirm.title">
+      <v-card-text>{{ store.confirm.message }}</v-card-text>
+      <v-card-actions>
+        <v-btn v-for="button in store.confirm.buttons" :color="button.color" :text="button.title"
+               @click="() => store.confirmCallback(button)"/>
       </v-card-actions>
     </v-card>
   </v-dialog>

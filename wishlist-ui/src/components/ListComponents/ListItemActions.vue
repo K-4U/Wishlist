@@ -3,10 +3,10 @@
 import {defineProps, ref} from "vue";
 import {WishlistItemProp, WishlistProp} from "@/proptypes";
 import {useRouter} from "vue-router";
-import ConfirmDialog from "@/components/ConfirmDialog.vue";
 import {useAuthStore, useListsStore} from "@/stores";
 import {useMessagesStore} from "@/stores/messages.store";
 import {WishlistDTO} from "@/api";
+import {useDialogStore} from "@/stores/dialog.store";
 
 const router = useRouter();
 const listsStore = useListsStore();
@@ -20,7 +20,7 @@ const {item, list, own} = defineProps({
   }
 })
 
-const confirmDialogRef = ref<InstanceType<typeof ConfirmDialog> | null>(null);
+const dialogStore = useDialogStore();
 const auth = useAuthStore();
 const moveDialogVisible = ref(false);
 // const selectedMoveList = ref();
@@ -31,7 +31,7 @@ function openEditPage() {
 }
 
 function removeItem() {
-  confirmDialogRef.value?.open('Weet je zeker dat je dit item wilt verwijderen?',
+  dialogStore.showConfirm('Weet je zeker dat je dit item wilt verwijderen?',
     'Dit zorgt ervoor dat het item niet meer zichtbaar is om te kopen, maar zal geen bericht sturen naar iemand die dit misschien al heeft gekocht.',
     [{
       title: 'Oke!', color: 'success', handler: () => {
@@ -45,7 +45,7 @@ function removeItem() {
 }
 
 function buy() {
-  confirmDialogRef.value?.open('Weet je zeker dat je dit item wilt markeren als gekocht?',
+  dialogStore.showConfirm('Weet je zeker dat je dit item wilt markeren als gekocht?',
     'Weet je zeker dat je dit gaat kopen? Je kan deze actie ongedaan maken, maar dat is natuurlijk niet netjes!',
     [{
       title: 'Ja', color: 'success', handler: () => {
@@ -59,7 +59,7 @@ function buy() {
 }
 
 function unbuy() {
-  confirmDialogRef.value?.open('Weet je zeker dat je dit item niet meer wilt markeren als gekocht?',
+  dialogStore.showConfirm('Weet je zeker dat je dit item niet meer wilt markeren als gekocht?',
     'Het item zal weer beschikbaar zijn voor anderen om te kopen.',
     [{
       title: 'Ja', color: 'success', handler: () => {
@@ -118,8 +118,6 @@ function confirmMove() {
       <v-icon>mdi-cart-minus</v-icon>
     </v-btn>
   </v-btn-group>
-
-  <ConfirmDialog ref="confirmDialogRef"/>
 
   <v-dialog v-model="moveDialogVisible" max-width="800">
     <v-card :title="`Verplaats ${item?.description} van lijst`" prepend-icon="mdi-folder-move">

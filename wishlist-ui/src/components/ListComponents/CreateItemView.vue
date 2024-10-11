@@ -7,9 +7,9 @@ import {useAuthStore, useListsStore} from "@/stores";
 import * as Yup from "yup";
 import {useForm} from "vee-validate";
 import CurrencyInput from "@/components/form/CurrencyInput.vue";
-import ConfirmDialog from "@/components/ConfirmDialog.vue";
 import Messages from "@/components/Messages.vue";
 import {useMessagesStore} from "@/stores/messages.store";
+import {useDialogStore} from "@/stores/dialog.store";
 
 const route = useRoute()
 const router = useRouter();
@@ -17,7 +17,6 @@ const list = ref<WishlistDTO | null>(null);
 const listsStore = useListsStore();
 const authStore = useAuthStore();
 const own = ref<Boolean>(false);
-const confirmDialogRef = ref<InstanceType<typeof ConfirmDialog> | null>(null);
 
 onMounted(() => {
   //@ts-ignore
@@ -26,9 +25,11 @@ onMounted(() => {
   });
 });
 
+const dialogStore = useDialogStore();
+
 function returnToList() {
   if (isFieldTouched('description') || isFieldTouched('price') || isFieldTouched('url') || isFieldTouched('remarks')) {
-    confirmDialogRef.value?.open('Weet je zeker dat je terug wilt gaan?', 'Je hebt wijzigingen gemaakt die nog niet zijn opgeslagen.',
+    dialogStore.showConfirm('Weet je zeker dat je terug wilt gaan?', 'Je hebt wijzigingen gemaakt die nog niet zijn opgeslagen.',
       [{title: 'Oke!', color: 'success', handler: (e) => handleConfirm()}, {title: 'Woepsie', color: 'error'}]);
     return;
   }
@@ -107,8 +108,6 @@ const onSubmitHandler = handleSubmit((values, actions) => {
       </v-card-actions>
     </v-form>
   </v-card>
-
-  <ConfirmDialog ref="confirmDialogRef"/>
 </template>
 
 <style scoped>
