@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 
-import ListView from "@/components/ListView.vue";
+import ListView from "@/components/ListComponents/ListView.vue";
 </script>
 
 <template>

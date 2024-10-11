@@ -1,5 +1,5 @@
 import {defineStore} from 'pinia';
-import {authenticationApi, BeckersUser, JwtResponse} from "@/api";
+import {authenticationApi, JwtResponse, UserDTO} from "@/api";
 import type {AxiosResponse} from 'axios';
 import router from "@/router";
 import {jwtDecode, JwtPayload} from "jwt-decode";
@@ -8,7 +8,7 @@ import {LoginError} from "@/exceptions/LoginError";
 
 export const useAuthStore = defineStore({
   id: 'auth',
-  state: (): { user: BeckersUser | null, returnUrl: string | null, token: string | null } => ({
+  state: (): { user: UserDTO | null, returnUrl: string | null, token: string | null } => ({
     // initialize state from local storage to enable user to stay logged in
     user: JSON.parse(localStorage.getItem('user') ?? "{}"),
     token: localStorage.getItem('token'),

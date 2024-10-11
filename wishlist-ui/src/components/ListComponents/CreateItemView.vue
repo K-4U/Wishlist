@@ -2,7 +2,7 @@
 
 import {onMounted, ref} from "vue";
 import {useRoute, useRouter} from "vue-router";
-import {Wishlist} from "@/api";
+import {WishlistDTO} from "@/api";
 import {useAuthStore, useListsStore} from "@/stores";
 import * as Yup from "yup";
 import {useForm} from "vee-validate";
@@ -13,7 +13,7 @@ import {useMessagesStore} from "@/stores/messages.store";
 
 const route = useRoute()
 const router = useRouter();
-const list = ref<Wishlist | null>(null);
+const list = ref<WishlistDTO | null>(null);
 const listsStore = useListsStore();
 const authStore = useAuthStore();
 const own = ref<Boolean>(false);

@@ -4,7 +4,7 @@ import {defineEmits, defineExpose, defineProps, ref} from 'vue';
 interface Button {
   title: string;
   color: string;
-  handler: (e: any) => void;
+  handler?: (e: any) => void;
 }
 
 const props = defineProps({
@@ -25,7 +25,7 @@ const props = defineProps({
 const emit = defineEmits(['confirm', 'cancel']);
 
 const visible = ref(false);
-const buttons = ref<Button[]>();
+const buttons = ref<Button[]>([]);
 const title = ref('');
 const message = ref('');
 

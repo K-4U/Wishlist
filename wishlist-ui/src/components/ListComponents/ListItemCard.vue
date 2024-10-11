@@ -3,13 +3,13 @@
 import {defineProps, onMounted, ref} from "vue";
 import {WishlistItemProp, WishlistProp} from "@/proptypes";
 import {useRouter} from "vue-router";
-import ListItemActions from "@/components/ListItemActions.vue";
+import ListItemActions from "@/components/ListComponents/ListItemActions.vue";
 import {formatCurrency} from "@/helpers";
-import {Wishlist, WishlistItem} from "@/api";
+import {WishlistDTO, WishlistItemDTO} from "@/api";
 
 const router = useRouter();
-const item = ref<WishlistItem>();
-const list = ref<Wishlist>()
+const item = ref<WishlistItemDTO>();
+const list = ref<WishlistDTO>()
 
 const props = defineProps({
   item: WishlistItemProp,

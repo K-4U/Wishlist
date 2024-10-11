@@ -3,6 +3,7 @@ package nl.k4u.web.wishlist.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import nl.k4u.jpa.wishlist.pojo.BeckersUser;
 import nl.k4u.jpa.wishlist.pojo.Wishlist;
 import nl.k4u.jpa.wishlist.pojo.WishlistItem;
@@ -12,11 +13,10 @@ import nl.k4u.web.wishlist.api.annotations.ResponseForbidden;
 import nl.k4u.web.wishlist.api.annotations.ResponseNoContent;
 import nl.k4u.web.wishlist.api.annotations.ResponseNotFound;
 import nl.k4u.web.wishlist.api.annotations.ResponseOk;
-import nl.k4u.web.wishlist.api.pojo.SingleValueWrapper;
-import nl.k4u.web.wishlist.api.pojo.WishlistItemCreate;
-import nl.k4u.web.wishlist.api.pojo.WishlistItemUpdate;
+import nl.k4u.web.wishlist.api.mappers.WishlistItemMapper;
+import nl.k4u.web.wishlist.api.mappers.WishlistMapper;
+import nl.k4u.web.wishlist.api.pojo.*;
 import nl.k4u.web.wishlist.security.AuthSupport;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -31,29 +31,29 @@ import java.util.Calendar;
 @RestController
 @RequestMapping("/api/lists")
 @Tag(name = "Lists")
+@RequiredArgsConstructor
 public class ListRestController extends BaseController {
 
-    @Autowired
-    private ListService listService;
-    @Autowired
-    private ItemService itemService;
-    @Autowired
-    private AuthSupport authSupport;
+    private final ListService listService;
+    private final ItemService itemService;
+    private final AuthSupport authSupport;
+    private final WishlistMapper listMapper;
+    private final WishlistItemMapper itemMapper;
 
 
     @GetMapping("/{id}")
     @Operation(summary = "Get list by ID")
     @ResponseOk
-    public Wishlist getListById(@PathVariable("id") Long id) {
-        return listService.getWishListById(id);
+    public WishlistDTO getListById(@PathVariable("id") Long id) {
+        return listMapper.toDTO(listService.getWishListById(id));
     }
 
     @PostMapping("/{listId}/items/{itemId}")
     @ResponseOk
-    public ResponseEntity<WishlistItem> saveItem(@Valid @RequestBody WishlistItemUpdate update,
-                                                 BindingResult result,
-                                                 @PathVariable Long listId,
-                                                 @PathVariable Long itemId) {
+    public ResponseEntity<WishlistItemDTO> saveItem(@Valid @RequestBody WishlistItemUpdate update,
+                                                    BindingResult result,
+                                                    @PathVariable Long listId,
+                                                    @PathVariable Long itemId) {
 
         if (result.hasErrors()) {
             //TODO: Figure out how to send this back?
@@ -77,13 +77,13 @@ public class ListRestController extends BaseController {
 
         itemService.saveItem(item);
 
-        return ResponseEntity.ok(item);
+        return ResponseEntity.ok(itemMapper.toDTO(item));
     }
 
     @PutMapping("/{listId}/items")
     @ResponseOk
     @ResponseForbidden
-    public ResponseEntity<WishlistItem> addItem(@Valid @RequestBody WishlistItemCreate update,
+    public ResponseEntity<WishlistItemDTO> addItem(@Valid @RequestBody WishlistItemCreate update,
                                                 BindingResult result,
                                                 @PathVariable Long listId) {
 
@@ -112,7 +112,7 @@ public class ListRestController extends BaseController {
 
         itemService.saveItem(item);
 
-        return ResponseEntity.ok(item);
+        return ResponseEntity.ok(itemMapper.toDTO(item));
     }
 
     @DeleteMapping("/{listId}/items/{itemId}")
@@ -138,13 +138,13 @@ public class ListRestController extends BaseController {
     @GetMapping("/{listId}/items/{itemId}")
     @ResponseOk
     @ResponseNotFound
-    public ResponseEntity<WishlistItem> getItem(@PathVariable Long listId, @PathVariable Long itemId) {
+    public ResponseEntity<WishlistItemDTO> getItem(@PathVariable Long listId, @PathVariable Long itemId) {
 
         WishlistItem itemById = itemService.getItemById(itemId);
         if (!itemById.getWishlist().getId().equals(listId)) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(itemById);
+        return ResponseEntity.ok(itemMapper.toDTO(itemById));
     }
 
     @PostMapping("/{listId}/items/{itemId}/buy")

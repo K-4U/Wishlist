@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {Wishlist} from "@/api";
+import {WishlistDTO} from "@/api";
 import {defineProps, ref} from "vue";
 import {BeckersUserProp} from "@/proptypes";
 import {getAvatarUrl} from "@/helpers";
@@ -12,14 +12,14 @@ const confirmDialogRef = ref<InstanceType<typeof ConfirmDialog> | null>(null);
 
 const props = defineProps({
   user: BeckersUserProp,
-  lists: Array<Wishlist>,
+  lists: Array<WishlistDTO>,
   own: {
     type: Boolean,
     default: false
   }
 })
 
-function openList(target: Wishlist) {
+function openList(target: WishlistDTO) {
   router.push({path: `/list/${target.id}`});
 }
 
@@ -31,6 +31,12 @@ function changeListName(e: any, listId: number) {
 }
 
 function removeList(e: any, listId: number) {
+  props.lists.forEach((list) => {
+    if (list.id === listId) {
+      // if(list.items)
+      //TODO: Continue here
+    }
+  });
   confirmDialogRef.value?.open(
     'Weet je zeker dat je deze lijst wilt verwijderen?', 'Dit kan niet ongedaan worden gemaakt.',
     [{
@@ -40,7 +46,7 @@ function removeList(e: any, listId: number) {
     ]);
 }
 
-function actuallyRemoveList() {
+function actuallyRemoveList(listId: Number) {
   console.log('actually remove list');
 }
 

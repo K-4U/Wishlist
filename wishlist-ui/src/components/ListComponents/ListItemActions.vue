@@ -6,6 +6,7 @@ import {useRouter} from "vue-router";
 import ConfirmDialog from "@/components/ConfirmDialog.vue";
 import {useAuthStore, useListsStore} from "@/stores";
 import {useMessagesStore} from "@/stores/messages.store";
+import {WishlistDTO} from "@/api";
 
 const router = useRouter();
 const listsStore = useListsStore();
@@ -34,9 +35,10 @@ function removeItem() {
     'Dit zorgt ervoor dat het item niet meer zichtbaar is om te kopen, maar zal geen bericht sturen naar iemand die dit misschien al heeft gekocht.',
     [{
       title: 'Oke!', color: 'success', handler: () => {
-        listsStore.deleteItem(list.id, item.id).then(() => {
+        //@ts-ignore the fact that list can be null
+        listsStore.deleteItem(list?.id, item?.id).then(() => {
           useMessagesStore().showMessage('Het item is verwijderd van de lijst.', 'success');
-          window.location.reload();
+          router.go(0);
         });
       }
     }, {title: 'Misschien niet', color: 'error'}]);
@@ -47,9 +49,10 @@ function buy() {
     'Weet je zeker dat je dit gaat kopen? Je kan deze actie ongedaan maken, maar dat is natuurlijk niet netjes!',
     [{
       title: 'Ja', color: 'success', handler: () => {
-        listsStore.buyItem(list.id, item.id).then(() => {
+        //@ts-ignore the fact that list can be null
+        listsStore.buyItem(list?.id, item?.id).then(() => {
           useMessagesStore().showMessage('Je hebt dit item gekocht!', 'success');
-          window.location.reload();
+          router.go(0);
         });
       }
     }, {title: 'Nee', color: 'error'}]);
@@ -60,20 +63,22 @@ function unbuy() {
     'Het item zal weer beschikbaar zijn voor anderen om te kopen.',
     [{
       title: 'Ja', color: 'success', handler: () => {
-        listsStore.unbuyItem(list.id, item.id).then(() => {
+        //@ts-ignore the fact that list can be null
+        listsStore.unbuyItem(list?.id, item?.id).then(() => {
           useMessagesStore().showMessage('Je hebt dit item teruggelegd!', 'warning');
-          window.location.reload();
+          router.go(0);
         });
       }
     }, {title: 'Nee', color: 'error'}]);
 }
 
-const ownLists = ref<WishlistProp[]>([]);
+const ownLists = ref<WishlistDTO[]>([]);
 
 function moveItem() {
   listsStore.getOwnLists().then((lists) => {
     //Filter out the current list
-    ownLists.value = lists.filter((l) => l.id != list.id);
+    //@ts-ignore the fact that list can be null
+    ownLists.value = lists.filter((l: WishlistDTO) => l.id != list?.id);
     moveDialogVisible.value = true;
   });
 }
@@ -81,10 +86,11 @@ function moveItem() {
 function confirmMove() {
   const selectedList = selectedMoveList.value;
   const listName = ownLists.value.filter((l) => l.id == selectedList)[0].listName;
-  console.log('Moving item', item.id, 'to list', selectedList);
-  listsStore.moveItem(list.id, item.id, selectedList).then(() => {
+  console.log('Moving item', item?.id, 'to list', selectedList);
+  //@ts-ignore the fact that list can be null
+  listsStore.moveItem(list?.id, item?.id, selectedList).then(() => {
     useMessagesStore().showMessage(`Het item is verplaatst naar ${listName}.`, 'success');
-    window.location.reload();
+    router.go(0);
   });
 }
 
@@ -116,7 +122,7 @@ function confirmMove() {
   <ConfirmDialog ref="confirmDialogRef"/>
 
   <v-dialog v-model="moveDialogVisible" max-width="800">
-    <v-card :title="`Verplaats ${item.description} van lijst`" prepend-icon="mdi-folder-move">
+    <v-card :title="`Verplaats ${item?.description} van lijst`" prepend-icon="mdi-folder-move">
       <v-card-text>
         <v-select v-model="selectedMoveList" :items="ownLists" item-title="listName" item-value="id"
                   label="Naar lijst"/>

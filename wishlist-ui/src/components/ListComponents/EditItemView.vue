@@ -2,7 +2,7 @@
 
 import {onMounted, ref} from "vue";
 import {useRoute, useRouter} from "vue-router";
-import {Wishlist, WishlistItem, WishlistItemUpdate} from "@/api";
+import {WishlistDTO, WishlistItemDTO, WishlistItemUpdate} from "@/api";
 import {useAuthStore, useListsStore} from "@/stores";
 import * as Yup from "yup";
 import {useForm} from "vee-validate";
@@ -13,7 +13,7 @@ import {useMessagesStore} from "@/stores/messages.store";
 
 const route = useRoute()
 const router = useRouter();
-const list = ref<Wishlist | null>(null);
+const list = ref<WishlistDTO | null>(null);
 const editItem = ref<WishlistItemUpdate | null>(null);
 const listsStore = useListsStore();
 const authStore = useAuthStore();
@@ -22,7 +22,7 @@ const confirmDialogRef = ref<InstanceType<typeof ConfirmDialog> | null>(null);
 
 onMounted(() => {
   //@ts-ignore
-  listsStore.getItemFromList(route.params.listId, route.params.itemId).then((itemFromApi: WishlistItem) => {
+  listsStore.getItemFromList(route.params.listId, route.params.itemId).then((itemFromApi: WishlistItemDTO) => {
     editItem.value = {
       itemId: itemFromApi.id,
       description: itemFromApi.description,

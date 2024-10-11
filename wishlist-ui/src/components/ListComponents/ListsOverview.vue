@@ -2,29 +2,23 @@
 
 import {useListsStore} from "@/stores/lists.store";
 import {onMounted, ref} from "vue";
-import {BeckersUser, listsApi, Wishlist} from "@/api";
+import {UserDTO, WishlistDTO} from "@/api";
 import {useAuthStore} from "@/stores";
-import UserLists from "@/components/UserLists.vue";
+import UserLists from "@/components/ListComponents/UserLists.vue";
 import Messages from "@/components/Messages.vue";
 
 const authStore = useAuthStore();
 
 console.log(authStore.currentUserId);
 const listsStore = useListsStore();
-const listsRef = ref<{ [user: number]: Wishlist[] }>([])
-const currentUserListsRef = ref<Wishlist[]>([])
-const usersRef = ref<{ [user: number]: BeckersUser }>([])
+const listsRef = ref<{ [user: number]: WishlistDTO[] }>([])
+const currentUserListsRef = ref<WishlistDTO[]>([])
+const usersRef = ref<{ [user: number]: UserDTO }>([])
 
 onMounted(() => {
-  listsApi.getAllLists().then((lists) => {
-    console.log(lists);
-  });
-
-  console.log('fetching lists');
   listsStore.getAllListsGroupedByUser().then((lists) => {
     listsRef.value = {};
     usersRef.value = [];
-    console.log(lists);
     Object.keys(lists).map(Number).forEach((key: number) => {
       //Check if the key for userId is in the usersRef. If not, add the current list owner to it.
       if (!usersRef.value[key]) {

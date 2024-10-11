@@ -3,6 +3,7 @@ package nl.k4u.web.wishlist.security;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import nl.k4u.jpa.wishlist.pojo.BeckersUser;
+import nl.k4u.web.wishlist.api.mappers.UserMapper;
 import nl.k4u.web.wishlist.api.pojo.JwtResponse;
 import nl.k4u.web.wishlist.api.pojo.LoginRequest;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,6 +23,7 @@ public class AuthSupport {
 
 	public final AuthenticationManager authenticationManager;
 	public final JwtUtils jwtUtils;
+	public final UserMapper userMapper;
 
 	/**
 	 * We need to update the existing principal; we either have new assignments
@@ -126,7 +128,7 @@ public class AuthSupport {
 
 		return JwtResponse.builder()
 				.token(jwt)
-				.delegate(userDetails.getDelegate())
+				.delegate(userMapper.toDTO(userDetails.getDelegate()))
 				.build();
 	}
 

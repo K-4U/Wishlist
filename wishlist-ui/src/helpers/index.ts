@@ -1,6 +1,6 @@
-import {BeckersUser} from "@/api";
+import {UserDTO} from "@/api";
 
-export function getAvatarUrl(user: BeckersUser | undefined | null): string {
+export function getAvatarUrl(user: UserDTO | undefined | null): string {
   if (!user || !user.avatarName) {
     return new URL("/avatar/unknown.png", import.meta.url).href
   }

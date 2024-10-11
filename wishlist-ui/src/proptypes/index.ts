@@ -1,6 +1,6 @@
 import {PropType} from "vue";
-import {BeckersUser, Wishlist, WishlistItem} from "@/api";
+import {UserDTO, WishlistDTO, WishlistItemDTO} from "@/api";
 
-export const BeckersUserProp: PropType<BeckersUser> = Object as PropType<BeckersUser>
-export const WishlistItemProp: PropType<WishlistItem> = Object as PropType<WishlistItem>
-export const WishlistProp: PropType<Wishlist> = Object as PropType<Wishlist>
+export const BeckersUserProp: PropType<UserDTO> = Object as PropType<UserDTO>
+export const WishlistItemProp: PropType<WishlistItemDTO> = Object as PropType<WishlistItemDTO>
+export const WishlistProp: PropType<WishlistDTO> = Object as PropType<WishlistDTO>

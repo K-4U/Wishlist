@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 
-import CreateItemView from "@/components/CreateItemView.vue";
+import CreateItemView from "@/components/ListComponents/CreateItemView.vue";
 </script>
 
 <template>

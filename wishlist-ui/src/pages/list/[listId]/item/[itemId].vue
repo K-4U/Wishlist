@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 
-import EditItemView from "@/components/EditItemView.vue";
+import EditItemView from "@/components/ListComponents/EditItemView.vue";
 </script>
 
 <template>

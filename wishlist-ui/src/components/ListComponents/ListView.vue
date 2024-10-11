@@ -3,21 +3,21 @@
 import {useRoute, useRouter} from 'vue-router'
 import {useAuthStore, useListsStore} from "@/stores";
 import {computed, onMounted, ref} from "vue";
-import {Wishlist} from "@/api";
+import {WishlistDTO, WishlistItemDTO} from "@/api";
 import {formatCurrency} from "@/helpers";
-import ListItemCard from "@/components/ListItemCard.vue";
-import ListItemActions from "@/components/ListItemActions.vue";
+import ListItemCard from "@/components/ListComponents/ListItemCard.vue";
+import ListItemActions from "@/components/ListComponents/ListItemActions.vue";
 import Messages from "@/components/Messages.vue";
 import {useSettingsStore} from "@/stores/settings.store";
 
 const route = useRoute()
 const router = useRouter();
-const list = ref<Wishlist | null>(null);
+const list = ref<WishlistDTO | null>(null);
 const listsStore = useListsStore();
 const authStore = useAuthStore();
 const settingsStore = useSettingsStore();
 const own = ref<Boolean>(false);
-const tableView = ref<Boolean>(settingsStore.getSetting('tableView') ?? false);
+const tableView = ref<Boolean>((settingsStore.getSetting('tableView') ?? false) == true);
 
 onMounted(() => {
   //@ts-ignore
@@ -30,12 +30,11 @@ onMounted(() => {
 
 function toggleView() {
   tableView.value = !tableView.value;
-  settingsStore.setSetting('tableView', tableView.value);
+  settingsStore.setSetting('tableView', tableView.value.valueOf());
 }
 
 const items = computed(() => {
-  //@ts-ignore Lists can't have items? TODO
-  return list.value?.items.filter((item: WishlistItem) => !item.deleted && ((!own.value && item.purchasedBy == undefined) || own.value || item.purchasedBy?.id == authStore.currentUserId));
+  return list.value?.items?.filter((item: WishlistItemDTO) => !item.deleted && ((!own.value && item.purchasedBy == undefined) || own.value || item.purchasedBy?.id == authStore.currentUserId));
 })
 
 </script>

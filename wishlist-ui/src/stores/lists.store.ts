@@ -1,5 +1,5 @@
 import {defineStore} from 'pinia';
-import {listsApi, RequiredError, Wishlist, WishlistItem, WishlistItemCreate, WishlistItemUpdate} from "@/api";
+import {listsApi, RequiredError, WishlistDTO, WishlistItemCreate, WishlistItemDTO, WishlistItemUpdate} from "@/api";
 import type {AxiosResponse} from 'axios';
 
 
@@ -8,41 +8,41 @@ export const useListsStore = defineStore({
   state: (): {} => ({}),
   getters: {},
   actions: {
-    async getAllLists(): Promise<Array<Wishlist>> {
+    async getAllLists(): Promise<Array<WishlistDTO>> {
       return await listsApi.getAllLists()
         .catch((response: RequiredError) => {
         })
-        .then((response: void | AxiosResponse<Array<Wishlist>, any>) => {
+        .then((response: void | AxiosResponse<Array<WishlistDTO>, any>) => {
           if (!response) {
             return []
           }
           return response.data
         });
     },
-    async getOwnLists(): Promise<Array<Wishlist>> {
+    async getOwnLists(): Promise<Array<WishlistDTO>> {
       return await listsApi.ownLists()
         .catch((response: RequiredError) => {
         })
-        .then((response: void | AxiosResponse<Array<Wishlist>, any>) => {
+        .then((response: void | AxiosResponse<Array<WishlistDTO>, any>) => {
           if (!response) {
             return []
           }
           return response.data
         });
     },
-    async getAllListsGroupedByUser(): Promise<{ [user: number]: Wishlist[] }> {
+    async getAllListsGroupedByUser(): Promise<{ [user: number]: WishlistDTO[] }> {
       console.log("Getting all lists grouped by user")
       console.log(listsApi)
       return await listsApi.getAllLists()
         .catch((response: RequiredError) => {
           console.error(response);
         })
-        .then((response: void | AxiosResponse<Array<Wishlist>, any>) => {
+        .then((response: void | AxiosResponse<Array<WishlistDTO>, any>) => {
           if (!response) {
             return {}
           }
-          let listsByUser: { [user: number]: Wishlist[] } = {}
-          response.data.map((wishlist: Wishlist) => {
+          let listsByUser: { [user: number]: WishlistDTO[] } = {}
+          response.data.map((wishlist: WishlistDTO) => {
             if (!listsByUser[wishlist.owner?.id]) {
               listsByUser[wishlist.owner?.id] = []
             }
@@ -52,26 +52,26 @@ export const useListsStore = defineStore({
           return listsByUser;
         })
     },
-    async getListById(id: number): Promise<Wishlist> {
+    async getListById(id: number): Promise<WishlistDTO> {
       return await listsApi.getListById(id)
         .catch((response: RequiredError) => {
         })
-        .then((response: void | AxiosResponse<Wishlist, any>) => {
+        .then((response: void | AxiosResponse<WishlistDTO, any>) => {
           if (!response) {
-            return {} as Wishlist
+            return {} as WishlistDTO
           }
           return response.data
         });
     },
-    async getItemFromList(listId: number, itemId: number): Promise<WishlistItem> {
+    async getItemFromList(listId: number, itemId: number): Promise<WishlistItemDTO> {
       return await listsApi.getItem(listId, itemId)
         .catch((response: RequiredError) => {
           console.error(response);
         })
-        .then((response: AxiosResponse<WishlistItem, any> | void) => {
+        .then((response: AxiosResponse<WishlistItemDTO, any> | void) => {
           console.log(response);
           if (!response) {
-            return {} as WishlistItem
+            return {} as WishlistItemDTO
           }
           return response.data
         });
@@ -79,9 +79,9 @@ export const useListsStore = defineStore({
     async updateItem(listId: number, itemId: number, item: WishlistItemUpdate) {
       return await listsApi.saveItem(listId, itemId, item).catch((response: RequiredError) => {
         console.error(response)
-      }).then((response: AxiosResponse<WishlistItem, any> | void) => {
+      }).then((response: AxiosResponse<WishlistItemDTO, any> | void) => {
         if (!response) {
-          return {} as WishlistItem
+          return {} as WishlistItemDTO
         }
         return response.data;
       });
@@ -91,7 +91,7 @@ export const useListsStore = defineStore({
         console.error(response)
       }).then((response: AxiosResponse<void, any> | void) => {
         if (!response) {
-          return {} as WishlistItem
+          return {} as WishlistItemDTO
         }
         return response.data;
       });
@@ -99,9 +99,9 @@ export const useListsStore = defineStore({
     async createItem(listId: number, item: WishlistItemCreate) {
       return await listsApi.addItem(listId, item).catch((response: RequiredError) => {
         console.error(response)
-      }).then((response: AxiosResponse<WishlistItem, any> | void) => {
+      }).then((response: AxiosResponse<WishlistItemDTO, any> | void) => {
         if (!response) {
-          return {} as WishlistItem
+          return {} as WishlistItemDTO
         }
         return response.data;
       });
@@ -111,7 +111,7 @@ export const useListsStore = defineStore({
         console.error(response)
       }).then((response: AxiosResponse<void, any> | void) => {
         if (!response) {
-          return {} as WishlistItem
+          return {} as WishlistItemDTO
         }
         return response.data;
       });
@@ -121,7 +121,7 @@ export const useListsStore = defineStore({
         console.error(response)
       }).then((response: AxiosResponse<void, any> | void) => {
         if (!response) {
-          return {} as WishlistItem
+          return {} as WishlistItemDTO
         }
         return response.data;
       });
@@ -131,7 +131,7 @@ export const useListsStore = defineStore({
         console.error(response)
       }).then((response: AxiosResponse<void, any> | void) => {
         if (!response) {
-          return {} as WishlistItem
+          return {} as WishlistItemDTO
         }
         return response.data;
       });

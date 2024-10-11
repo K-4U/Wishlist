@@ -37,43 +37,6 @@ import {BASE_PATH, BaseAPI, COLLECTION_FORMATS, operationServerMap, RequiredErro
 /**
  *
  * @export
- * @interface BeckersUser
- */
-export interface BeckersUser {
-    /**
-     *
-     * @type {number}
-     * @memberof BeckersUser
-     */
-    'id': number;
-    /**
-     *
-     * @type {string}
-     * @memberof BeckersUser
-     */
-    'name': string;
-    /**
-     *
-     * @type {string}
-     * @memberof BeckersUser
-     */
-    'email': string;
-    /**
-     *
-     * @type {string}
-     * @memberof BeckersUser
-     */
-    'dateOfBirth': string;
-    /**
-     *
-     * @type {string}
-     * @memberof BeckersUser
-     */
-    'avatarName': string;
-}
-/**
- *
- * @export
  * @interface ErrorResponse
  */
 export interface ErrorResponse {
@@ -185,101 +148,24 @@ export interface ErrorResponseExceptionsInnerStackTraceInner {
 /**
  *
  * @export
- * @interface JwtResponse
+ * @enum {string}
  */
-export interface JwtResponse {
-    /**
-     *
-     * @type {string}
-     * @memberof JwtResponse
-     */
-    'token': string;
-    /**
-     *
-     * @type {BeckersUser}
-     * @memberof JwtResponse
-     */
-    'delegate': BeckersUser;
-}
-/**
- *
- * @export
- * @interface ListFBO
- */
-export interface ListFBO {
-    /**
-     *
-     * @type {Wishlist}
-     * @memberof ListFBO
-     */
-    'delegate'?: Wishlist;
-}
-/**
- *
- * @export
- * @interface LoginRequest
- */
-export interface LoginRequest {
-    /**
-     *
-     * @type {string}
-     * @memberof LoginRequest
-     */
-    'username': string;
-    /**
-     *
-     * @type {string}
-     * @memberof LoginRequest
-     */
-    'password': string;
-}
-/**
- *
- * @export
- * @interface SingleValueWrapperLong
- */
-export interface SingleValueWrapperLong {
-  /**
-   *
-   * @type {number}
-   * @memberof SingleValueWrapperLong
-   */
-  'value': number;
-}
+
+export const Event = {
+  Christmas: 'CHRISTMAS',
+  Birthday: 'BIRTHDAY'
+} as const;
+
+export type Event = typeof Event[keyof typeof Event];
+
 
 /**
  *
  * @export
- * @interface Wishlist
+ * @enum {string}
  */
-export interface Wishlist {
-    /**
-     *
-     * @type {number}
-     * @memberof Wishlist
-     */
-    'id': number;
-    /**
-     *
-     * @type {BeckersUser}
-     * @memberof Wishlist
-     */
-    'owner': BeckersUser;
-    /**
-     *
-     * @type {string}
-     * @memberof Wishlist
-     */
-    'listName': string;
-    /**
-     *
-     * @type {string}
-     * @memberof Wishlist
-     */
-    'icon'?: WishlistIconEnum;
-}
 
-export const WishlistIconEnum = {
+export const Glyphicon = {
     AddressBook: 'address-book',
     AddressCard: 'address-card',
     Angry: 'angry',
@@ -1531,106 +1417,139 @@ export const WishlistIconEnum = {
     Zhihu: 'zhihu'
 } as const;
 
-export type WishlistIconEnum = typeof WishlistIconEnum[keyof typeof WishlistIconEnum];
+export type Glyphicon = typeof Glyphicon[keyof typeof Glyphicon];
+
 
 /**
  *
  * @export
- * @interface WishlistItem
+ * @interface JwtResponse
  */
-export interface WishlistItem {
+export interface JwtResponse {
+    /**
+     *
+     * @type {string}
+     * @memberof JwtResponse
+     */
+    'token': string;
+    /**
+     *
+     * @type {UserDTO}
+     * @memberof JwtResponse
+     */
+    'delegate': UserDTO;
+}
+
+/**
+ *
+ * @export
+ * @interface LoginRequest
+ */
+export interface LoginRequest {
+    /**
+     *
+     * @type {string}
+     * @memberof LoginRequest
+     */
+    'username': string;
+    /**
+     *
+     * @type {string}
+     * @memberof LoginRequest
+     */
+    'password': string;
+}
+
+/**
+ *
+ * @export
+ * @interface SingleValueWrapperLong
+ */
+export interface SingleValueWrapperLong {
+  /**
+   *
+   * @type {number}
+   * @memberof SingleValueWrapperLong
+   */
+  'value': number;
+}
+
+/**
+ *
+ * @export
+ * @interface UserDTO
+ */
+export interface UserDTO {
     /**
      *
      * @type {number}
-     * @memberof WishlistItem
+     * @memberof UserDTO
      */
     'id': number;
     /**
      *
-     * @type {BeckersUser}
-     * @memberof WishlistItem
+     * @type {string}
+     * @memberof UserDTO
      */
-    'owner': BeckersUser;
+    'name': string;
     /**
      *
      * @type {string}
-     * @memberof WishlistItem
+     * @memberof UserDTO
      */
-    'description': string;
+    'email': string;
     /**
      *
      * @type {string}
-     * @memberof WishlistItem
+     * @memberof UserDTO
      */
-    'url': string;
-    /**
-     *
-     * @type {number}
-     * @memberof WishlistItem
-     */
-    'price': number;
+    'dateOfBirth': string;
     /**
      *
      * @type {string}
-     * @memberof WishlistItem
+     * @memberof UserDTO
      */
-    'addedOn': string;
-    /**
-     *
-     * @type {BeckersUser}
-     * @memberof WishlistItem
-     */
-    'purchasedBy'?: BeckersUser;
-    /**
-     *
-     * @type {string}
-     * @memberof WishlistItem
-     */
-    'purchasedOn'?: string;
-    /**
-     *
-     * @type {string}
-     * @memberof WishlistItem
-     */
-    'purchaseEvent'?: WishlistItemPurchaseEventEnum;
-    /**
-     *
-     * @type {boolean}
-     * @memberof WishlistItem
-     */
-    'deleted': boolean;
+    'avatarName': string;
+}
+
+/**
+ * The wishlist this item is part of
+ * @export
+ * @interface WishlistDTO
+ */
+export interface WishlistDTO {
   /**
    *
-   * @type {Wishlist}
-   * @memberof WishlistItem
-   */
-  'wishlist': Wishlist;
+   * @type {number}
+   * @memberof WishlistDTO
+     */
+  'id': number;
     /**
      *
-     * @type {string}
-     * @memberof WishlistItem
+     * @type {UserDTO}
+     * @memberof WishlistDTO
      */
-    'remarks'?: string;
-    /**
-     * Indicates if the URL is a valid URL
-     * @type {boolean}
-     * @memberof WishlistItem
-     */
-    'hasValidUrl': boolean;
+    'owner': UserDTO;
   /**
    *
    * @type {string}
-   * @memberof WishlistItem
+   * @memberof WishlistDTO
    */
-  'store': string;
+  'listName': string;
+  /**
+   *
+   * @type {Glyphicon}
+   * @memberof WishlistDTO
+   */
+  'icon'?: Glyphicon;
+  /**
+   *
+   * @type {Array<WishlistItemDTO>}
+   * @memberof WishlistDTO
+   */
+  'items'?: Array<WishlistItemDTO>;
 }
 
-export const WishlistItemPurchaseEventEnum = {
-    Christmas: 'CHRISTMAS',
-    Birthday: 'BIRTHDAY'
-} as const;
-
-export type WishlistItemPurchaseEventEnum = typeof WishlistItemPurchaseEventEnum[keyof typeof WishlistItemPurchaseEventEnum];
 
 /**
  *
@@ -1663,6 +1582,100 @@ export interface WishlistItemCreate {
    */
   'remarks'?: string;
 }
+
+/**
+ *
+ * @export
+ * @interface WishlistItemDTO
+ */
+export interface WishlistItemDTO {
+  /**
+   *
+   * @type {number}
+   * @memberof WishlistItemDTO
+   */
+  'id': number;
+  /**
+   *
+   * @type {UserDTO}
+   * @memberof WishlistItemDTO
+   */
+  'owner': UserDTO;
+  /**
+   *
+   * @type {string}
+   * @memberof WishlistItemDTO
+   */
+  'description': string;
+  /**
+   *
+   * @type {string}
+   * @memberof WishlistItemDTO
+   */
+  'url': string;
+  /**
+   *
+   * @type {number}
+   * @memberof WishlistItemDTO
+   */
+  'price': number;
+  /**
+   *
+   * @type {string}
+   * @memberof WishlistItemDTO
+   */
+  'addedOn': string;
+  /**
+   *
+   * @type {UserDTO}
+   * @memberof WishlistItemDTO
+   */
+  'purchasedBy'?: UserDTO;
+  /**
+   *
+   * @type {string}
+   * @memberof WishlistItemDTO
+   */
+  'purchasedOn'?: string;
+  /**
+   *
+   * @type {Event}
+   * @memberof WishlistItemDTO
+   */
+  'purchaseEvent'?: Event;
+  /**
+   *
+   * @type {boolean}
+   * @memberof WishlistItemDTO
+   */
+  'deleted': boolean;
+  /**
+   *
+   * @type {WishlistDTO}
+   * @memberof WishlistItemDTO
+   */
+  'wishlist': WishlistDTO;
+  /**
+   *
+   * @type {string}
+   * @memberof WishlistItemDTO
+   */
+  'remarks'?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof WishlistItemDTO
+   */
+  'store': string;
+  /**
+   * Indicates if the URL is a valid URL
+   * @type {boolean}
+   * @memberof WishlistItemDTO
+   */
+  'hasValidUrl': boolean;
+}
+
+
 /**
  *
  * @export
@@ -1924,38 +1937,6 @@ export const ListsApiAxiosParamCreator = function (configuration?: Configuration
           url: toPathString(localVarUrlObj),
           options: localVarRequestOptions,
         };
-      },
-        /**
-         *
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        addList: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/lists/own/add`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-          const localVarRequestOptions = {method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-          // authentication jwt required
-          // http bearer authentication required
-          await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-          setSearchParams(localVarUrlObj, localVarQueryParameter);
-          let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-          localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-          return {
-            url: toPathString(localVarUrlObj),
-            options: localVarRequestOptions,
-          };
         },
       /**
        *
@@ -2272,47 +2253,6 @@ export const ListsApiAxiosParamCreator = function (configuration?: Configuration
                 options: localVarRequestOptions,
             };
         },
-        /**
-         *
-         * @param {ListFBO} obj
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        saveList: async (obj: ListFBO, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'obj' is not null or undefined
-            assertParamExists('saveList', 'obj', obj)
-            const localVarPath = `/api/lists/own/add`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-          const localVarRequestOptions = {method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication jwt required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-            if (obj !== undefined) {
-                for (const [key, value] of Object.entries(obj)) {
-                    localVarQueryParameter[key] = value;
-                }
-            }
-
-
-          setSearchParams(localVarUrlObj, localVarQueryParameter);
-          let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-          localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-          return {
-            url: toPathString(localVarUrlObj),
-            options: localVarRequestOptions,
-          };
-        },
       /**
        *
        * @param {number} listId
@@ -2370,23 +2310,12 @@ export const ListsApiFp = function (configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async addItem(listId: number, wishlistItemCreate: WishlistItemCreate, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<WishlistItem>> {
+        async addItem(listId: number, wishlistItemCreate: WishlistItemCreate, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<WishlistItemDTO>> {
           const localVarAxiosArgs = await localVarAxiosParamCreator.addItem(listId, wishlistItemCreate, options);
           const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
           const localVarOperationServerBasePath = operationServerMap['ListsApi.addItem']?.[localVarOperationServerIndex]?.url;
           return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
-      /**
-       *
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async addList(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.addList(options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['ListsApi.addList']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-      },
       /**
        *
        * @param {number} listId
@@ -2419,7 +2348,7 @@ export const ListsApiFp = function (configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getAllLists(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Wishlist>>> {
+      async getAllLists(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<WishlistDTO>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getAllLists(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ListsApi.getAllLists']?.[localVarOperationServerIndex]?.url;
@@ -2432,7 +2361,7 @@ export const ListsApiFp = function (configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getItem(listId: number, itemId: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<WishlistItem>> {
+        async getItem(listId: number, itemId: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<WishlistItemDTO>> {
           const localVarAxiosArgs = await localVarAxiosParamCreator.getItem(listId, itemId, options);
           const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
           const localVarOperationServerBasePath = operationServerMap['ListsApi.getItem']?.[localVarOperationServerIndex]?.url;
@@ -2445,7 +2374,7 @@ export const ListsApiFp = function (configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getListById(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Wishlist>> {
+      async getListById(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<WishlistDTO>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getListById(id, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ListsApi.getListById']?.[localVarOperationServerIndex]?.url;
@@ -2471,7 +2400,7 @@ export const ListsApiFp = function (configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async ownLists(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Wishlist>>> {
+        async ownLists(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<WishlistDTO>>> {
           const localVarAxiosArgs = await localVarAxiosParamCreator.ownLists(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
           const localVarOperationServerBasePath = operationServerMap['ListsApi.ownLists']?.[localVarOperationServerIndex]?.url;
@@ -2485,24 +2414,12 @@ export const ListsApiFp = function (configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async saveItem(listId: number, itemId: number, wishlistItemUpdate: WishlistItemUpdate, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<WishlistItem>> {
+        async saveItem(listId: number, itemId: number, wishlistItemUpdate: WishlistItemUpdate, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<WishlistItemDTO>> {
           const localVarAxiosArgs = await localVarAxiosParamCreator.saveItem(listId, itemId, wishlistItemUpdate, options);
           const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
           const localVarOperationServerBasePath = operationServerMap['ListsApi.saveItem']?.[localVarOperationServerIndex]?.url;
           return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
-      /**
-       *
-       * @param {ListFBO} obj
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async saveList(obj: ListFBO, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.saveList(obj, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['ListsApi.saveList']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-      },
       /**
        *
        * @param {number} listId
@@ -2533,26 +2450,18 @@ export const ListsApiFactory = function (configuration?: Configuration, basePath
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        addItem(listId: number, wishlistItemCreate: WishlistItemCreate, options?: RawAxiosRequestConfig): AxiosPromise<WishlistItem> {
+        addItem(listId: number, wishlistItemCreate: WishlistItemCreate, options?: RawAxiosRequestConfig): AxiosPromise<WishlistItemDTO> {
           return localVarFp.addItem(listId, wishlistItemCreate, options).then((request) => request(axios, basePath));
         },
       /**
        *
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        addList(options?: RawAxiosRequestConfig): AxiosPromise<string> {
-            return localVarFp.addList(options).then((request) => request(axios, basePath));
-        },
-        /**
-         *
-         * @param {number} listId
-         * @param {number} itemId
+       * @param {number} listId
+       * @param {number} itemId
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
         buyItem(listId: number, itemId: number, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-          return localVarFp.buyItem(listId, itemId, options).then((request) => request(axios, basePath));
+        return localVarFp.buyItem(listId, itemId, options).then((request) => request(axios, basePath));
         },
       /**
        *
@@ -2570,7 +2479,7 @@ export const ListsApiFactory = function (configuration?: Configuration, basePath
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAllLists(options?: RawAxiosRequestConfig): AxiosPromise<Array<Wishlist>> {
+      getAllLists(options?: RawAxiosRequestConfig): AxiosPromise<Array<WishlistDTO>> {
             return localVarFp.getAllLists(options).then((request) => request(axios, basePath));
         },
         /**
@@ -2580,7 +2489,7 @@ export const ListsApiFactory = function (configuration?: Configuration, basePath
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getItem(listId: number, itemId: number, options?: RawAxiosRequestConfig): AxiosPromise<WishlistItem> {
+        getItem(listId: number, itemId: number, options?: RawAxiosRequestConfig): AxiosPromise<WishlistItemDTO> {
           return localVarFp.getItem(listId, itemId, options).then((request) => request(axios, basePath));
         },
       /**
@@ -2590,7 +2499,7 @@ export const ListsApiFactory = function (configuration?: Configuration, basePath
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getListById(id: number, options?: RawAxiosRequestConfig): AxiosPromise<Wishlist> {
+      getListById(id: number, options?: RawAxiosRequestConfig): AxiosPromise<WishlistDTO> {
             return localVarFp.getListById(id, options).then((request) => request(axios, basePath));
         },
         /**
@@ -2610,7 +2519,7 @@ export const ListsApiFactory = function (configuration?: Configuration, basePath
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-      ownLists(options?: RawAxiosRequestConfig): AxiosPromise<Array<Wishlist>> {
+      ownLists(options?: RawAxiosRequestConfig): AxiosPromise<Array<WishlistDTO>> {
         return localVarFp.ownLists(options).then((request) => request(axios, basePath));
         },
         /**
@@ -2621,17 +2530,8 @@ export const ListsApiFactory = function (configuration?: Configuration, basePath
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        saveItem(listId: number, itemId: number, wishlistItemUpdate: WishlistItemUpdate, options?: RawAxiosRequestConfig): AxiosPromise<WishlistItem> {
+        saveItem(listId: number, itemId: number, wishlistItemUpdate: WishlistItemUpdate, options?: RawAxiosRequestConfig): AxiosPromise<WishlistItemDTO> {
           return localVarFp.saveItem(listId, itemId, wishlistItemUpdate, options).then((request) => request(axios, basePath));
-        },
-      /**
-       *
-       * @param {ListFBO} obj
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        saveList(obj: ListFBO, options?: RawAxiosRequestConfig): AxiosPromise<string> {
-            return localVarFp.saveList(obj, options).then((request) => request(axios, basePath));
         },
       /**
        *
@@ -2667,25 +2567,15 @@ export class ListsApi extends BaseAPI {
 
     /**
      *
+     * @param {number} listId
+     * @param {number} itemId
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ListsApi
      */
-    public addList(options?: RawAxiosRequestConfig) {
-        return ListsApiFp(this.configuration).addList(options).then((request) => request(this.axios, this.basePath));
+    public buyItem(listId: number, itemId: number, options?: RawAxiosRequestConfig) {
+      return ListsApiFp(this.configuration).buyItem(listId, itemId, options).then((request) => request(this.axios, this.basePath));
     }
-
-  /**
-   *
-   * @param {number} listId
-   * @param {number} itemId
-   * @param {*} [options] Override http request option.
-   * @throws {RequiredError}
-   * @memberof ListsApi
-   */
-  public buyItem(listId: number, itemId: number, options?: RawAxiosRequestConfig) {
-    return ListsApiFp(this.configuration).buyItem(listId, itemId, options).then((request) => request(this.axios, this.basePath));
-  }
 
   /**
    *
@@ -2773,26 +2663,15 @@ export class ListsApi extends BaseAPI {
 
     /**
      *
-     * @param {ListFBO} obj
+     * @param {number} listId
+     * @param {number} itemId
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ListsApi
      */
-    public saveList(obj: ListFBO, options?: RawAxiosRequestConfig) {
-        return ListsApiFp(this.configuration).saveList(obj, options).then((request) => request(this.axios, this.basePath));
+    public unbuyItem(listId: number, itemId: number, options?: RawAxiosRequestConfig) {
+      return ListsApiFp(this.configuration).unbuyItem(listId, itemId, options).then((request) => request(this.axios, this.basePath));
     }
-
-  /**
-   *
-   * @param {number} listId
-   * @param {number} itemId
-   * @param {*} [options] Override http request option.
-   * @throws {RequiredError}
-   * @memberof ListsApi
-   */
-  public unbuyItem(listId: number, itemId: number, options?: RawAxiosRequestConfig) {
-    return ListsApiFp(this.configuration).unbuyItem(listId, itemId, options).then((request) => request(this.axios, this.basePath));
-  }
 }
 
 
