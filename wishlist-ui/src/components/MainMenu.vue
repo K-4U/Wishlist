@@ -24,12 +24,6 @@ const showPreviousButton = computed(() => {
   return !showHomeButton.value && router.currentRoute.value.meta.previousPage;
 });
 
-function doTest() {
-  dialogStore.showAlert('test', 'Dit is een test', () => {
-    console.log('callback');
-  }, null);
-}
-
 </script>
 
 <template>
@@ -53,7 +47,6 @@ function doTest() {
       <v-spacer></v-spacer>
 
       <ThemeSwitcher/>
-      <v-btn @click="doTest">Click me</v-btn>
       <span class="mr-2">{{ auth.user?.name }}</span>
 
       <v-menu class="d-none d-md-flex">
