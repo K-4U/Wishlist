@@ -48,8 +48,8 @@ public class WishlistItem {
 	@Column(nullable = false)
 	private boolean deleted;
 
-	@JoinColumn(nullable = false)
-	@ManyToOne(optional = false)
+	@JoinColumn
+	@ManyToOne
 	@JsonIgnoreProperties("items")
 	private Wishlist wishlist;
 

@@ -25,8 +25,8 @@ import java.util.UUID;
 public class RestResponseEntityExceptionHandler
         extends ResponseEntityExceptionHandler {
 
-    public static final int UNKNOWN_ERROR = -1;
-    public static final int NOT_FOUND = -2;
+    public static final int UNKNOWN_ERROR = 500;
+    public static final int NOT_FOUND = 404;
     public static final int AUTHENTICATION_ERROR = 401;
     public static final int ACCESS_DENIED = 403;
     public static final int CONFLICT = 409;
@@ -39,8 +39,6 @@ public class RestResponseEntityExceptionHandler
         body.setExceptions(ex);
         body.setMessage(ex.getMessage());
         body.setId(UUID.randomUUID().toString());
-
-        LOG.error(ex.getMessage(), ex);
 
         return body;
     }
@@ -89,18 +87,20 @@ public class RestResponseEntityExceptionHandler
     @Override
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         ErrorResponse body = getErrorResponse(ex, MALFORMED_REQUEST);
+        LOG.error(request.getContextPath(), body.getId(), ex);
         return handleExceptionInternal(ex, body, headers, status, request);
     }
 
     private ResponseEntity<Object> handleInternalError(Exception ex, WebRequest request, ErrorResponse body) {
         //log internal errors
-        LOG.error(body.getId(), ex);
+        LOG.error(request.getContextPath(), body.getId(), ex);
         return handleExceptionInternal(ex, body, new HttpHeaders(), HttpStatus.valueOf(body.getCode()), request);
     }
 
     @Override
     protected ResponseEntity<Object> handleTypeMismatch(TypeMismatchException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         ErrorResponse body = getErrorResponse(ex, MALFORMED_REQUEST);
+        LOG.error(request.getContextPath(), body.getId(), ex);
         return handleExceptionInternal(ex, body, headers, status, request);
     }
 
