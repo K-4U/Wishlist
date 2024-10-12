@@ -9,7 +9,6 @@ declare module 'vue' {
   export interface GlobalComponents {
     AlertDialog: typeof import('./src/components/AlertDialog.vue')['default']
     ApiErrorHandler: typeof import('./src/components/ApiErrorHandler.vue')['default']
-    AppFooter: typeof import('./src/components/AppFooter.vue')['default']
     ConfirmDialog: typeof import('./src/components/ConfirmDialog.vue')['default']
     CreateItemView: typeof import('./src/components/ListComponents/CreateItemView.vue')['default']
     CreateListView: typeof import('./src/components/ListComponents/CreateListView.vue')['default']
@@ -23,7 +22,6 @@ declare module 'vue' {
     LoaderIndicator: typeof import('./src/components/LoaderIndicator.vue')['default']
     MainMenu: typeof import('./src/components/MainMenu.vue')['default']
     Messages: typeof import('./src/components/Messages.vue')['default']
-    RenameListDialog: typeof import('./src/components/ListComponents/RenameListDialog.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     ThemeSwitcher: typeof import('./src/components/ThemeSwitcher.vue')['default']

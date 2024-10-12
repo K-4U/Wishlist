@@ -21,7 +21,7 @@ onMounted(() => {
     editList.value = {
       id: listFromApi.id,
       name: listFromApi.listName,
-      icon: listFromApi.icon,
+      icon: listFromApi.icon ?? '',
     };
     setValues({
       name: editList.value?.name,

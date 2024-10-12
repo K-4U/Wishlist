@@ -1,4 +1,5 @@
 import {defineStore} from 'pinia';
+import {ref} from 'vue';
 
 interface Button {
   title: string;
@@ -6,56 +7,64 @@ interface Button {
   handler?: (e: any) => void;
 }
 
-export const useDialogStore = defineStore({
-  id: 'alert',
-  state: (): {} => ({
-    alert: {
-      visible: false,
-      message: '',
-      title: '',
-      callback: () => {
-      },
-      icon: 'mdi-information',
-      color: null
+export const useDialogStore = defineStore('alert', () => {
+  const alert = ref({
+    visible: false,
+    message: '',
+    title: '',
+    callback: () => {
     },
-    confirm: {
-      visible: false,
-      message: '',
-      title: '',
-      icon: 'mdi-information',
-      color: null,
-      buttons: [] as Button[]
-    }
-  }),
-  getters: {},
-  actions: {
-    showAlert(title: string, message: string, callback: () => void, icon: string | null = 'mdi-information', color: string | null = null) {
-      this.alert.title = title;
-      this.alert.message = message;
-      this.alert.callback = callback;
-      this.alert.icon = icon ?? 'mdi-information';
-      this.alert.color = color;
-      this.alert.visible = true;
-    },
-    showConfirm(title: string, message: string, buttons: Button[], icon: string | null = 'mdi-information', color: string | null = null) {
-      this.confirm.title = title;
-      this.confirm.message = message;
-      this.confirm.buttons = buttons;
-      this.confirm.icon = icon ?? 'mdi-information';
-      this.confirm.color = color;
-      this.confirm.visible = true;
-    },
-    alertCallback() {
-      this.alert.visible = false
-      if (this.alert.callback) {
-        this.alert.callback();
-      }
-    },
-    confirmCallback(button: Button) {
-      this.confirm.visible = false
-      if (button.handler) {
-        button.handler(null);
-      }
+    icon: 'mdi-information',
+    color: ''
+  });
+
+  const confirm = ref({
+    visible: false,
+    message: '',
+    title: '',
+    icon: 'mdi-information',
+    color: '',
+    buttons: [] as Button[]
+  });
+
+  function showAlert(title: string, message: string, callback: () => void, icon: string | null = 'mdi-information', color: string | null = null) {
+    alert.value.title = title;
+    alert.value.message = message;
+    alert.value.callback = callback;
+    alert.value.icon = icon ?? 'mdi-information';
+    alert.value.color = color ?? '';
+    alert.value.visible = true;
+  }
+
+  function showConfirm(title: string, message: string, buttons: Button[], icon: string | null = 'mdi-information', color: string | null = null) {
+    confirm.value.title = title;
+    confirm.value.message = message;
+    confirm.value.buttons = buttons;
+    confirm.value.icon = icon ?? 'mdi-information';
+    confirm.value.color = color ?? '';
+    confirm.value.visible = true;
+  }
+
+  function alertCallback() {
+    alert.value.visible = false;
+    if (alert.value.callback) {
+      alert.value.callback();
     }
   }
+
+  function confirmCallback(button: Button) {
+    confirm.value.visible = false;
+    if (button.handler) {
+      button.handler(null);
+    }
+  }
+
+  return {
+    alert,
+    confirm,
+    showAlert,
+    showConfirm,
+    alertCallback,
+    confirmCallback
+  };
 });

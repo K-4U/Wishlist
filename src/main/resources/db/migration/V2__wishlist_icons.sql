@@ -1,4 +1,3 @@
-USE wishlist;
 alter table wishlist
     modify icon varchar(255) null;
 UPDATE wishlist

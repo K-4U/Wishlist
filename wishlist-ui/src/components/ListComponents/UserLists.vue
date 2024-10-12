@@ -32,10 +32,12 @@ function changeListName(e: any, listId: number) {
 
 function removeList(e: any, listId: number) {
   for (const listItr in props.lists) {
+    //@ts-ignore
     const list = props.lists[listItr];
     if (list.id === listId) {
       if (list.items.length > 0) {
-        dialogStore.showAlert('Let op, deze lijst niet leeg is!', 'Je kan alleen lege lijsten verwijderen.');
+        dialogStore.showAlert('Let op, deze lijst niet leeg is!', 'Je kan alleen lege lijsten verwijderen.', () => {
+        });
       } else {
         dialogStore.showConfirm(
           'Weet je zeker dat je deze lijst wilt verwijderen?', 'Dit kan niet ongedaan worden gemaakt.',

@@ -64,9 +64,9 @@ export default defineConfig(({command, mode}) => {
                 }
             })
         ],
-        /*build: {
-            minify: false,
-        },*/
+        build: {
+            // minify: false,
+        },
         define: {'process.env': {...env, ...{mode: mode}}},
         resolve: {
             alias: {
