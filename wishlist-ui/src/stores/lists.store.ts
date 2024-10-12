@@ -88,6 +88,10 @@ export const useListsStore = defineStore('lists', () => {
     return await handleApiCall(listsApi.createList(list)) ?? {} as WishlistDTO;
   }
 
+  async function deleteList(listId: number) {
+    return await handleApiCall(listsApi.deleteList(listId))
+  }
+
   return {
     lists,
     listById,
@@ -104,6 +108,7 @@ export const useListsStore = defineStore('lists', () => {
     unbuyItem,
     moveItem,
     updateList,
-    createList
+    createList,
+    deleteList
   };
 });

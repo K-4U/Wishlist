@@ -47,7 +47,7 @@ public class WishlistItemDTO {
 
     @JsonIgnoreProperties("items")
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED, name = "wishlist", description = "The wishlist this item is part of")
-    private WishlistDTO wishlistDTO;
+    private WishlistDTO wishlist;
 
     @Schema(requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String remarks;

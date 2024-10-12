@@ -12,7 +12,7 @@ import nl.k4u.web.wishlist.api.annotations.ResponseForbidden;
 import nl.k4u.web.wishlist.api.annotations.ResponseNoContent;
 import nl.k4u.web.wishlist.api.annotations.ResponseNotFound;
 import nl.k4u.web.wishlist.api.annotations.ResponseOk;
-import nl.k4u.web.wishlist.api.mappers.WishlistItemMapper;
+import nl.k4u.web.wishlist.api.mappers.CycleAvoidingMappingContext;
 import nl.k4u.web.wishlist.api.mappers.WishlistMapper;
 import nl.k4u.web.wishlist.api.pojo.SingleValueWrapper;
 import nl.k4u.web.wishlist.api.pojo.WishlistItemCreate;
@@ -40,7 +40,6 @@ public class ListRestController extends BaseController {
     private final ItemService itemService;
     private final AuthSupport authSupport;
     private final WishlistMapper listMapper;
-    private final WishlistItemMapper itemMapper;
 
     @PostMapping("/{listId}/items/{itemId}")
     @ResponseOk
@@ -69,7 +68,7 @@ public class ListRestController extends BaseController {
 
         itemService.saveItem(item);
 
-        return ResponseEntity.ok(itemMapper.toDTO(item));
+        return ResponseEntity.ok(listMapper.toItemDTO(item, new CycleAvoidingMappingContext()));
     }
 
     @PutMapping("/{listId}/items")
@@ -102,7 +101,7 @@ public class ListRestController extends BaseController {
 
         itemService.saveItem(item);
 
-        return ResponseEntity.ok(itemMapper.toDTO(item));
+        return ResponseEntity.ok(listMapper.toItemDTO(item, new CycleAvoidingMappingContext()));
     }
 
     @DeleteMapping("/{listId}/items/{itemId}")
@@ -130,10 +129,12 @@ public class ListRestController extends BaseController {
     public ResponseEntity<WishlistItemDTO> getItem(@PathVariable("listId") Long listId, @PathVariable("itemId") Long itemId) {
 
         WishlistItem itemById = itemService.getItemById(itemId);
+        //Trigger a fetch on this to make sure we have the wishlist.
+        itemById.getWishlist();
         if (!itemById.getWishlist().getId().equals(listId)) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(itemMapper.toDTO(itemById));
+        return ResponseEntity.ok(listMapper.toItemDTO(itemById, new CycleAvoidingMappingContext()));
     }
 
     @PostMapping("/{listId}/items/{itemId}/buy")

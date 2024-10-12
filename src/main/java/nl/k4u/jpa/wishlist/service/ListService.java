@@ -9,6 +9,7 @@ import nl.k4u.web.wishlist.api.pojo.WishlistCreate;
 import nl.k4u.web.wishlist.api.pojo.WishlistUpdate;
 import nl.k4u.web.wishlist.security.AuthSupport;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -17,6 +18,7 @@ import java.util.List;
  */
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ListService {
 
     private final ListDao listDao;
