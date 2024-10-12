@@ -14,9 +14,7 @@ import nl.k4u.web.wishlist.api.pojo.WishlistCreate;
 import nl.k4u.web.wishlist.api.pojo.WishlistDTO;
 import nl.k4u.web.wishlist.api.pojo.WishlistUpdate;
 import nl.k4u.web.wishlist.security.AuthSupport;
-import nl.k4u.web.wishlist.validators.ListValidator;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,18 +28,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ListsRestController extends BaseController {
 
-    private static final String COMMAND_NAME = "listAddCommand";
-
     private final ListService listService;
-    private final ListValidator validator;
     private final WishlistMapper mapper;
     private final AuthSupport authSupport;
-
-
-    @InitBinder(COMMAND_NAME)
-    public void initBinder(WebDataBinder binder) {
-        binder.addValidators(validator);
-    }
 
     @GetMapping("own")
     @Operation(summary = "Get own lists")
