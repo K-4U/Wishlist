@@ -1,6 +1,10 @@
 version: 2
 updates:
-  - package-ecosystem: package-manager
+  - package-ecosystem: maven
     directory: /
+    schedule:
+      interval: daily
+  - package-ecosystem: npm
+    directory: /wishlist-ui
     schedule:
       interval: daily
