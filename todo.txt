@@ -1,0 +1,1 @@
+- Zorgen dat je dingen kan toevoegen aan een lijst door te delen (android/ios?)

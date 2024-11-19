@@ -4,12 +4,11 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Calendar;
 import java.util.UUID;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
+import jakarta.transaction.Transactional;
 import nl.k4u.jpa.wishlist.dao.PasswordTokenDao;
 import nl.k4u.jpa.wishlist.dao.UserDao;
 import nl.k4u.jpa.wishlist.pojo.BeckersUser;

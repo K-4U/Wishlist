@@ -1,23 +1,30 @@
 package nl.k4u.web.wishlist.security;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import nl.k4u.jpa.wishlist.pojo.BeckersUser;
+import nl.k4u.web.wishlist.api.mappers.UserMapper;
+import nl.k4u.web.wishlist.api.pojo.JwtResponse;
+import nl.k4u.web.wishlist.api.pojo.LoginRequest;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Component;
 
-import nl.k4u.jpa.wishlist.pojo.BeckersUser;
-
 /**
  * @author Koen Beckers (K-4U)
  */
 @Component("authSupport")
+@Log4j2
+@RequiredArgsConstructor
 public class AuthSupport {
 
-	// Log instance for this class
-	private static Logger LOG = LogManager.getLogger();
+	public final AuthenticationManager authenticationManager;
+	public final JwtUtils jwtUtils;
+	public final UserMapper userMapper;
 
 	/**
 	 * We need to update the existing principal; we either have new assignments
@@ -38,7 +45,7 @@ public class AuthSupport {
 				SecurityContextHolder.getContext().setAuthentication(newToken);
 			}
 		} catch (Throwable t) {
-			LOG.warn("Error updating the principal", t);
+			log.warn("Error updating the principal", t);
 		}
 	}
 
@@ -58,7 +65,7 @@ public class AuthSupport {
 				}
 			}
 		} catch (Throwable t) {
-			LOG.warn("Error updating the principal delegate", t);
+			log.warn("Error updating the principal delegate", t);
 		}
 	}
 
@@ -76,7 +83,7 @@ public class AuthSupport {
 				}
 			}
 		} catch (Throwable t) {
-			LOG.warn("Error getting the principal delegate", t);
+			log.warn("Error getting the principal delegate", t);
 		}
 		return null;
 	}
@@ -95,7 +102,7 @@ public class AuthSupport {
 				}
 			}
 		} catch (Throwable t) {
-			LOG.warn("Error getting the principal", t);
+			log.warn("Error getting the principal", t);
 		}
 		return null;
 	}
@@ -107,8 +114,32 @@ public class AuthSupport {
 				return ((WebAuthenticationDetails) auth.getDetails()).getSessionId();
 			}
 		} catch (Throwable t) {
-			LOG.warn("Error getting the principal", t);
+			log.warn("Error getting the principal", t);
 		}
 		return null;
+	}
+
+	public JwtResponse authenticate(LoginRequest loginRequest) {
+		Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.username(),
+				loginRequest.password()));
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+		String jwt = jwtUtils.generateJwtToken(authentication);
+
+		LoginPrincipal userDetails = (LoginPrincipal) authentication.getPrincipal();
+
+		return JwtResponse.builder()
+				.token(jwt)
+				.delegate(userMapper.toDTO(userDetails.getDelegate()))
+				.build();
+	}
+
+	private boolean canEdit(BeckersUser owner) {
+        return getPrincipalDelegate().getId().equals(owner.getId());
+    }
+
+	public void assertEdit(BeckersUser owner) {
+		if (!canEdit(owner)) {
+			throw new AccessDeniedException("You are not allowed to edit this item");
+		}
 	}
 }

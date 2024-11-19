@@ -1,18 +1,17 @@
 package nl.k4u.jpa.wishlist.dao;
 
-import java.util.List;
-
+import nl.k4u.jpa.wishlist.pojo.Wishlist;
+import nl.k4u.jpa.wishlist.pojo.WishlistItem;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import nl.k4u.jpa.wishlist.pojo.Wishlist;
-import nl.k4u.jpa.wishlist.pojo.WishlistItem;
+import java.util.List;
 
 /**
  * @author Koen Beckers (K-4U)
  */
 @Repository
-public interface WishlistItemDao extends JpaRepository<WishlistItem, Integer> {
+public interface WishlistItemDao extends JpaRepository<WishlistItem, Long> {
 
 	List<WishlistItem> getAllByWishlist(Wishlist wishlist);
 
