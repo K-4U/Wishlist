@@ -9,6 +9,7 @@ import nl.k4u.web.wishlist.api.annotations.ResponseForbidden;
 import nl.k4u.web.wishlist.api.annotations.ResponseNoContent;
 import nl.k4u.web.wishlist.api.annotations.ResponseNotFound;
 import nl.k4u.web.wishlist.api.annotations.ResponseOk;
+import nl.k4u.web.wishlist.api.mappers.CycleAvoidingMappingContext;
 import nl.k4u.web.wishlist.api.mappers.WishlistMapper;
 import nl.k4u.web.wishlist.api.pojo.WishlistCreate;
 import nl.k4u.web.wishlist.api.pojo.WishlistDTO;
@@ -37,21 +38,21 @@ public class ListsRestController extends BaseController {
     @ResponseOk
     public List<WishlistDTO> ownLists() {
         BeckersUser user = AuthSupport.getPrincipalDelegate();
-        return mapper.toDTOList(listService.getAllWishlistsByUser(user));
+        return mapper.toDTOList(listService.getAllWishlistsByUser(user), new CycleAvoidingMappingContext());
     }
 
     @GetMapping
     @Operation(summary = "Get all lists")
     @ResponseOk
     public List<WishlistDTO> getAllLists() {
-        return mapper.toDTOList(listService.getAllWishlists());
+        return mapper.toDTOList(listService.getAllWishlists(), new CycleAvoidingMappingContext());
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "Get list by ID")
     @ResponseOk
     public WishlistDTO getListById(@PathVariable("id") Long id) {
-        return mapper.toDTO(listService.getWishListById(id));
+        return mapper.toDTO(listService.getWishListById(id), new CycleAvoidingMappingContext());
     }
 
     @DeleteMapping("/{id}")
@@ -71,14 +72,14 @@ public class ListsRestController extends BaseController {
     @ResponseForbidden
     @ResponseNotFound
     public WishlistDTO updateList(@PathVariable("id") Long id, @RequestBody WishlistUpdate dto) {
-        return mapper.toDTO(listService.updateList(id, dto));
+        return mapper.toDTO(listService.updateList(id, dto), new CycleAvoidingMappingContext());
     }
 
     @PutMapping("/")
     @Operation(summary = "Create list")
     @ResponseOk
     public WishlistDTO createList(@RequestBody WishlistCreate dto) {
-        return mapper.toDTO(listService.createList(dto));
+        return mapper.toDTO(listService.createList(dto), new CycleAvoidingMappingContext());
     }
 
 }

@@ -12,7 +12,7 @@ import nl.k4u.web.wishlist.api.annotations.ResponseForbidden;
 import nl.k4u.web.wishlist.api.annotations.ResponseNoContent;
 import nl.k4u.web.wishlist.api.annotations.ResponseNotFound;
 import nl.k4u.web.wishlist.api.annotations.ResponseOk;
-import nl.k4u.web.wishlist.api.mappers.WishlistItemMapper;
+import nl.k4u.web.wishlist.api.mappers.CycleAvoidingMappingContext;
 import nl.k4u.web.wishlist.api.mappers.WishlistMapper;
 import nl.k4u.web.wishlist.api.pojo.SingleValueWrapper;
 import nl.k4u.web.wishlist.api.pojo.WishlistItemCreate;
@@ -40,14 +40,13 @@ public class ListRestController extends BaseController {
     private final ItemService itemService;
     private final AuthSupport authSupport;
     private final WishlistMapper listMapper;
-    private final WishlistItemMapper itemMapper;
 
     @PostMapping("/{listId}/items/{itemId}")
     @ResponseOk
     public ResponseEntity<WishlistItemDTO> saveItem(@Valid @RequestBody WishlistItemUpdate update,
                                                     BindingResult result,
-                                                    @PathVariable Long listId,
-                                                    @PathVariable Long itemId) {
+                                                    @PathVariable("listId") Long listId,
+                                                    @PathVariable("itemId") Long itemId) {
 
         if (result.hasErrors()) {
             //TODO: Figure out how to send this back?
@@ -69,7 +68,7 @@ public class ListRestController extends BaseController {
 
         itemService.saveItem(item);
 
-        return ResponseEntity.ok(itemMapper.toDTO(item));
+        return ResponseEntity.ok(listMapper.toItemDTO(item, new CycleAvoidingMappingContext()));
     }
 
     @PutMapping("/{listId}/items")
@@ -77,7 +76,7 @@ public class ListRestController extends BaseController {
     @ResponseForbidden
     public ResponseEntity<WishlistItemDTO> addItem(@Valid @RequestBody WishlistItemCreate update,
                                                 BindingResult result,
-                                                @PathVariable Long listId) {
+                                                   @PathVariable("listId") Long listId) {
 
         if (result.hasErrors()) {
             //TODO: Figure out how to send this back?
@@ -102,13 +101,13 @@ public class ListRestController extends BaseController {
 
         itemService.saveItem(item);
 
-        return ResponseEntity.ok(itemMapper.toDTO(item));
+        return ResponseEntity.ok(listMapper.toItemDTO(item, new CycleAvoidingMappingContext()));
     }
 
     @DeleteMapping("/{listId}/items/{itemId}")
     @ResponseNoContent
     @ResponseForbidden
-    public ResponseEntity<Void> deleteItem(@PathVariable Long listId, @PathVariable Long itemId) {
+    public ResponseEntity<Void> deleteItem(@PathVariable("listId") Long listId, @PathVariable("itemId") Long itemId) {
 
         WishlistItem item = itemService.getItemById(itemId);
 
@@ -118,6 +117,7 @@ public class ListRestController extends BaseController {
         }
 
         item.setDeleted(true);
+        item.setWishlist(null);
         itemService.saveItem(item);
 
         return ResponseEntity.noContent().build();
@@ -126,19 +126,21 @@ public class ListRestController extends BaseController {
     @GetMapping("/{listId}/items/{itemId}")
     @ResponseOk
     @ResponseNotFound
-    public ResponseEntity<WishlistItemDTO> getItem(@PathVariable Long listId, @PathVariable Long itemId) {
+    public ResponseEntity<WishlistItemDTO> getItem(@PathVariable("listId") Long listId, @PathVariable("itemId") Long itemId) {
 
         WishlistItem itemById = itemService.getItemById(itemId);
+        //Trigger a fetch on this to make sure we have the wishlist.
+        itemById.getWishlist();
         if (!itemById.getWishlist().getId().equals(listId)) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(itemMapper.toDTO(itemById));
+        return ResponseEntity.ok(listMapper.toItemDTO(itemById, new CycleAvoidingMappingContext()));
     }
 
     @PostMapping("/{listId}/items/{itemId}/buy")
     @ResponseNoContent
     @ResponseNotFound
-    public ResponseEntity<Void> buyItem(@PathVariable Long listId, @PathVariable Long itemId) {
+    public ResponseEntity<Void> buyItem(@PathVariable("listId") Long listId, @PathVariable("itemId") Long itemId) {
 		BeckersUser user = AuthSupport.getPrincipalDelegate();
 
 		WishlistItem item = itemService.getItemById(itemId);
@@ -158,7 +160,7 @@ public class ListRestController extends BaseController {
     @ResponseNoContent
     @ResponseForbidden
     @ResponseNotFound
-    public ResponseEntity<Void> unbuyItem(@PathVariable Long listId, @PathVariable Long itemId) {
+    public ResponseEntity<Void> unbuyItem(@PathVariable("listId") Long listId, @PathVariable("itemId") Long itemId) {
         BeckersUser user = AuthSupport.getPrincipalDelegate();
 
         WishlistItem item = itemService.getItemById(itemId);
@@ -181,7 +183,7 @@ public class ListRestController extends BaseController {
     @ResponseNoContent
     @ResponseForbidden
     @ResponseNotFound
-    public ResponseEntity<Void> moveItem(@PathVariable Long listId, @PathVariable Long itemId, @RequestBody SingleValueWrapper<Long> targetListId) {
+    public ResponseEntity<Void> moveItem(@PathVariable("listId") Long listId, @PathVariable("itemId") Long itemId, @RequestBody SingleValueWrapper<Long> targetListId) {
         BeckersUser user = AuthSupport.getPrincipalDelegate();
 
         WishlistItem item = itemService.getItemById(itemId);
